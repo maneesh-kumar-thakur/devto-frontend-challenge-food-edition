@@ -1,0 +1,530 @@
+/* ============================================================
+   CUTTING CHAI
+   Masala chai in a terracotta kulhad. Pure CSS — no SVG, no
+   images, no canvas. Every shape is a div, a gradient, a
+   clip-path or a shadow.
+
+   Sized entirely in `cqw` (1% of the scene's own width) off one
+   container query, so the whole picture scales to any viewport
+   with no media queries and no magic numbers.
+   ============================================================ */
+
+:root {
+  /* unglazed terracotta, which is the whole reason for this subject:
+     matte clay is far kinder to layered gradients than glass */
+  --clay-0: #e3ab7e;
+  --clay-1: #d09468;
+  --clay-2: #b9714a;
+  --clay-3: #8c4a2c;
+  --clay-4: #5e2e1a;
+
+  /* the chai itself */
+  --chai-0: #d8a970;
+  --chai-1: #b98147;
+  --chai-2: #8e5b28;
+  --chai-3: #6b3f16;
+
+  --wood-0: #7a4926;
+  --wood-1: #5a3218;
+  --wood-2: #3d200f;
+  --wood-3: #241207;
+
+  --ease: cubic-bezier(0.22, 0.9, 0.26, 1);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  gap: 1.5rem;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: radial-gradient(120% 90% at 50% 0%, #2b1a0e 0%, #140b05 72%);
+  color: #a98d74;
+  font: 400 1rem/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.stage {
+  display: grid;
+  justify-items: center;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 60rem;
+}
+
+.caption {
+  margin: 0;
+  max-width: 34rem;
+  text-align: center;
+  font-size: clamp(0.85rem, 2.4vw, 1rem);
+  text-wrap: balance;
+}
+.caption strong { color: var(--clay-0); font-weight: 600; }
+
+/* ---------- the one interactive affordance ------------------ */
+.dunk {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0.55rem 1.15rem;
+  border: 1px solid #4a2e1b;
+  border-radius: 999px;
+  background: #241409;
+  color: #d8bda3;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.dunk:hover { background: #2f1b0d; border-color: #7a4926; color: #f3e2d0; }
+.dunk:focus-visible { outline: 3px solid var(--clay-0); outline-offset: 3px; }
+.dunk[disabled] { opacity: 0.55; cursor: default; }
+.dunk__dot {
+  width: 0.6rem; height: 0.6rem;
+  border-radius: 50%;
+  background: var(--clay-1);
+  box-shadow: 0 0 0.55rem var(--clay-2);
+}
+
+/* ============================================================
+   SCENE
+   ============================================================ */
+.scene {
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: var(--wood-3);
+  box-shadow: 0 0 0 1px #3a2314, 0 2.5rem 5rem -1rem #000;
+  isolation: isolate;
+}
+
+/* ---------- wall and table ---------------------------------- */
+/* A single warm key from the upper left, falling off hard. Most of
+   the "is this any good" of a still life is in this one gradient. */
+.wall {
+  position: absolute;
+  inset: 0 0 34% 0;
+  background:
+    radial-gradient(56% 58% at 26% 2%, rgba(255, 190, 120, 0.26), transparent 62%),
+    radial-gradient(84% 78% at 30% 6%, #6d4526 0%, #3d2513 52%, #1d1008 100%);
+}
+
+.table {
+  position: absolute;
+  inset: 66% 0 0 0;
+  background:
+    /* pool of key light landing on the table */
+    radial-gradient(46% 88% at 40% 8%, rgba(255, 198, 132, 0.3), transparent 68%),
+    /* the shadow the wall throws forward */
+    linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, transparent 20%),
+    /* Grain runs ACROSS the table, so the gradient axis has to be
+       near-vertical — stripes are perpendicular to the axis. */
+    repeating-linear-gradient(1deg,
+      rgba(0, 0, 0, 0.14) 0 0.7cqw,
+      transparent 0.7cqw 2cqw,
+      rgba(255, 214, 168, 0.06) 2cqw 2.25cqw,
+      transparent 2.25cqw 4.2cqw),
+    /* board seams, running away from the viewer */
+    repeating-linear-gradient(90deg,
+      transparent 0 31cqw,
+      rgba(0, 0, 0, 0.13) 31cqw 31.35cqw),
+    linear-gradient(180deg, var(--wood-0) 0%, var(--wood-1) 44%, var(--wood-2) 100%);
+}
+/* the lit front edge of the table where the light catches it */
+.table::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 0.4cqw;
+  background: linear-gradient(90deg, transparent 4%, rgba(255, 196, 138, 0.5) 34%, rgba(255, 178, 112, 0.28) 62%, transparent 96%);
+}
+
+/* ---------- the out-of-focus cup behind ---------------------- */
+.backcup {
+  position: absolute;
+  left: 9cqw;
+  top: 38cqw;
+  width: 16cqw;
+  height: 16cqw;
+  clip-path: polygon(2% 0, 98% 0, 93% 40%, 88% 70%, 82% 92%, 78% 100%, 22% 100%, 18% 92%, 12% 70%, 7% 40%);
+  background: linear-gradient(180deg, #7c4d2e 0%, #5b3319 56%, #351a0c 100%);
+  filter: blur(1.8cqw);
+  opacity: 0.6;
+}
+.backcup::after {                    /* its rim */
+  content: "";
+  position: absolute;
+  left: -3%;
+  top: -8%;
+  width: 106%;
+  height: 22%;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #b8794f, #6d3d20);
+}
+
+/* ============================================================
+   THE KULHAD
+   ============================================================ */
+.cupshadow {
+  position: absolute;
+  left: 31cqw;
+  top: 59.4cqw;
+  width: 36cqw;
+  height: 6.4cqw;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(20, 8, 2, 0.72), transparent 72%);
+  filter: blur(1.2cqw);
+}
+
+/* A kulhad is squat, not tall — wide mouth, base a bit over half
+   the rim. Get that ratio wrong and it reads as a plant pot. */
+.kulhad {
+  position: absolute;
+  left: 34cqw;
+  top: 34cqw;
+  width: 30cqw;
+  height: 27cqw;
+  z-index: 3;
+}
+
+/* Tapered, slightly irregular — a kulhad is thrown by hand and
+   fired rough, so the silhouette should not be a clean cone. */
+.cup {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(
+    1% 0%, 99% 0%,
+    97.5% 13%, 95.5% 26%, 93% 40%, 90% 54%,
+    87% 67%, 84% 79%, 81% 90%, 78% 100%,
+    22% 100%, 19% 90%, 16% 79%, 13% 67%,
+    10% 54%, 7% 40%, 4.5% 26%, 2.5% 13%
+  );
+  background:
+    /* throwing rings left by the potter's fingers */
+    repeating-linear-gradient(0deg,
+      rgba(94, 46, 26, 0.16) 0 0.28cqw,
+      transparent 0.28cqw 1.5cqw),
+    /* rim light down the left edge */
+    linear-gradient(100deg, rgba(255, 220, 186, 0.5) 0 5%, rgba(255, 200, 160, 0.12) 14%, transparent 30%),
+    /* the shadow side */
+    linear-gradient(260deg, rgba(48, 20, 8, 0.62) 0 7%, rgba(60, 26, 12, 0.25) 20%, transparent 40%),
+    /* specular bloom */
+    radial-gradient(52% 38% at 32% 24%, rgba(255, 228, 198, 0.4), transparent 68%),
+    /* clay */
+    linear-gradient(180deg, var(--clay-1) 0%, var(--clay-2) 44%, var(--clay-3) 84%, var(--clay-4) 100%);
+}
+/* grit: unglazed clay is never smooth */
+.cup::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 22% 34%, rgba(94, 46, 26, 0.3) 0 0.22cqw, transparent 0.24cqw),
+    radial-gradient(circle at 61% 58%, rgba(94, 46, 26, 0.26) 0 0.18cqw, transparent 0.2cqw),
+    radial-gradient(circle at 41% 76%, rgba(255, 220, 186, 0.22) 0 0.16cqw, transparent 0.18cqw),
+    radial-gradient(circle at 74% 30%, rgba(94, 46, 26, 0.22) 0 0.2cqw, transparent 0.22cqw);
+  opacity: 0.9;
+}
+
+/* the rim, seen as an ellipse from just above */
+.rim {
+  position: absolute;
+  top: -3.1cqw;
+  left: -1.4cqw;
+  width: calc(100% + 2.8cqw);
+  height: 7.6cqw;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--clay-0) 0%, var(--clay-2) 52%, var(--clay-3) 100%);
+  box-shadow:
+    inset 0 -0.5cqw 0.9cqw rgba(70, 30, 14, 0.5),
+    0 0.35cqw 0.7cqw rgba(0, 0, 0, 0.3);
+}
+
+/* the chai, inset so a lip of clay shows all the way round */
+.chai {
+  position: absolute;
+  inset: 1.05cqw 1.5cqw;
+  overflow: hidden;
+  border-radius: 50%;
+  background:
+    /* the light catching the surface */
+    radial-gradient(64% 84% at 32% 22%, rgba(255, 238, 210, 0.5), transparent 58%),
+    /* depth at the far edge */
+    radial-gradient(120% 130% at 74% 92%, var(--chai-3), transparent 62%),
+    linear-gradient(180deg, var(--chai-0) 0%, var(--chai-1) 58%, var(--chai-2) 100%);
+  box-shadow: inset 0 0.6cqw 1.2cqw rgba(60, 26, 8, 0.55);
+}
+/* the skin of malai that forms if you leave it a minute */
+.chai::after {
+  content: "";
+  position: absolute;
+  inset: 12% 14%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 240, 214, 0.24), rgba(255, 232, 198, 0.07) 66%, transparent);
+}
+
+/* ground spice floating on top */
+.speck {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(74, 36, 14, 0.55);
+}
+/* kept low and off-axis: two specks side by side above a third
+   turns any circle into a face */
+.speck--a { left: 30%; top: 62%; width: 3.2%; aspect-ratio: 1; }
+.speck--b { left: 42%; top: 71%; width: 2.2%; aspect-ratio: 1; }
+.speck--c { left: 63%; top: 64%; width: 2.6%; aspect-ratio: 1; opacity: 0.8; }
+
+/* rings, thrown when the biscuit goes in */
+.chai__ripple {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: 12%;
+  aspect-ratio: 1;
+  margin: -6% 0 0 -6%;
+  border: 0.22cqw solid rgba(255, 240, 214, 0.65);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+/* ============================================================
+   THE BISCUIT
+   The bite is a mask, not a drawing — a radial-gradient mask
+   punches a real hole through the biscuit, crumb pattern and
+   all, which no amount of overlaid shapes would do.
+   ============================================================ */
+.biscuit {
+  position: absolute;
+  left: 61cqw;
+  top: 47cqw;
+  width: 15cqw;
+  height: 10.5cqw;
+  z-index: 2;
+  border-radius: 0.7cqw;
+  background:
+    /* docker holes, tiled */
+    radial-gradient(circle, rgba(140, 88, 36, 0.42) 0 0.28cqw, transparent 0.3cqw) 1cqw 1cqw / 2.7cqw 2.7cqw,
+    /* toasted edge */
+    linear-gradient(180deg, rgba(255, 236, 206, 0.35) 0 8%, transparent 26%),
+    linear-gradient(170deg, #ecc78c 0%, #d8ac6b 52%, #b98a4a 100%);
+  box-shadow:
+    inset 0 0 0 0.28cqw rgba(160, 108, 48, 0.35),
+    0 0.7cqw 1.1cqw rgba(24, 10, 2, 0.5);
+  transform: rotate(-8deg);
+  transform-origin: 82% 100%;
+  mask-image: radial-gradient(circle at 96% 16%, transparent 3.2cqw, #000 3.35cqw);
+}
+
+/* ============================================================
+   STEAM
+   ============================================================ */
+.steam {
+  position: absolute;
+  left: 49cqw;
+  top: 35cqw;
+  width: 0;
+  height: 0;
+  z-index: 4;
+  pointer-events: none;
+  /* screen so the steam ADDS light to the dark room rather than
+     laying a grey film over it */
+  mix-blend-mode: screen;
+}
+.steam i {
+  position: absolute;
+  bottom: 0;
+  /* each wisp leaves the surface at its own point, or all five
+     stack into a single chimney */
+  left: var(--x, 0cqw);
+  width: var(--w, 3cqw);
+  height: 26cqw;
+  border-radius: 50% 50% 44% 44% / 62% 62% 38% 38%;
+  background: linear-gradient(to top,
+    rgba(255, 246, 236, 0) 0%,
+    rgba(255, 246, 236, 0.92) 26%,
+    rgba(255, 240, 226, 0.36) 62%,
+    rgba(255, 236, 220, 0.06) 88%,
+    transparent 100%);
+  filter: blur(1.15cqw);
+  transform-origin: bottom center;
+  opacity: 0;
+  animation: rise var(--d, 7s) var(--delay, 0s) infinite ease-in-out;
+}
+/* Hand-authored fallbacks so the steam still moves with the JS
+   pane emptied — the script only randomises these. */
+.steam i:nth-child(1) { --x: -5cqw;   --w: 3.2cqw; --d: 7s;   --delay: -0.5s; --drift:  4cqw; --twist:  9deg; }
+.steam i:nth-child(2) { --x: -1.5cqw; --w: 2.4cqw; --d: 8.5s; --delay: -2.6s; --drift: -3cqw; --twist: -7deg; }
+.steam i:nth-child(3) { --x:  2cqw;   --w: 3.6cqw; --d: 6.4s; --delay: -4.1s; --drift:  6cqw; --twist: 12deg; }
+.steam i:nth-child(4) { --x:  5.5cqw; --w: 2.1cqw; --d: 9.2s; --delay: -1.7s; --drift: -5cqw; --twist:-11deg; }
+.steam i:nth-child(5) { --x:  0.5cqw; --w: 2.8cqw; --d: 7.8s; --delay: -5.4s; --drift:  2cqw; --twist:  5deg; }
+
+@keyframes rise {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 3cqw) scale(0.5, 0.4) rotate(-3deg);
+  }
+  20% { opacity: 0.85; }
+  62% { opacity: 0.4; }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--drift, 4cqw)), -22cqw)
+               scale(1.55, 1.35) rotate(var(--twist, 8deg));
+  }
+}
+
+/* ---------- the dunk ---------------------------------------- */
+.scene.is-dunking .biscuit { animation: dunk 1.9s var(--ease) 1; }
+.scene.is-dunking .chai__ripple { animation: ripple 1.5s 0.62s ease-out 1; }
+.scene.is-dunking .chai__ripple--2 { animation-delay: 0.86s; }
+/* the steam gusts when something hot is disturbed */
+.scene.is-dunking .steam i { animation-duration: calc(var(--d, 7s) * 0.62); }
+
+@keyframes dunk {
+  0%   { transform: rotate(-8deg)  translate(0, 0); }
+  26%  { transform: rotate(-28deg) translate(-8cqw, -8cqw); }
+  46%  { transform: rotate(-38deg) translate(-13cqw, -2.5cqw); }
+  58%  { transform: rotate(-38deg) translate(-13cqw, 0.4cqw); }
+  74%  { transform: rotate(-30deg) translate(-9cqw, -7cqw); }
+  100% { transform: rotate(-8deg)  translate(0, 0); }
+}
+
+@keyframes ripple {
+  0%   { opacity: 0.8; transform: scale(0.3); }
+  100% { opacity: 0;   transform: scale(4.6); }
+}
+
+/* ============================================================
+   SPICES ON THE TABLE
+   ============================================================ */
+/* Star anise: eight petals placed by rotating a single custom
+   property, so the whole flower is one rule and an index. */
+.anise {
+  position: absolute;
+  left: 17cqw;
+  top: 63cqw;
+  width: 10cqw;
+  aspect-ratio: 1;
+  transform: rotate(11deg);
+  filter: drop-shadow(0 0.5cqw 0.6cqw rgba(20, 8, 2, 0.6));
+}
+.anise i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3.2cqw;
+  height: 4.5cqw;
+  margin: -2.25cqw 0 0 -1.6cqw;
+  border-radius: 52% 52% 44% 44% / 62% 62% 38% 38%;
+  background: linear-gradient(165deg, #7d4821 0%, #4c2511 62%, #33180a 100%);
+  box-shadow: inset 0 0.28cqw 0.4cqw rgba(255, 208, 160, 0.28);
+  transform: rotate(calc(var(--i) * 45deg)) translateY(-2.6cqw);
+}
+.anise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 2.3cqw;
+  height: 2.3cqw;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 30%, #90562a 0%, #52280f 60%, #33180a 100%);
+}
+
+.cinnamon {
+  position: absolute;
+  left: 68cqw;
+  top: 69cqw;
+  width: 15cqw;
+  height: 3.4cqw;
+  border-radius: 1.7cqw;
+  background:
+    linear-gradient(180deg, rgba(255, 226, 192, 0.24) 0 20%, transparent 44%),
+    repeating-linear-gradient(93deg,
+      #905025 0 0.5cqw,
+      #6f3a17 0.5cqw 1.05cqw,
+      #a56231 1.05cqw 1.7cqw);
+  transform: rotate(-9deg);
+  box-shadow: 0 0.55cqw 0.9cqw rgba(24, 10, 2, 0.55);
+}
+.cinnamon::after {                   /* the curled-in end */
+  content: "";
+  position: absolute;
+  right: -0.3cqw;
+  top: -0.1cqw;
+  width: 3.6cqw;
+  height: calc(100% + 0.2cqw);
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 44%, #4a2410 0 30%, #824921 32%, #5d3216 72%);
+}
+
+.cardamom {
+  position: absolute;
+  width: 3.6cqw;
+  height: 2.3cqw;
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  background: linear-gradient(168deg, #d2d8a6 0%, #9ca66e 62%, #78814f 100%);
+  box-shadow: 0 0.35cqw 0.5cqw rgba(24, 10, 2, 0.5);
+}
+.cardamom::after {                   /* the seam down the pod */
+  content: "";
+  position: absolute;
+  inset: 16% 47% 16% 47%;
+  border-radius: 1cqw;
+  background: rgba(88, 96, 56, 0.6);
+}
+.cardamom--a { left: 28cqw; top: 71cqw; transform: rotate(-16deg); }
+.cardamom--b { left: 32.5cqw; top: 73.5cqw; transform: rotate(24deg); }
+
+.clove {
+  position: absolute;
+  width: 2.6cqw;
+  height: 0.75cqw;
+  border-radius: 0.4cqw;
+  background: linear-gradient(90deg, #2e1608 0%, #4d2712 62%, #6b3a1c 100%);
+  box-shadow: 0 0.25cqw 0.35cqw rgba(20, 8, 2, 0.55);
+}
+.clove::after {                      /* the bud */
+  content: "";
+  position: absolute;
+  right: -0.35cqw;
+  top: -0.35cqw;
+  width: 1.4cqw;
+  height: 1.45cqw;
+  border-radius: 50%;
+  background: radial-gradient(circle at 36% 32%, #7d4620, #3a1c0c);
+}
+.clove--a { left: 72cqw; top: 62cqw; transform: rotate(18deg); }
+.clove--b { left: 24cqw; top: 58cqw; transform: rotate(-34deg); }
+.clove--c { left: 78cqw; top: 74cqw; transform: rotate(6deg); }
+
+/* ---------- final grade ------------------------------------- */
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background: radial-gradient(104% 96% at 46% 40%,
+    transparent 26%,
+    rgba(18, 8, 2, 0.26) 64%,
+    rgba(10, 4, 1, 0.74) 100%);
+}
+
+/* ---------- respect the setting ----------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .steam i {
+    animation: none;
+    opacity: 0.5;
+    transform: translate(-50%, -8cqw) scale(1.2, 1.1);
+  }
+  .scene.is-dunking .biscuit,
+  .scene.is-dunking .chai__ripple,
+  .scene.is-dunking .steam i { animation: none; }
+  .dunk { transition: none; }
+}

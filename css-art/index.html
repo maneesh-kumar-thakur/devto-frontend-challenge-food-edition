@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Midnight Fridge Raid — CSS Art</title>
+  <meta name="description" content="Pure-CSS art: a fridge door ajar in a dark kitchen at 2am, warm light spilling over last night's leftovers.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="stage">
+
+    <!-- The whole scene is one image as far as assistive tech is concerned. -->
+    <div
+      class="scene"
+      id="scene"
+      role="img"
+      aria-label="A dark kitchen at 2am. The refrigerator door stands open, spilling warm light across the floor and over three shelves of leftovers: a covered pot, a pizza box, a takeout carton, a slice of cake, and a carton of milk."
+    >
+
+      <!-- ── the room ─────────────────────────────────────────── -->
+      <div class="wall" aria-hidden="true"></div>
+      <div class="floor" aria-hidden="true"></div>
+
+      <div class="cabinets" aria-hidden="true">
+        <span class="cab"></span>
+        <span class="cab"></span>
+        <span class="cab"></span>
+      </div>
+
+      <div class="counter" aria-hidden="true">
+        <span class="kettle"></span>
+        <span class="mug"></span>
+      </div>
+
+      <!-- ── the fridge ───────────────────────────────────────── -->
+      <div class="fridge" aria-hidden="true">
+
+        <!-- freezer compartment, firmly shut -->
+        <div class="freezer"></div>
+
+        <div class="fridge__lower">
+
+        <!-- lit interior -->
+        <div class="cavity">
+          <div class="cavity__back"></div>
+          <div class="bulb"></div>
+          <div class="cavity__glow"></div>
+
+          <!-- top shelf -->
+          <div class="shelf shelf--top">
+            <div class="pot">
+              <span class="pot__lid"></span>
+              <span class="pot__knob"></span>
+            </div>
+            <div class="jar jar--tall"></div>
+            <div class="jar jar--short"></div>
+            <span class="glass"></span>
+          </div>
+
+          <!-- middle shelf -->
+          <div class="shelf shelf--mid">
+            <div class="pizzabox">
+              <span class="pizzabox__lid"></span>
+            </div>
+            <div class="carton">
+              <span class="carton__flap"></span>
+              <span class="carton__handle"></span>
+            </div>
+            <span class="glass"></span>
+          </div>
+
+          <!-- bottom shelf -->
+          <div class="shelf shelf--low">
+            <div class="cake">
+              <span class="cake__plate"></span>
+              <span class="cake__slice"></span>
+            </div>
+            <div class="bowl">
+              <span class="bowl__film"></span>
+            </div>
+            <div class="milk">
+              <span class="milk__cap"></span>
+            </div>
+            <span class="glass"></span>
+          </div>
+        </div>
+
+        <!-- carcass drawn over the cavity edges -->
+        <div class="fridge__frame"></div>
+
+        <!-- the door, hinged left, swung out toward the viewer -->
+        <div class="fridge__door">
+          <div class="door__face">
+            <div class="rack rack--top"><i></i><i></i><i></i></div>
+            <div class="rack rack--mid"><i></i><i></i></div>
+            <div class="rack rack--low"><i></i></div>
+          </div>
+          <div class="door__edge"></div>
+          <div class="door__seal"></div>
+          <div class="door__handle"></div>
+        </div>
+
+        </div><!-- /.fridge__lower -->
+      </div>
+
+      <!-- ── the light doing the actual work ──────────────────── -->
+      <div class="spill spill--wall" aria-hidden="true"></div>
+      <div class="spill spill--floor" aria-hidden="true"></div>
+      <div class="spill spill--hot" aria-hidden="true"></div>
+      <div class="mist" aria-hidden="true"></div>
+
+      <div class="motes" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+
+      <div class="vignette" aria-hidden="true"></div>
+    </div>
+
+    <p class="caption">
+      <strong>Midnight Fridge Raid</strong> — comfort food isn&rsquo;t a dish, it&rsquo;s 2am and
+      last night&rsquo;s leftovers.
+    </p>
+
+    <button class="toggle" id="toggle" type="button" aria-pressed="true">
+      <span class="toggle__dot" aria-hidden="true"></span>
+      <span class="toggle__label">Close the fridge</span>
+    </button>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

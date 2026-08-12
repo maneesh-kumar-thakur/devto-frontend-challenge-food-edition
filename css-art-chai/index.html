@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cutting Chai — CSS Art</title>
+  <meta name="description" content="Pure-CSS art: masala chai in a terracotta kulhad, steaming, with whole spices and a biscuit waiting to be dunked.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="stage">
+
+    <div
+      class="scene"
+      id="scene"
+      role="img"
+      aria-label="A terracotta kulhad of masala chai steaming on a wooden table, surrounded by whole spices — star anise, a cinnamon stick, cardamom pods and cloves — with a biscuit leaning against the cup, waiting to be dunked."
+    >
+
+      <!-- ── the setting ──────────────────────────────────────── -->
+      <div class="wall" aria-hidden="true"></div>
+      <div class="table" aria-hidden="true"></div>
+
+      <!-- a second cup, out of focus, for depth -->
+      <div class="backcup" aria-hidden="true"></div>
+
+      <!-- ── spices on the table ──────────────────────────────── -->
+      <div class="anise" aria-hidden="true">
+        <i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i>
+        <i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i>
+      </div>
+
+      <div class="cinnamon" aria-hidden="true"></div>
+
+      <div class="cardamom cardamom--a" aria-hidden="true"></div>
+      <div class="cardamom cardamom--b" aria-hidden="true"></div>
+
+      <div class="clove clove--a" aria-hidden="true"></div>
+      <div class="clove clove--b" aria-hidden="true"></div>
+      <div class="clove clove--c" aria-hidden="true"></div>
+
+      <!-- ── the kulhad ───────────────────────────────────────── -->
+      <div class="cupshadow" aria-hidden="true"></div>
+
+      <div class="kulhad" aria-hidden="true">
+        <div class="cup"></div>
+        <div class="rim">
+          <div class="chai">
+            <span class="chai__ripple"></span>
+            <span class="chai__ripple chai__ripple--2"></span>
+            <span class="speck speck--a"></span>
+            <span class="speck speck--b"></span>
+            <span class="speck speck--c"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── the biscuit ──────────────────────────────────────── -->
+      <div class="biscuit" aria-hidden="true"></div>
+
+      <!-- ── steam ────────────────────────────────────────────── -->
+      <div class="steam" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i>
+      </div>
+
+      <div class="vignette" aria-hidden="true"></div>
+    </div>
+
+    <p class="caption">
+      <strong>Cutting Chai</strong> &mdash; the comfort food that isn&rsquo;t food.
+      Four o&rsquo;clock, every day, for as long as anyone can remember.
+    </p>
+
+    <button class="dunk" id="dunk" type="button">
+      <span class="dunk__dot" aria-hidden="true"></span>
+      <span>Dunk the biscuit</span>
+    </button>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

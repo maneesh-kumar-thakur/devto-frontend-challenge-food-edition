@@ -1,0 +1,132 @@
+---
+title: "Open Late — a diner menu that follows the clock, not the other way round"
+published: false
+tags: frontendchallenge, css, a11y, webdev
+---
+
+*This is a submission for [Frontend Challenge: Comfort Food Edition](https://dev.to/challenges/frontend), Perfect Landing: Comfort Food*
+
+## What I Built
+
+**Open Late** is the landing page for an imaginary 24-hour comfort diner with
+four kitchens and one rule: *the menu follows the clock.*
+
+Open it at 3am and it opens on the Small Hours menu — khichdi, drunken
+noodles, grilled cheese. Open it at 8am and the same page is serving congee and
+soft eggs. The page reads your actual clock, picks the kitchen that's cooking,
+highlights the right row in the hours table, and tells you what it did. You can
+override it and look ahead at any other service.
+
+It's the companion piece to my CSS art entry, [Midnight Fridge
+Raid](#) — same idea, that comfort food is defined by the hour you need it,
+not by the cuisine.
+
+No framework. No build step. No image files — every plate on the page is
+two radial gradients and a shadow.
+
+## Demo
+
+**[Live demo →](https://YOUR-DEMO-URL)** · **[Source →](https://github.com/YOUR-REPO)**
+
+Try it, then try it again at a different time of day. It's a different page.
+
+## Journey
+
+### The idea: make the clock the interface
+
+Restaurant landing pages are a solved genre, which makes them a bad place to
+compete on layout. So I looked for a *behaviour* instead of a look. "The menu
+changes with the hour" turned out to be the right hook, because it isn't
+decoration — it removes a decision. You never scroll past breakfast to find
+what's actually available.
+
+That one idea then paid for the whole page: it gives the hero something true
+to say, it gives the hours table a live state, and it gives the booking
+confirmation something useful to tell you (*"that lands on the Evening menu"*).
+
+```js
+const SERVICES = [
+  { id: 'small',     name: 'the Small Hours menu', from: 0,  to: 5  },
+  { id: 'sunrise',   name: 'the Sunrise menu',     from: 5,  to: 11 },
+  { id: 'afternoon', name: 'the Afternoon menu',   from: 11, to: 17 },
+  { id: 'evening',   name: 'the Evening menu',     from: 17, to: 24 },
+];
+```
+
+The clock re-checks every 30 seconds and rolls the menu over — but only for
+someone who hasn't taken manual control of the picker. Yanking the page out
+from under a person who deliberately chose "Evening" would be rude.
+
+### Accessibility, and why each choice was made
+
+I tried to make every a11y decision a *design* decision rather than a
+retrofit:
+
+**The filters don't exist until they work.** They ship with `hidden` and JS
+removes it. With scripting off you get all sixteen dishes, each badged with the
+kitchen that cooks it — a perfectly good menu — instead of dead controls that
+lie about what they do.
+
+**Native controls, styled as chips.** The kitchen picker is `<fieldset>` +
+`<legend>` + real radios; the dietary filters are real checkboxes, because
+picking zero or more things is exactly what a checkbox group is. Arrow-key
+navigation, group semantics and checked state all come free. The inputs are
+visually invisible but still focusable, and the chip is styled through
+`:has(input:checked)`. No `div` can be talked into any of that.
+
+It also means the checkbox *is* the state — nothing is mirrored into a JS
+variable that can drift out of sync with what a screen reader announces.
+
+**A live region that says something useful.** Filtering is pointless if you
+can't tell what's left, so the count sits in an `<output>` — the native
+"result of a calculation" element, which carries an implicit status role and
+needs no ARIA at all. It announces *"Showing 4 dishes on Small Hours menu."*
+after every change, debounced by 250ms so typing doesn't machine-gun it.
+
+**And one live region I deliberately removed.** The header clock started life
+as `role="status"`. It updates every 30 seconds — so it would have read the
+time aloud twice a minute, forever. A kitchen changeover is worth announcing
+once, under the menu, where it changes what you can order. The clock is not.
+
+**`<details>` instead of a JS modal** for the ingredient lists. Native, keyboard
+operable, works with scripting off, and screen readers already know how to
+announce it. I saved `<dialog>` for the one genuine modal moment — the booking
+confirmation — where `showModal()` gives me the focus trap, Esc-to-close and
+focus restoration for free.
+
+**`novalidate`, deliberately.** Native validation bubbles vanish on blur, can't
+be styled, and aren't announced consistently. So the form owns its messaging:
+`aria-invalid` on the field, the message wired up through `aria-describedby`,
+and a `role="alert"` summary that takes focus on a failed submit. Fields only
+*re*-validate once they've already been marked wrong — nobody wants an error
+the first time they tab out of an empty box.
+
+Plus the usual, done properly: a skip link, landmarks with `aria-labelledby`,
+correct heading order, one focus style everywhere that clears 3:1 in both
+themes, 44px touch targets, `<time datetime>`, a `forced-colors` fallback so
+selection survives High Contrast mode, and a full `prefers-reduced-motion`
+block.
+
+### Night by default
+
+It's a nocturnal diner, so it's dark by default and light is the "day shift".
+A stored choice wins; otherwise it follows the OS. Every colour resolves
+through one `data-theme` attribute on `<html>`, so nothing needs a second
+definition per component.
+
+`localStorage` access is wrapped — it throws outright in some privacy modes,
+and a theme toggle is not worth a broken page.
+
+### One bug worth mentioning
+
+The neon sign's glow is deliberately larger than the sign itself
+(`inset: -18%`), which quietly added 60px of horizontal scroll on narrow
+screens. Absolutely-positioned children still contribute to document width.
+`overflow: hidden` on the hero section fixed it — but I only found it by
+measuring `scrollWidth` against `clientWidth` at four widths, not by looking.
+Worth adding to your own checklist.
+
+---
+
+Thanks for reading. The whole thing is three files and no dependencies, so
+it's easy to pull apart if any of it is useful to you.

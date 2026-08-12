@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="night">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open Late — the 24-hour comfort diner</title>
+<meta name="description" content="A diner that never closes and never serves the wrong thing. The menu changes with the hour, from 3am khichdi to a Sunday roast.">
+<meta name="color-scheme" content="dark light">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ══ header ══════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="wrap site-header__inner">
+
+    <a class="brand" href="#main">
+      <span class="brand__neon">Open Late</span>
+      <span class="brand__sub">est. whenever you need it</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Main">
+      <ul class="site-nav__list">
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#hours">Hours</a></li>
+        <li><a href="#table">Get a table</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-header__tools">
+      <!-- Deliberately NOT a live region. This updates every 30s, and a
+           polite region here would read the clock aloud twice a minute.
+           A kitchen changeover is announced once, by the results region
+           under the menu, which is where it actually matters. -->
+      <p class="open-pill">
+        <span class="open-pill__dot" aria-hidden="true"></span>
+        <span class="open-pill__text" id="open-pill-text">Open now</span>
+      </p>
+
+      <button class="theme-toggle" type="button" id="theme-toggle">
+        <span class="theme-toggle__icon" aria-hidden="true"></span>
+        <span id="theme-toggle-label">Switch to day shift</span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ══ hero ══════════════════════════════════════════════ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero__inner">
+
+      <div class="hero__copy">
+        <p class="hero__eyebrow">Open 24 hours &middot; 365 days</p>
+        <h1 id="hero-title">Whatever hour it is, something warm is on.</h1>
+        <p class="hero__lede">
+          We are a diner with four kitchens and one rule: the menu follows the
+          clock, not the other way round. Turn up at 3am and we will not try to
+          sell you a steak.
+        </p>
+
+        <p class="hero__now" id="hero-now">
+          Right now we&rsquo;re serving <strong id="hero-service">the Small Hours menu</strong>.
+        </p>
+
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#menu">See what&rsquo;s on now</a>
+          <a class="btn btn--ghost" href="#table">Get a table</a>
+        </div>
+      </div>
+
+      <!-- A kulhad of chai, drawn entirely in CSS. Decorative, so it's
+           hidden from assistive tech — the headline already says
+           everything this says. -->
+      <div class="brew" aria-hidden="true">
+        <span class="brew__glow"></span>
+
+        <div class="brew__steam">
+          <i></i><i></i><i></i><i></i>
+        </div>
+
+        <div class="brew__cup">
+          <span class="brew__body"></span>
+          <span class="brew__rim">
+            <span class="brew__chai"></span>
+          </span>
+        </div>
+
+        <span class="brew__saucer"></span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ menu ══════════════════════════════════════════════ -->
+  <section class="menu" id="menu" aria-labelledby="menu-title">
+    <div class="wrap">
+
+      <div class="section-head">
+        <h2 id="menu-title">The menu, by the hour</h2>
+        <p class="section-head__lede">
+          Sixteen things worth getting out of bed for. Every dish lists what
+          time we make it, how long it takes, and what&rsquo;s in it.
+        </p>
+      </div>
+
+      <!-- Filters are hidden until JS confirms it can drive them.
+           With scripting off you get all sixteen dishes, each badged
+           with its service — which is a perfectly good menu. -->
+      <div class="filters" id="filters" hidden>
+
+        <fieldset class="filters__group filters__group--service">
+          <legend class="filters__legend">Kitchen</legend>
+          <p class="filters__hint" id="service-hint">
+            Starts on whichever kitchen is cooking right now. Pick another to
+            look ahead.
+          </p>
+          <div class="chips" aria-describedby="service-hint">
+            <label class="chip"><input type="radio" name="service" value="all"><span>Everything</span></label>
+            <label class="chip"><input type="radio" name="service" value="small"><span>Small Hours</span></label>
+            <label class="chip"><input type="radio" name="service" value="sunrise"><span>Sunrise</span></label>
+            <label class="chip"><input type="radio" name="service" value="afternoon"><span>Afternoon</span></label>
+            <label class="chip"><input type="radio" name="service" value="evening"><span>Evening</span></label>
+          </div>
+        </fieldset>
+
+        <!-- Checkboxes, not toggle buttons: picking zero or more filters
+             is exactly what a checkbox group is, and the native control
+             brings its own group semantics and checked state. -->
+        <fieldset class="filters__group">
+          <legend class="filters__legend">Dietary</legend>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" data-diet="veg"><span>Vegetarian</span></label>
+            <label class="chip"><input type="checkbox" data-diet="vegan"><span>Vegan</span></label>
+            <label class="chip"><input type="checkbox" data-diet="gf"><span>Gluten-free</span></label>
+          </div>
+        </fieldset>
+
+        <div class="filters__group filters__group--search">
+          <label class="filters__legend" for="dish-search">Search</label>
+          <input class="field" type="search" id="dish-search" placeholder="noodles, eggs, cheese&hellip;"
+                 aria-describedby="search-hint" autocomplete="off">
+          <p class="filters__hint" id="search-hint">Matches dish names and ingredients.</p>
+        </div>
+
+        <button class="btn btn--quiet" type="button" id="clear-filters">Clear filters</button>
+      </div>
+
+      <!-- The native output element is the "result of a calculation"
+           element and carries an implicit status role, so the count is
+           announced politely after each change with no ARIA needed. -->
+      <output class="results" id="results">Showing all 16 dishes.</output>
+
+      <ul class="dishes" id="dishes">
+
+        <!-- ── Small Hours ───────────────────────────────── -->
+        <li class="dish" data-service="small" data-diet="veg gf" data-search="khichdi rice mung dal ghee turmeric">
+          <article>
+            <div class="dish__art" style="--food-a:#f0d089; --food-b:#c08c2e" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Small Hours &middot; 12am&ndash;5am</p>
+              <h3 class="dish__name">3am Khichdi</h3>
+              <p class="dish__desc">Rice and split mung cooked past the point of holding their shape, a spoon of ghee melting on top.</p>
+              <p class="dish__meta"><span class="dish__price">$9</span><span class="dish__time">12 min</span></p>
+              <ul class="tags">
+                <li class="tag">Vegetarian</li>
+                <li class="tag">Gluten-free</li>
+              </ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Short-grain rice, split mung dal, ghee, turmeric, cumin, ginger, salt.</p>
+                  <p><strong>Allergens.</strong> Dairy (ghee). Ask for oil instead and it&rsquo;s vegan.</p>
+                  <p><strong>Why it works at 3am.</strong> Nothing to chew, nothing to decide.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-service="small" data-diet="vegan" data-search="drunken noodles rice basil chilli thai">
+          <article>
+            <div class="dish__art" style="--food-a:#e9b96b; --food-b:#8a4a1e" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Small Hours &middot; 12am&ndash;5am</p>
+              <h3 class="dish__name">Drunken Noodles</h3>
+              <p class="dish__desc">Wide rice noodles seared hard, holy basil, more chilli than is strictly sensible.</p>
+              <p class="dish__meta"><span class="dish__price">$11</span><span class="dish__time">10 min</span></p>
+              <ul class="tags"><li class="tag">Vegan</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Wide rice noodles, holy basil, bird&rsquo;s eye chilli, garlic, soy, tofu.</p>
+                  <p><strong>Allergens.</strong> Soy.</p>
+                  <p><strong>Why it works at 3am.</strong> Heat sobers a person up faster than coffee.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-service="small" data-diet="veg" data-search="grilled cheese tomato soup toastie">
+          <article>
+            <div class="dish__art" style="--food-a:#e4623c; --food-b:#a8321c" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Small Hours &middot; 12am&ndash;5am</p>
+              <h3 class="dish__name">Grilled Cheese &amp; Tomato Soup</h3>
+              <p class="dish__desc">Cut on the diagonal, because the other way is wrong. Soup comes in a mug you can hold.</p>
+              <p class="dish__meta"><span class="dish__price">$10</span><span class="dish__time">9 min</span></p>
+              <ul class="tags"><li class="tag">Vegetarian</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Sourdough, mature cheddar, butter, plum tomatoes, cream, basil.</p>
+                  <p><strong>Allergens.</strong> Gluten, dairy.</p>
+                  <p><strong>Why it works at 3am.</strong> It is the first thing most of us were ever cooked.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-service="small" data-diet="veg" data-search="chilaquiles tortilla salsa crema egg mexican">
+          <article>
+            <div class="dish__art" style="--food-a:#d94f34; --food-b:#8e2a17" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Small Hours &middot; 12am&ndash;5am</p>
+              <h3 class="dish__name">Chilaquiles Rojos</h3>
+              <p class="dish__desc">Yesterday&rsquo;s tortillas, today&rsquo;s salsa, a fried egg holding the whole argument together.</p>
+              <p class="dish__meta"><span class="dish__price">$12</span><span class="dish__time">14 min</span></p>
+              <ul class="tags"><li class="tag">Vegetarian</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Corn tortillas, guajillo salsa, crema, queso fresco, white onion, egg.</p>
+                  <p><strong>Allergens.</strong> Dairy, egg.</p>
+                  <p><strong>Why it works at 3am.</strong> Built entirely from leftovers, which is the whole point.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <!-- ── Sunrise ───────────────────────────────────── -->
+        <li class="dish" data-service="sunrise" data-diet="vegan gf" data-search="congee rice porridge jook ginger">
+          <article>
+            <div class="dish__art" style="--food-a:#f3ece0; --food-b:#cbbfa9" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Sunrise &middot; 5am&ndash;11am</p>
+              <h3 class="dish__name">Morning Congee</h3>
+              <p class="dish__desc">Rice simmered for an hour until it forgets it was rice. Ginger, scallion, a slick of sesame.</p>
+              <p class="dish__meta"><span class="dish__price">$8</span><span class="dish__time">25 min</span></p>
+              <ul class="tags"><li class="tag">Vegan</li><li class="tag">Gluten-free</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Jasmine rice, ginger, scallion, sesame oil, white pepper, salt.</p>
+                  <p><strong>Allergens.</strong> Sesame.</p>
+                  <p><strong>Why it works at sunrise.</strong> The only breakfast that works when you&rsquo;re ill.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-service="sunrise" data-diet="veg" data-search="egg toast soldiers soft boiled butter">
+          <article>
+            <div class="dish__art" style="--food-a:#f6c445; --food-b:#c98f18" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Sunrise &middot; 5am&ndash;11am</p>
+              <h3 class="dish__name">Soft Egg &amp; Soldiers</h3>
+              <p class="dish__desc">Six minutes exactly. Buttered toast cut into strips, for dipping, obviously.</p>
+              <p class="dish__meta"><span class="dish__price">$7</span><span class="dish__time">6 min</span></p>
+              <ul class="tags"><li class="tag">Vegetarian</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Two free-range eggs, white bloomer, salted butter, flaky salt.</p>
+                  <p><strong>Allergens.</strong> Egg, gluten, dairy.</p>
+                  <p><strong>Why it works at sunrise.</strong> Six minutes is exactly as long as anyone can wait before 7am.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-service="sunrise" data-diet="veg" data-search="masala omelette pav bread onion chilli indian">
+          <article>
+            <div class="dish__art" style="--food-a:#f2b13c; --food-b:#b96a1b" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Sunrise &middot; 5am&ndash;11am</p>
+              <h3 class="dish__name">Masala Omelette Pav</h3>
+              <p class="dish__desc">Onion, green chilli and coriander folded through, pressed into buttered pav.</p>
+              <p class="dish__meta"><span class="dish__price">$8</span><span class="dish__time">8 min</span></p>
+              <ul class="tags"><li class="tag">Vegetarian</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Eggs, red onion, green chilli, coriander, turmeric, pav, butter.</p>
+                  <p><strong>Allergens.</strong> Egg, gluten, dairy.</p>
+                  <p><strong>Why it works at sunrise.</strong> Eaten standing up, at a stall, on the way to somewhere.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-service="sunrise" data-diet="veg" data-search="pancakes buttermilk stack maple syrup butter">
+          <article>
+            <div class="dish__art" style="--food-a:#e0a961; --food-b:#a86a2c" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Sunrise &middot; 5am&ndash;11am</p>
+              <h3 class="dish__name">Buttermilk Pancakes</h3>
+              <p class="dish__desc">A stack of four, a pat of butter sliding off the top, syrup poured at the table.</p>
+              <p class="dish__meta"><span class="dish__price">$10</span><span class="dish__time">12 min</span></p>
+              <ul class="tags"><li class="tag">Vegetarian</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Flour, buttermilk, egg, butter, baking soda, maple syrup.</p>
+                  <p><strong>Allergens.</strong> Gluten, dairy, egg.</p>
+                  <p><strong>Why it works at sunrise.</strong> Because somebody made these on weekends.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <!-- ── Afternoon ─────────────────────────────────── -->
+        <li class="dish" data-service="afternoon" data-diet="veg gf" data-search="rajma chawal kidney beans rice punjabi">
+          <article>
+            <div class="dish__art" style="--food-a:#8e4230; --food-b:#5b2519" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Afternoon &middot; 11am&ndash;5pm</p>
+              <h3 class="dish__name">Rajma Chawal</h3>
+              <p class="dish__desc">Kidney beans stewed down thick and dark, over rice, with raw onion on the side.</p>
+              <p class="dish__meta"><span class="dish__price">$11</span><span class="dish__time">15 min</span></p>
+              <ul class="tags"><li class="tag">Vegetarian</li><li class="tag">Gluten-free</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Kidney beans, tomato, onion, ginger, garlic, garam masala, basmati.</p>
+                  <p><strong>Allergens.</strong> None. Cooked in oil, not ghee.</p>
+                  <p><strong>Why it works in the afternoon.</strong> The Sunday lunch of about a hundred million people.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-service="afternoon" data-diet="" data-search="chicken noodle soup broth carrot celery">
+          <article>
+            <div class="dish__art" style="--food-a:#f0c66b; --food-b:#b8842c" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Afternoon &middot; 11am&ndash;5pm</p>
+              <h3 class="dish__name">Chicken Noodle Soup</h3>
+              <p class="dish__desc">Broth from actual bones, egg noodles, enough black pepper to clear your head.</p>
+              <p class="dish__meta"><span class="dish__price">$12</span><span class="dish__time">18 min</span></p>
+              <ul class="tags"></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Chicken, carrot, celery, onion, thyme, egg noodles, black pepper.</p>
+                  <p><strong>Allergens.</strong> Gluten, egg.</p>
+                  <p><strong>Why it works in the afternoon.</strong> The closest thing to medicine we are legally allowed to serve.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-service="afternoon" data-diet="veg" data-search="mac and cheese baked pasta cheddar breadcrumb">
+          <article>
+            <div class="dish__art" style="--food-a:#f2b33a; --food-b:#c07b16" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Afternoon &middot; 11am&ndash;5pm</p>
+              <h3 class="dish__name">Baked Mac &amp; Cheese</h3>
+              <p class="dish__desc">Three cheeses, a breadcrumb lid, and the crunchy corner piece if you ask nicely.</p>
+              <p class="dish__meta"><span class="dish__price">$13</span><span class="dish__time">20 min</span></p>
+              <ul class="tags"><li class="tag">Vegetarian</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Macaroni, cheddar, gruy&egrave;re, parmesan, b&eacute;chamel, panko, mustard.</p>
+                  <p><strong>Allergens.</strong> Gluten, dairy, mustard.</p>
+                  <p><strong>Why it works in the afternoon.</strong> It is the only dish improved by being reheated.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-service="afternoon" data-diet="vegan" data-search="falafel hummus bowl chickpea tahini pickle">
+          <article>
+            <div class="dish__art" style="--food-a:#9db054; --food-b:#5f7229" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Afternoon &middot; 11am&ndash;5pm</p>
+              <h3 class="dish__name">Falafel &amp; Hummus Bowl</h3>
+              <p class="dish__desc">Fried to order, never before. Hummus loose enough to be a sauce, pickles sharp enough to matter.</p>
+              <p class="dish__meta"><span class="dish__price">$12</span><span class="dish__time">10 min</span></p>
+              <ul class="tags"><li class="tag">Vegan</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Chickpeas, parsley, cumin, tahini, lemon, pickled turnip, olive oil.</p>
+                  <p><strong>Allergens.</strong> Sesame.</p>
+                  <p><strong>Why it works in the afternoon.</strong> Filling without putting you to sleep at your desk.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <!-- ── Evening ───────────────────────────────────── -->
+        <li class="dish" data-service="evening" data-diet="" data-search="shepherds pie lamb mash potato gravy">
+          <article>
+            <div class="dish__art" style="--food-a:#d9a05b; --food-b:#8a5320" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Evening &middot; 5pm&ndash;12am</p>
+              <h3 class="dish__name">Shepherd&rsquo;s Pie</h3>
+              <p class="dish__desc">Fork-raked mash browned under the grill, gravy that has been going since lunchtime.</p>
+              <p class="dish__meta"><span class="dish__price">$16</span><span class="dish__time">25 min</span></p>
+              <ul class="tags"></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Lamb mince, carrot, onion, rosemary, stock, potato, butter, milk.</p>
+                  <p><strong>Allergens.</strong> Dairy, celery.</p>
+                  <p><strong>Why it works in the evening.</strong> A dish that requires sitting down properly.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-service="evening" data-diet="veg" data-search="dal makhani naan black lentil butter cream">
+          <article>
+            <div class="dish__art" style="--food-a:#6b3a26; --food-b:#3d1f14" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Evening &middot; 5pm&ndash;12am</p>
+              <h3 class="dish__name">Dal Makhani &amp; Naan</h3>
+              <p class="dish__desc">Black lentils on the stove since morning, finished with butter nobody needs to know about.</p>
+              <p class="dish__meta"><span class="dish__price">$14</span><span class="dish__time">20 min</span></p>
+              <ul class="tags"><li class="tag">Vegetarian</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Urad dal, rajma, tomato, butter, cream, ginger, garlic, naan.</p>
+                  <p><strong>Allergens.</strong> Dairy, gluten (naan).</p>
+                  <p><strong>Why it works in the evening.</strong> Eight hours of cooking, eaten in nine minutes.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-service="evening" data-diet="" data-search="ramen shoyu noodles broth egg nori pork">
+          <article>
+            <div class="dish__art" style="--food-a:#e0b46a; --food-b:#8a5a24" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Evening &middot; 5pm&ndash;12am</p>
+              <h3 class="dish__name">Shoyu Ramen</h3>
+              <p class="dish__desc">Clear broth, thin curly noodles, a jammy egg cut so the yolk shows.</p>
+              <p class="dish__meta"><span class="dish__price">$15</span><span class="dish__time">16 min</span></p>
+              <ul class="tags"></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Chicken and pork broth, soy tare, wheat noodles, chashu, ajitama, nori, scallion.</p>
+                  <p><strong>Allergens.</strong> Gluten, soy, egg.</p>
+                  <p><strong>Why it works in the evening.</strong> It is impossible to eat quietly, or unhappily.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-service="evening" data-diet="gf" data-search="roast chicken mash gravy sunday dinner">
+          <article>
+            <div class="dish__art" style="--food-a:#dcaa62; --food-b:#9a6423" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Evening &middot; 5pm&ndash;12am</p>
+              <h3 class="dish__name">Roast Chicken &amp; Mash</h3>
+              <p class="dish__desc">Half a bird, skin properly rendered, and the pan juices poured over everything.</p>
+              <p class="dish__meta"><span class="dish__price">$18</span><span class="dish__time">30 min</span></p>
+              <ul class="tags"><li class="tag">Gluten-free</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Free-range chicken, potato, butter, thyme, lemon, garlic, pan juices.</p>
+                  <p><strong>Allergens.</strong> Dairy.</p>
+                  <p><strong>Why it works in the evening.</strong> Sunday, served every day, because Sunday is not always convenient.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+      </ul>
+
+      <p class="no-results" id="no-results" hidden>
+        Nothing matches that. <button class="link-btn" type="button" id="reset-from-empty">Clear the filters</button> and start again.
+      </p>
+
+    </div>
+  </section>
+
+  <!-- ══ hours ═════════════════════════════════════════════ -->
+  <section class="hours" id="hours" aria-labelledby="hours-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="hours-title">Four kitchens, one door</h2>
+        <p class="section-head__lede">
+          We never close. What changes is who&rsquo;s on the pass.
+        </p>
+      </div>
+
+      <div class="table-scroll">
+        <table class="hours-table">
+          <caption class="sr-only">Service times and what each kitchen cooks. The kitchen cooking now is marked.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Kitchen</th>
+              <th scope="col">Hours</th>
+              <th scope="col">What it&rsquo;s for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-service="small">
+              <th scope="row">Small Hours</th>
+              <td><time datetime="00:00">12am</time>&ndash;<time datetime="05:00">5am</time></td>
+              <td>Soft, fast, and no decisions required.</td>
+            </tr>
+            <tr data-service="sunrise">
+              <th scope="row">Sunrise</th>
+              <td><time datetime="05:00">5am</time>&ndash;<time datetime="11:00">11am</time></td>
+              <td>Eggs, porridge, and things you can eat standing up.</td>
+            </tr>
+            <tr data-service="afternoon">
+              <th scope="row">Afternoon</th>
+              <td><time datetime="11:00">11am</time>&ndash;<time datetime="17:00">5pm</time></td>
+              <td>Proper lunch. Enough to keep going on.</td>
+            </tr>
+            <tr data-service="evening">
+              <th scope="row">Evening</th>
+              <td><time datetime="17:00">5pm</time>&ndash;<time datetime="24:00">12am</time></td>
+              <td>The long-cooked things. Sit down for these.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ booking ═══════════════════════════════════════════ -->
+  <section class="book" id="table" aria-labelledby="book-title">
+    <div class="wrap book__inner">
+
+      <div class="section-head">
+        <h2 id="book-title">Get a table</h2>
+        <p class="section-head__lede">
+          We hold back a few booths for people who didn&rsquo;t plan ahead.
+          Tell us when, and we&rsquo;ll keep one warm.
+        </p>
+      </div>
+
+      <!-- novalidate so we own the messaging: native bubbles vanish on
+           blur, aren't announced consistently, and can't be styled. -->
+      <form class="form" id="book-form" novalidate>
+
+        <p class="form__error-summary" id="form-summary" role="alert" hidden tabindex="-1"></p>
+
+        <div class="form__row">
+          <label class="form__label" for="name">Name <span class="req" aria-hidden="true">*</span></label>
+          <input class="field" type="text" id="name" name="name" required
+                 autocomplete="name" aria-describedby="name-error">
+          <p class="form__msg" id="name-error" hidden></p>
+        </div>
+
+        <div class="form__row">
+          <label class="form__label" for="email">Email <span class="req" aria-hidden="true">*</span></label>
+          <input class="field" type="email" id="email" name="email" required
+                 autocomplete="email" aria-describedby="email-hint email-error">
+          <p class="form__hint" id="email-hint">Only used to confirm the booking.</p>
+          <p class="form__msg" id="email-error" hidden></p>
+        </div>
+
+        <div class="form__row">
+          <label class="form__label" for="when">When <span class="req" aria-hidden="true">*</span></label>
+          <input class="field" type="time" id="when" name="when" required
+                 aria-describedby="when-hint when-error">
+          <p class="form__hint" id="when-hint">Any hour at all. We mean it.</p>
+          <p class="form__msg" id="when-error" hidden></p>
+        </div>
+
+        <div class="form__row">
+          <label class="form__label" for="party">How many</label>
+          <select class="field" id="party" name="party">
+            <option value="1">Just me</option>
+            <option value="2" selected>Two</option>
+            <option value="3">Three</option>
+            <option value="4">Four</option>
+            <option value="5">Five or more</option>
+          </select>
+        </div>
+
+        <div class="form__row form__row--wide">
+          <label class="form__label" for="notes">Anything we should know</label>
+          <textarea class="field" id="notes" name="notes" rows="3"
+                    aria-describedby="notes-hint"></textarea>
+          <p class="form__hint" id="notes-hint">Allergies, a bad day, a birthday. All useful.</p>
+        </div>
+
+        <div class="form__actions">
+          <button class="btn btn--primary" type="submit">Hold me a booth</button>
+        </div>
+      </form>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ══ footer ══════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="wrap site-footer__inner">
+    <p class="site-footer__brand">Open Late</p>
+    <p>
+      An imaginary diner, built for the
+      <a href="https://dev.to/challenges/frontend">DEV Frontend Challenge: Comfort Food Edition</a>.
+      No frameworks, no build step, no images &mdash; every plate on this page is CSS.
+    </p>
+  </div>
+</footer>
+
+<!-- Booking confirmation. A real modal moment: it interrupts, and it
+     should trap focus until acknowledged. -->
+<dialog class="confirm" id="confirm" aria-labelledby="confirm-title">
+  <h2 id="confirm-title">Booth held.</h2>
+  <p id="confirm-body"></p>
+  <form method="dialog">
+    <button class="btn btn--primary" type="submit" autofocus>Thanks</button>
+  </form>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
