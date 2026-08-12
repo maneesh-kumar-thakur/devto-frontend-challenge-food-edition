@@ -90,16 +90,34 @@
         <!-- carcass drawn over the cavity edges -->
         <div class="fridge__frame"></div>
 
-        <!-- the door, hinged left, swung out toward the viewer -->
+        <!-- The door is two skins on one hinge, and backface-visibility
+             swaps them as it swings: shut, you see the outside — the
+             notes and the magnets. Open, you see the racks. -->
         <div class="fridge__door">
+
+          <!-- outside: only on show when the door is shut -->
+          <div class="door__outer">
+            <span class="note note--a"></span>
+            <span class="note note--b"></span>
+            <span class="note note--c"></span>
+
+            <span class="magnet magnet--block"><b>A</b></span>
+            <span class="magnet magnet--round"></span>
+            <span class="magnet magnet--star"></span>
+            <span class="magnet magnet--pear"></span>
+
+            <span class="door__handle"></span>
+          </div>
+
+          <!-- inside: racks and the rubber seal -->
           <div class="door__face">
             <div class="rack rack--top"><i></i><i></i><i></i></div>
             <div class="rack rack--mid"><i></i><i></i></div>
             <div class="rack rack--low"><i></i></div>
+            <span class="door__seal"></span>
           </div>
+
           <div class="door__edge"></div>
-          <div class="door__seal"></div>
-          <div class="door__handle"></div>
         </div>
 
         </div><!-- /.fridge__lower -->

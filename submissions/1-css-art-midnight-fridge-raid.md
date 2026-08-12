@@ -88,6 +88,41 @@ trapezoid, and its wire handle simply vanished — as did the milk carton's cap
 and the cake's frosting. All three were children of clipped parents. Moving the
 clip onto a `::before` and leaving the parent unclipped brought them all back.
 
+### The door has two sides, and it should
+
+My first version was one panel. Shut it, and you were looking at the *racks* —
+because a single plane can only ever show you one thing.
+
+A fridge door has an outside, and what's on the outside is the whole point of a
+fridge door: the notes, the shopping list, the alphabet magnets that outlived
+the child they were bought for. So it became two skins on one hinge:
+
+```css
+.door__outer, .door__face { backface-visibility: hidden; }
+.door__outer { transform: translateZ(0.45cqw); }                      /* notes */
+.door__face  { transform: rotateY(180deg) translateZ(0.45cqw); }      /* racks */
+```
+
+That's the flip-card pattern, but the parent never rotates a full 180° — it
+swings from -3° to -64°. The swap still happens by itself, somewhere mid-swing,
+at whatever angle the door's plane turns away from the camera. I didn't have to
+pick a threshold or write a line of JS; the browser works out which face you can
+see and draws only that one.
+
+Two details fell out of it. The inner face is mirrored by its own 180° flip, so
+its lighting gradient had to be reversed from `90deg` to `270deg` to stay
+brightest at the hinge. And the notes are drawn almost black — at 2am in an
+unlit kitchen a sticky note is a *shape and a smudge of colour*, so the ruled
+lines are there to tell you it's handwriting while giving you no chance of
+reading a word:
+
+```css
+.note::after {
+  background: repeating-linear-gradient(0deg,
+    rgba(0,0,0,.4) 0 0.15cqw, transparent 0.15cqw 0.78cqw);
+}
+```
+
 ### Sizing: one container query, zero breakpoints
 
 Every dimension in the scene is in `cqw` — 1% of the scene's own width — off a

@@ -649,13 +649,36 @@ body {
   animation: door-open 1.15s 0.2s 1 both var(--ease-door);
 }
 
+/* Both skins hide their own backface, so exactly one is ever drawn.
+   Which one depends on where the door has swung to relative to the
+   camera — shut shows the outside, open shows the racks, and the
+   swap happens by itself mid-swing. */
+.door__outer,
 .door__face {
   position: absolute;
   inset: 0;
   border-radius: 1.4cqw;
-  /* inner face, lit at a glancing angle — brightest near the hinge */
+  backface-visibility: hidden;
+}
+
+/* ---- outside: what lives on a fridge door ------------------ */
+.door__outer {
+  transform: translateZ(0.45cqw);
   background:
-    linear-gradient(90deg,
+    /* the only light out here is cold ambient off the window */
+    linear-gradient(100deg, rgba(126, 158, 200, 0.12) 0 4%, transparent 24%),
+    linear-gradient(180deg, #1a2233 0%, #131a28 56%, #0d1320 100%);
+  box-shadow:
+    inset 0 0 0 0.3cqw #2b3550,
+    inset 0 0 2.6cqw rgba(0, 0, 0, 0.55);
+}
+
+/* ---- inside: racks. Mirrored by the 180° flip, so the lighting
+        gradient is reversed to keep it brightest at the hinge. ---- */
+.door__face {
+  transform: rotateY(180deg) translateZ(0.45cqw);
+  background:
+    linear-gradient(270deg,
       rgba(255, 206, 145, 0.34) 0%,
       rgba(255, 170, 96, 0.1) 26%,
       transparent 52%),
@@ -663,6 +686,123 @@ body {
   box-shadow:
     inset 0 0 0 0.3cqw #263047,
     inset 0 0 2.4cqw rgba(0, 0, 0, 0.6);
+}
+
+/* ============================================================
+   STICKY NOTES
+   Deliberately unreadable. At 2am in an unlit kitchen a note is a
+   shape and a smudge of colour — the ruled lines are there so you
+   know it's handwriting without being able to read a word of it.
+   ============================================================ */
+.note {
+  position: absolute;
+  border-radius: 0.15cqw;
+  box-shadow:
+    0 0.45cqw 0.9cqw rgba(0, 0, 0, 0.6),
+    inset 0 0.18cqw 0 rgba(255, 255, 255, 0.07);
+}
+.note::after {
+  content: "";
+  position: absolute;
+  inset: 24% 15% 16% 15%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.4) 0 0.15cqw,
+    transparent 0.15cqw 0.78cqw);
+  opacity: 0.6;
+}
+/* a curled corner, because they never lie flat */
+.note::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 26%;
+  aspect-ratio: 1;
+  background: linear-gradient(315deg, rgba(255, 255, 255, 0.08), transparent 62%);
+  border-radius: 0 0 0.15cqw 0;
+}
+
+/* yellow, pink, blue — as they'd look with no light on them */
+.note--a {
+  left: 11%; top: 11%;
+  width: 25%; aspect-ratio: 1 / 0.94;
+  transform: rotate(-5deg);
+  background: linear-gradient(160deg, #3a341c 0%, #262110 100% 100%);
+}
+.note--b {
+  left: 42%; top: 24%;
+  width: 22%; aspect-ratio: 1 / 1.02;
+  transform: rotate(4deg);
+  background: linear-gradient(160deg, #3a1f26 0%, #261218 100% 100%);
+}
+.note--c {
+  left: 14%; top: 44%;
+  width: 21%; aspect-ratio: 1 / 0.9;
+  transform: rotate(-9deg);
+  background: linear-gradient(160deg, #1d2f35 0%, #131e23 100% 100%);
+}
+
+/* ============================================================
+   MAGNETS
+   ============================================================ */
+.magnet {
+  position: absolute;
+  box-shadow:
+    0 0.32cqw 0.6cqw rgba(0, 0, 0, 0.65),
+    inset 0 0.16cqw 0 rgba(255, 255, 255, 0.09);
+}
+
+/* an alphabet block, the kind that outlives the child it was for */
+.magnet--block {
+  left: 68%; top: 15%;
+  width: 15%; aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 0.45cqw;
+  background: linear-gradient(160deg, #40262b 0%, #29171c 100% 100%);
+}
+.magnet--block b {
+  font: 700 2.6cqw/1 ui-sans-serif, system-ui, sans-serif;
+  color: rgba(255, 226, 206, 0.2);
+}
+
+.magnet--round {
+  left: 71%; top: 38%;
+  width: 11%; aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #2e3d4c 0%, #1c2733 70%, #121a23 100%);
+}
+
+.magnet--star {
+  left: 45%; top: 58%;
+  width: 13%; aspect-ratio: 1;
+  clip-path: polygon(
+    50% 0%, 61% 35%, 98% 35%, 68% 57%,
+    79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+  );
+  background: linear-gradient(155deg, #413620 0%, #251e11 100%);
+  box-shadow: none;                 /* clip-path eats the shadow anyway */
+}
+
+/* a little pear, slightly wonky */
+.magnet--pear {
+  left: 24%; top: 68%;
+  width: 10%; aspect-ratio: 1 / 1.3;
+  border-radius: 52% 48% 44% 56% / 68% 66% 34% 32%;
+  background: linear-gradient(158deg, #28351e 0%, #172012 100%);
+  transform: rotate(-8deg);
+}
+.magnet--pear::after {               /* stalk */
+  content: "";
+  position: absolute;
+  left: 46%;
+  top: -22%;
+  width: 12%;
+  height: 30%;
+  border-radius: 0.2cqw;
+  background: #2a2013;
+  transform: rotate(12deg);
 }
 
 /* door racks, each holding bottle silhouettes */
@@ -716,7 +856,7 @@ body {
 /* handle, riding the door's free edge */
 .door__handle {
   position: absolute;
-  right: -0.2cqw;
+  right: 1.5cqw;
   top: 26%;
   width: 1.4cqw;
   height: 24cqw;
