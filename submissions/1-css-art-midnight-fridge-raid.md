@@ -18,8 +18,10 @@ one I could think of isn't a plate at all: it's standing barefoot in front of
 an open fridge at 2am, deciding whether last night's leftovers count as a
 meal. (They do.)
 
-So I drew the moment instead of the meal. Everything in the scene is a `div`,
-a gradient, a `clip-path` or a shadow. No SVG, no images, no canvas.
+So I drew the moment instead of the meal. Three shelves and a crisper drawer,
+a blower vent breathing cold over the top of it, and a door covered in sticky
+notes you can't read. Everything in the scene is a `div`, a gradient, a
+`clip-path` or a shadow. No SVG, no images, no canvas.
 
 ## Demo
 
@@ -122,6 +124,56 @@ reading a word:
     rgba(0,0,0,.4) 0 0.15cqw, transparent 0.15cqw 0.78cqw);
 }
 ```
+
+### The blower, and why the cold needed no blend mode
+
+There's a vent grille cut into the back wall, and cold falls out of it. It's
+the same trick as the steam in my [chai piece](#) — drifting translucent
+shapes — run in reverse, because **cold sinks**. Steam rises and spreads; this
+drops and fans forward over the shelves.
+
+The grille is one `repeating-linear-gradient` with a lit lower lip on each
+slat, which is what sells it as cut *into* the wall rather than stuck on:
+
+```css
+background: repeating-linear-gradient(180deg,
+  rgba(58,26,6,.72)     0      0.34cqw,   /* the slot */
+  rgba(255,226,180,.32) 0.34cqw 0.5cqw,   /* light catching its lower edge */
+  transparent           0.5cqw  0.78cqw);
+```
+
+My first attempt at the cold air used `mix-blend-mode: screen`, copied
+straight from the light cones outside. It was completely invisible, and the
+reason is obvious in hindsight: `screen` *adds* light, and the inside of a lit
+fridge is already near-white. There was nothing left to add. Cold air has to
+**sit on** the warm light and cool it, not brighten it — so it's plain alpha,
+no blend mode at all. Blend modes aren't free wins; they only work when the
+backdrop has room to move in that direction.
+
+### Depth when you have no room for it
+
+Comparing against reference photos, the thing my fridge was most obviously
+missing was **density**. Real fridges are packed. Mine had three items a shelf.
+
+But the cavity is only 31cqw wide and the open door hides a third of it, so
+there was no horizontal room for more. The answer was to build backwards
+instead: a second row that sits *higher* on each shelf, which reads as further
+back, and then sells it with two cheap cues:
+
+```css
+.backrow {
+  bottom: 3.4cqw;                          /* higher = further back */
+  filter: brightness(0.72) blur(0.09cqw);  /* dimmer and softer = further away */
+}
+```
+
+Three properties, no extra width, and the shelves suddenly look stocked.
+
+The crisper drawer does the opposite thing with the same goal. The vegetables
+are drawn at full strength and then **buried** behind a translucent panel with
+`backdrop-filter`, so they read as "vegetables you can half see" rather than as
+vegetables. It's the only place in the picture where *hiding* detail is what
+adds it.
 
 ### Sizing: one container query, zero breakpoints
 
