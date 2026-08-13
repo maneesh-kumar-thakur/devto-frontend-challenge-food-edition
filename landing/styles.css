@@ -727,19 +727,10 @@ img, svg { max-width: 100%; }
     inset 0 -0.2rem 0.5rem rgb(0 0 0 / 0.18);
 }
 
-/* --- stack: layers on a plate. Pancakes, toast, anything piled --- */
-.dish[data-form="stack"] .dish__art::before {
-  width: 48%;
-  aspect-ratio: 1 / 0.74;
-  border-radius: 0;
-  background:
-    radial-gradient(ellipse 46% 13% at 50% 20%, var(--food-a) 0 92%, transparent 94%),
-    radial-gradient(ellipse 48% 13% at 50% 40%, var(--food-b) 0 92%, transparent 94%),
-    radial-gradient(ellipse 50% 13% at 50% 60%, var(--food-a) 0 92%, transparent 94%),
-    radial-gradient(ellipse 54% 11% at 50% 80%, #e7ecf2 0 92%, transparent 94%);
-  filter: drop-shadow(0 0.5rem 1rem rgb(0 0 0 / 0.45));
-  box-shadow: none;
-}
+/* A "stack" vessel used to live here. It was a mistake: a stack is a
+   shape food takes, not a thing you serve it in — and once the glyph
+   supplies the food, a stack vessel under a stack glyph reads doubled.
+   Those dishes are plates now, and the glyph does the stacking. */
 
 /* --- tray: something baked, with a browned top and a dish rim --- */
 .dish[data-form="tray"] .dish__art::before {
@@ -791,6 +782,32 @@ img, svg { max-width: 100%; }
   height: 32%;
   background: linear-gradient(180deg, transparent, rgb(0 0 0 / 0.28));
 }
+/* The sprite itself never renders. */
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* The glyph sits ON the vessel and identifies the dish. The vessel
+   supplies colour and depth; the glyph supplies "this is noodles".
+   Stroke-only on currentColor, so one sprite serves both themes. */
+.dish__icon {
+  position: absolute;
+  z-index: 2;
+  width: 32%;
+  aspect-ratio: 1;
+  /* One ink colour, referenced by both stroke and fill through
+     currentColor, so a glyph can mix outlines and solids. */
+  color: rgb(26 13 2 / 0.62);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0.08rem 0 rgb(255 255 255 / 0.3));
+  transition: transform 0.22s ease;
+}
+.dish__icon .solid { fill: currentColor; stroke: none; }
+[data-theme="day"] .dish__icon { color: rgb(40 22 6 / 0.68); }
+.dish > article:hover .dish__icon { transform: scale(1.07); }
+
 .dish__steam {
   position: absolute;
   top: 8%;

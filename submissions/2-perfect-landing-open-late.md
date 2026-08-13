@@ -57,29 +57,48 @@ The clock re-checks every 30 seconds and rolls the menu over — but only for
 someone who hasn't taken manual control of the picker. Yanking the page out
 from under a person who deliberately chose "Evening" would be rude.
 
-### Twenty-four dishes, five vessels
+### Twenty-four dishes: a vessel and a glyph
 
-Every plate on this page is CSS, and my first version was honestly poor: one
-bowl recipe rendered in two dozen different colours. It looked tidy and told
-you nothing. Colour alone can't say *soup* — but a **shape** can.
+My first version was honestly poor: one bowl recipe rendered in two dozen
+colours. It looked tidy and told you nothing. Colour alone can't say *soup*.
 
-So each dish declares a vessel instead:
+The fix came in two layers. First, a **vessel**, drawn in CSS — how the thing
+arrives at your table:
 
 ```html
 <li class="dish" data-form="mug" …>
 ```
 
 ```css
-.dish[data-form="plate"] .dish__art::before { … }   /* mound on a flat oval */
-.dish[data-form="stack"] .dish__art::before { … }   /* layers, on a plate    */
-.dish[data-form="tray"]  .dish__art::before { … }   /* browned, forked top   */
-.dish[data-form="mug"]   .dish__art::before { … }   /* + ::after is a handle */
+.dish[data-form="plate"] .dish__art::before { … }  /* mound on a flat oval  */
+.dish[data-form="tray"]  .dish__art::before { … }  /* browned, forked top   */
+.dish[data-form="mug"]   .dish__art::before { … }  /* + ::after is a handle */
 ```
 
-Five forms — bowl, plate, stack, tray, mug — across twenty-four dishes. Now the
-grid tells you at a glance that the grilled cheese comes with soup in a mug,
-that the pancakes are a stack, and that the mac and cheese was baked in a
-tray. Same amount of CSS, vastly more information.
+Then a **glyph** on top of it — what the thing actually is. Fourteen of them,
+hand-drawn as one inline `<symbol>` sprite:
+
+```html
+<svg class="dish__icon"><use href="#i-noodles"/></svg>
+```
+
+I deliberately didn't reach for an icon library. A CDN link would break the
+page's zero-dependency claim and die in any offline or sandboxed context, and
+none of the good free sets (Lucide, Tabler, Phosphor) has a khichdi, an idli
+or a paratha in it. Fourteen hand-drawn glyphs is a couple of hours and it's
+*mine*, with no licence to honour and no request to make.
+
+Two things I got wrong first time, both worth stealing:
+
+**The glyphs originally drew their own bowls.** A bowl glyph sitting inside a
+CSS bowl reads as doubled and slightly broken. Every glyph is now the *food
+only* — a nest of noodles, a mound of rice, a fried egg — and the vessel
+underneath supplies the container.
+
+**One of my "vessels" wasn't a vessel.** I had `stack` alongside bowl, plate,
+tray and mug — but a stack is a shape food *takes*, not a thing you serve it
+in. Once the glyph did the stacking, a stack vessel under a stack glyph was
+the same doubling again. Those dishes are plates now.
 
 The lesson generalises past food: when you're differentiating a list of things
 visually, **spend your effort on silhouette before colour.** Shape survives
