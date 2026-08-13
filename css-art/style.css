@@ -219,6 +219,46 @@ body {
   box-shadow: inset 0.25cqw 0 0 rgba(255, 178, 96, 0.3);
 }
 
+/* Two more silhouettes so the far side of the room isn't just dark.
+   Rim light only — they're well outside the beam. */
+.counter .crock {
+  position: absolute;
+  bottom: 100%;
+  left: 24cqw;
+  width: 4.4cqw;
+  height: 5cqw;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.5cqw;
+  border-radius: 0.3cqw 0.3cqw 0.7cqw 0.7cqw;
+  background: linear-gradient(90deg, #0e1420 0%, #1b2333 100%);
+  box-shadow: inset 0.25cqw 0 0 rgba(255, 178, 96, 0.26);
+}
+.counter .crock i {                  /* utensil handles poking out */
+  width: 0.6cqw;
+  height: 4.5cqw;
+  margin-bottom: 3.4cqw;
+  border-radius: 0.3cqw;
+  background: linear-gradient(180deg, #2a3448, #141b28);
+  box-shadow: inset 0.14cqw 0 0 rgba(255, 178, 96, 0.24);
+}
+.counter .crock i:nth-child(2) { height: 5.6cqw; }
+.counter .crock i:nth-child(3) { height: 4cqw; transform: rotate(7deg); }
+
+.counter .board {                    /* chopping board, leaning */
+  position: absolute;
+  bottom: 100%;
+  left: 31cqw;
+  width: 5.6cqw;
+  height: 9cqw;
+  border-radius: 0.5cqw 0.5cqw 0.3cqw 0.3cqw;
+  background: linear-gradient(90deg, #0f1522 0%, #1c2436 100%);
+  transform: rotate(4deg);
+  transform-origin: bottom right;
+  box-shadow: inset 0.24cqw 0 0 rgba(255, 178, 96, 0.22);
+}
+
 /* ============================================================
    THE FRIDGE
    Cropped hard by the left frame edge so the open door reads as
@@ -248,11 +288,29 @@ body {
   border-radius: 1.6cqw 1.6cqw 0.4cqw 0.4cqw;
   background:
     linear-gradient(90deg, rgba(255, 186, 110, 0.1) 0 3%, transparent 22%),
+    /* brushed steel: fine vertical grain over the panel colour */
+    repeating-linear-gradient(90deg,
+      rgba(255, 255, 255, 0.022) 0 0.18cqw,
+      transparent 0.18cqw 0.5cqw),
     linear-gradient(180deg, #212a3d 0%, #161d2c 55%, #10151f 100%);
   box-shadow:
     inset 0 0 0 0.26cqw #2d3850,
     inset 0 -0.4cqw 1cqw rgba(0, 0, 0, 0.5),
     0 0.6cqw 1.4cqw rgba(0, 0, 0, 0.6);
+}
+/* a badge plate, so the biggest dark shape in the frame isn't blank */
+.freezer::before {
+  content: "";
+  position: absolute;
+  left: 7%;
+  top: 30%;
+  width: 19%;
+  height: 15%;
+  border-radius: 0.28cqw;
+  background: linear-gradient(180deg, #2b3752, #1a2233);
+  box-shadow:
+    inset 0 0.12cqw 0 rgba(255, 255, 255, 0.12),
+    0 0.15cqw 0.3cqw rgba(0, 0, 0, 0.5);
 }
 .freezer::after {                   /* pull handle */
   content: "";
@@ -432,18 +490,44 @@ body {
   gap: 0.5cqw;
   filter: brightness(0.72) blur(0.09cqw);
 }
+/* Give the back row silhouettes rather than blocks. Odd ones get a
+   neck and read as bottles, even ones get a lid lip and read as tubs.
+   Two pseudo-element rules is the difference between "a second row of
+   things" and "some coloured rectangles". */
 .backrow i {
+  position: relative;
   flex: 1;
   height: 100%;
-  border-radius: 0.5cqw 0.5cqw 0.25cqw 0.25cqw;
+  border-radius: 0.45cqw 0.45cqw 0.2cqw 0.2cqw;
   background: linear-gradient(180deg, #b8823f, #7d4c1c);
 }
-.backrow--squat i { height: 68%; border-radius: 0.3cqw; }
-.backrow i:nth-child(1) { background: linear-gradient(180deg, #a8514a, #6d2a24); height: 86%; }
-.backrow i:nth-child(2) { background: linear-gradient(180deg, #6f8f5c, #3f5730); }
-.backrow i:nth-child(3) { background: linear-gradient(180deg, #c69a52, #8a5f24); height: 92%; }
-.backrow i:nth-child(4) { background: linear-gradient(180deg, #7b93a8, #47596b); }
-.backrow i:nth-child(5) { background: linear-gradient(180deg, #b06a3c, #74401b); height: 78%; }
+.backrow i:nth-child(odd)::before {   /* bottle neck */
+  content: "";
+  position: absolute;
+  left: 33%;
+  right: 33%;
+  bottom: 100%;
+  height: 36%;
+  border-radius: 0.28cqw 0.28cqw 0 0;
+  background: inherit;
+}
+.backrow i:nth-child(even)::before {  /* tub lid, overhanging slightly */
+  content: "";
+  position: absolute;
+  left: -7%;
+  right: -7%;
+  bottom: 100%;
+  height: 13%;
+  border-radius: 0.22cqw 0.22cqw 0 0;
+  background: rgba(255, 240, 214, 0.32);
+}
+
+.backrow--squat i { height: 66%; }
+.backrow i:nth-child(1) { flex: 1.1; height: 84%; background: linear-gradient(180deg, #a8514a, #6d2a24); }
+.backrow i:nth-child(2) { flex: 1.3; background: linear-gradient(180deg, #6f8f5c, #3f5730); }
+.backrow i:nth-child(3) { flex: 0.9; height: 92%; background: linear-gradient(180deg, #c69a52, #8a5f24); }
+.backrow i:nth-child(4) { flex: 1.2; background: linear-gradient(180deg, #7b93a8, #47596b); }
+.backrow i:nth-child(5) { flex: 1;   height: 76%; background: linear-gradient(180deg, #b06a3c, #74401b); }
 
 /* the glass shelf plate the food sits on: a bright leading edge
    and a faint tint is all a pane of glass needs */
@@ -1398,6 +1482,27 @@ body {
   animation: roll 9s 0.6s infinite ease-in-out, light-up 1.6s 0.5s 1 both;
 }
 
+/* The lit opening reflected in the floor. A vertical smear directly
+   below the cavity — kitchen floors are never matte, and this is the
+   cheapest possible way to say so. */
+.sheen {
+  position: absolute;
+  left: 54cqw;
+  top: 55cqw;
+  width: 22cqw;
+  height: 25cqw;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(180deg,
+    rgba(255, 206, 140, 0.5) 0%,
+    rgba(255, 176, 96, 0.22) 34%,
+    rgba(255, 160, 70, 0.06) 66%,
+    transparent 100%);
+  filter: blur(1.5cqw);
+  mix-blend-mode: screen;
+  animation: light-up 1.3s 0.45s 1 both;
+}
+
 /* dust drifting through the beam.
    JS randomises these; the nth-child fallbacks below mean the
    pen still looks alive with the JS pane empty. */
@@ -1528,8 +1633,18 @@ body {
 
   .fridge__door { animation: none; transform: rotateY(-58deg); }
   .cavity__glow { animation: none; opacity: 1; }
-  .spill { animation: none; opacity: 1; }
-  .mist  { animation: none; opacity: 1; }
+  .spill  { animation: none; opacity: 1; }
+  .sheen  { animation: none; opacity: 1; }
+  .mist   { animation: none; opacity: 1; }
   .motes i { animation: none; opacity: 0.85; }
+
+  /* The cold still hangs in the box, it just stops moving. Reduced
+     motion means less movement, not less picture. */
+  .chill i {
+    animation: none;
+    opacity: 0.55;
+    transform: translate(-2cqw, 8cqw) scaleX(1.2);
+  }
+
   .toggle, .toggle__dot { transition: none; }
 }
