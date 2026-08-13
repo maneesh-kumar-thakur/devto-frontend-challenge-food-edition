@@ -105,14 +105,21 @@ body {
 }
 
 /* ---------- wall and table ---------------------------------- */
-/* A single warm key from the upper left, falling off hard. Most of
-   the "is this any good" of a still life is in this one gradient. */
+/* A warm key from the upper left — and, crucially, a COOL fill from the
+   right. The scene used to be terracotta on brown wood against a brown
+   wall: everything sat in one narrow warm band, so nothing had anything
+   to push against. The warm light didn't need to get warmer; the
+   shadows needed to get cooler. */
 .wall {
   position: absolute;
   inset: 0 0 34% 0;
   background:
     radial-gradient(56% 58% at 26% 2%, rgba(255, 190, 120, 0.26), transparent 62%),
-    radial-gradient(84% 78% at 30% 6%, #6d4526 0%, #3d2513 52%, #1d1008 100%);
+    /* Cool ambient spilling in from off-frame right. Kept deliberately
+       low — at full strength it stopped reading as a wall in shadow and
+       started reading as a blue wall, which is a different picture. */
+    radial-gradient(72% 82% at 98% 22%, rgba(98, 134, 180, 0.15), transparent 68%),
+    radial-gradient(84% 78% at 30% 6%, #6d4526 0%, #3b2a1e 48%, #1a1720 100%);
 }
 
 .table {
@@ -235,10 +242,14 @@ body {
     repeating-linear-gradient(0deg,
       rgba(94, 46, 26, 0.16) 0 0.28cqw,
       transparent 0.28cqw 1.5cqw),
-    /* rim light down the left edge */
+    /* warm rim light down the left edge */
     linear-gradient(100deg, rgba(255, 220, 186, 0.5) 0 5%, rgba(255, 200, 160, 0.12) 14%, transparent 30%),
+    /* Cool rim on the shadow side, from the same off-frame ambient that
+       lights the wall. One thin cool edge does more to make terracotta
+       look like terracotta than any amount of extra orange. */
+    linear-gradient(266deg, rgba(158, 196, 238, 0.5) 0 2.5%, rgba(124, 164, 210, 0.18) 9%, transparent 22%),
     /* the shadow side */
-    linear-gradient(260deg, rgba(48, 20, 8, 0.62) 0 7%, rgba(60, 26, 12, 0.25) 20%, transparent 40%),
+    linear-gradient(260deg, rgba(38, 22, 14, 0.62) 0 7%, rgba(52, 30, 20, 0.25) 20%, transparent 40%),
     /* specular bloom */
     radial-gradient(52% 38% at 32% 24%, rgba(255, 228, 198, 0.4), transparent 68%),
     /* clay */
@@ -265,7 +276,10 @@ body {
   width: calc(100% + 2.8cqw);
   height: 7.6cqw;
   border-radius: 50%;
-  background: linear-gradient(180deg, var(--clay-0) 0%, var(--clay-2) 52%, var(--clay-3) 100%);
+  background:
+    /* the same cool ambient catching the far lip */
+    linear-gradient(262deg, rgba(158, 196, 238, 0.34) 0 4%, transparent 16%),
+    linear-gradient(180deg, var(--clay-0) 0%, var(--clay-2) 52%, var(--clay-3) 100%);
   box-shadow:
     inset 0 -0.5cqw 0.9cqw rgba(70, 30, 14, 0.5),
     0 0.35cqw 0.7cqw rgba(0, 0, 0, 0.3);
@@ -528,27 +542,37 @@ body {
 .cardamom--a { left: 28cqw; top: 71cqw; transform: rotate(-16deg); }
 .cardamom--b { left: 32.5cqw; top: 73.5cqw; transform: rotate(24deg); }
 
+/* Cloves are dark brown objects on dark brown wood, so colour alone
+   will never separate them. What makes a small dark thing visible on a
+   dark ground is a lit EDGE and a shadow beneath it — the silhouette
+   gets read from the highlight, not from the body. Slightly larger too,
+   and moved into the light pool rather than the dark corners. */
 .clove {
   position: absolute;
-  width: 2.6cqw;
-  height: 0.75cqw;
-  border-radius: 0.4cqw;
-  background: linear-gradient(90deg, #2e1608 0%, #4d2712 62%, #6b3a1c 100%);
-  box-shadow: 0 0.25cqw 0.35cqw rgba(20, 8, 2, 0.55);
+  width: 3.2cqw;
+  height: 0.95cqw;
+  border-radius: 0.5cqw;
+  background: linear-gradient(90deg, #2a1408 0%, #4d2712 58%, #7a4520 100%);
+  box-shadow:
+    inset 0 0.18cqw 0 rgba(255, 214, 166, 0.45),
+    0 0.4cqw 0.6cqw rgba(12, 4, 0, 0.85);
 }
 .clove::after {                      /* the bud */
   content: "";
   position: absolute;
-  right: -0.35cqw;
-  top: -0.35cqw;
-  width: 1.4cqw;
-  height: 1.45cqw;
+  right: -0.42cqw;
+  top: -0.42cqw;
+  width: 1.75cqw;
+  height: 1.8cqw;
   border-radius: 50%;
-  background: radial-gradient(circle at 36% 32%, #7d4620, #3a1c0c);
+  background: radial-gradient(circle at 34% 30%, #9a5c2c 0%, #5a2c12 58%, #2e1509 100%);
+  box-shadow:
+    inset 0 0.16cqw 0 rgba(255, 214, 166, 0.4),
+    0 0.3cqw 0.5cqw rgba(12, 4, 0, 0.8);
 }
-.clove--a { left: 72cqw; top: 62cqw; transform: rotate(18deg); }
-.clove--b { left: 24cqw; top: 58cqw; transform: rotate(-34deg); }
-.clove--c { left: 78cqw; top: 74cqw; transform: rotate(6deg); }
+.clove--a { left: 66cqw; top: 63cqw; transform: rotate(18deg); }
+.clove--b { left: 27cqw; top: 66cqw; transform: rotate(-34deg); }
+.clove--c { left: 58cqw; top: 74cqw; transform: rotate(6deg); }
 
 /* ---------- final grade ------------------------------------- */
 .vignette {
