@@ -41,6 +41,13 @@ dunk.addEventListener('click', () => {
   dunk.disabled = true;
 
   const biscuit = scene.querySelector('.biscuit');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* The biscuit comes out wet and stays that way. Timed to the moment
+     it starts lifting clear of the chai (~64% of 3.4s) so the soak
+     fades up as it rises, rather than appearing while it's still
+     hidden inside the cup. */
+  setTimeout(() => scene.classList.add('is-soaked'), reduced ? 0 : 2200);
 
   const finish = () => {
     scene.classList.remove('is-dunking');
@@ -51,7 +58,6 @@ dunk.addEventListener('click', () => {
   /* animationend is the honest signal, but if the animation never
      runs — reduced motion, or a browser that skips it — the button
      must still come back. */
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduced) setTimeout(finish, 200);
   else biscuit.addEventListener('animationend', finish, { once: true });
 });

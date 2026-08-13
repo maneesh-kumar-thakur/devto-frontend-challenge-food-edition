@@ -437,19 +437,88 @@ body {
 }
 
 /* ---------- the dunk ---------------------------------------- */
-.scene.is-dunking .biscuit { animation: dunk 1.9s var(--ease) 1; }
-.scene.is-dunking .chai__ripple { animation: ripple 1.5s 0.62s ease-out 1; }
-.scene.is-dunking .chai__ripple--2 { animation-delay: 0.86s; }
-/* the steam gusts when something hot is disturbed */
+/* 3.4s, not 1.9s. "Slowly" is the whole point of a dunk — rushed, it
+   reads as the biscuit twitching rather than being lowered in. */
+.scene.is-dunking .biscuit { animation: dunk 3.4s linear 1; }
+
+/* Ripples fire when the biscuit actually breaks the surface — around
+   40% of 3.4s, partway down the descent — not on a delay picked to
+   look about right. */
+.scene.is-dunking .chai__ripple { animation: ripple 1.7s 1.35s ease-out 1; }
+.scene.is-dunking .chai__ripple--2 { animation-delay: 1.7s; }
+
+/* the steam gusts when something cold goes into something hot */
 .scene.is-dunking .steam i { animation-duration: calc(var(--d, 7s) * 0.62); }
 
+/* The dunk, as an actual dunk. The old version slid the biscuit
+   diagonally across the frame and back, which never read as anything.
+   This one does what a hand does: lift it clear, carry it over the
+   mouth, lower it in slowly, hold it there, and draw it back out.
+
+   The descent and the hold take up nearly half the timeline on
+   purpose — the pause is where the soaking reads. The cup sits above
+   the biscuit in the stack, so everything below the rim is occluded
+   by the cup itself: it genuinely disappears into the chai. */
+/* Each segment carries its OWN easing. The animation-level `--ease` is
+   a snappy ease-out, and CSS applies the animation's timing function
+   between every pair of keyframes — so the "slow descent" was snapping
+   to the bottom in the first fraction of its segment and then sitting
+   there. The animation runs `linear` now and each leg shapes itself. */
 @keyframes dunk {
-  0%   { transform: rotate(-8deg)  translate(0, 0); }
-  26%  { transform: rotate(-28deg) translate(-8cqw, -8cqw); }
-  46%  { transform: rotate(-38deg) translate(-13cqw, -2.5cqw); }
-  58%  { transform: rotate(-38deg) translate(-13cqw, 0.4cqw); }
-  74%  { transform: rotate(-30deg) translate(-9cqw, -7cqw); }
-  100% { transform: rotate(-8deg)  translate(0, 0); }
+  0% {
+    transform: rotate(-8deg) translate(0, 0);
+    animation-timing-function: cubic-bezier(0.34, 0.9, 0.4, 1);    /* lift away, quick */
+  }
+  15% {
+    transform: rotate(-2deg) translate(-19.5cqw, -30cqw);          /* clear above the mouth */
+    animation-timing-function: ease-in-out;
+  }
+  24% {
+    transform: rotate(-2deg) translate(-19.5cqw, -30cqw);          /* hold, lined up */
+    animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  }
+  54% {
+    transform: rotate(-2deg) translate(-19.5cqw, -19cqw);          /* the slow part: 30% of the run */
+    animation-timing-function: linear;
+  }
+  68% {
+    transform: rotate(-2deg) translate(-19.5cqw, -18.6cqw);        /* soaking, settling */
+    animation-timing-function: cubic-bezier(0.4, 0, 0.35, 1);
+  }
+  86% {
+    transform: rotate(-2deg) translate(-19.5cqw, -30cqw);          /* drawn back out */
+    animation-timing-function: ease-in-out;
+  }
+  100% { transform: rotate(-8deg) translate(0, 0); }
+}
+
+/* What comes out is wet. The soak climbs only as far as the chai
+   reached, and it stays — a dunked biscuit does not dry out again. */
+.biscuit__soak {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.7cqw;
+  background: linear-gradient(180deg,
+    transparent 40%,
+    rgba(126, 72, 24, 0.3) 50%,
+    rgba(104, 56, 16, 0.68) 66%,
+    rgba(86, 44, 10, 0.88) 100%);
+  /* the same bite, so the soak can't spill outside the biscuit */
+  mask-image: radial-gradient(circle at 96% 16%, transparent 3.2cqw, #000 3.35cqw);
+  opacity: 0;
+  transition: opacity 1.1s ease;
+}
+.scene.is-soaked .biscuit__soak { opacity: 1; }
+/* a darker, wetter edge right at the waterline */
+.scene.is-soaked .biscuit__soak::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 46%;
+  height: 0.5cqw;
+  background: linear-gradient(180deg, rgba(70, 34, 6, 0.55), transparent);
+  filter: blur(0.16cqw);
 }
 
 @keyframes ripple {
