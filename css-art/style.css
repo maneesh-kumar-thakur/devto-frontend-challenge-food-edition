@@ -293,35 +293,44 @@ body {
       rgba(255, 255, 255, 0.022) 0 0.18cqw,
       transparent 0.18cqw 0.5cqw),
     linear-gradient(180deg, #212a3d 0%, #161d2c 55%, #10151f 100%);
+  /* A shut door needs three things to read as a door rather than a
+     dark panel: a lit top edge, a lit leading edge, and a shadowed
+     gap underneath where it meets the compartment below. */
   box-shadow:
-    inset 0 0 0 0.26cqw #2d3850,
-    inset 0 -0.4cqw 1cqw rgba(0, 0, 0, 0.5),
-    0 0.6cqw 1.4cqw rgba(0, 0, 0, 0.6);
+    inset 0 0.32cqw 0 rgba(148, 178, 220, 0.3),
+    inset 0.3cqw 0 0 rgba(138, 168, 212, 0.2),
+    inset 0 0 0 0.26cqw #38455f,
+    inset 0 -0.5cqw 1.2cqw rgba(0, 0, 0, 0.6),
+    0 0.9cqw 1.8cqw rgba(0, 0, 0, 0.75);
 }
-/* a badge plate, so the biggest dark shape in the frame isn't blank */
+/* the shadowed gap under the door */
 .freezer::before {
   content: "";
   position: absolute;
-  left: 7%;
-  top: 30%;
-  width: 19%;
-  height: 15%;
-  border-radius: 0.28cqw;
-  background: linear-gradient(180deg, #2b3752, #1a2233);
-  box-shadow:
-    inset 0 0.12cqw 0 rgba(255, 255, 255, 0.12),
-    0 0.15cqw 0.3cqw rgba(0, 0, 0, 0.5);
+  left: 1%;
+  right: 1%;
+  top: 100%;
+  height: 1cqw;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.35));
 }
-.freezer::after {                   /* pull handle */
+/* Pull handle, standing proud of the door: a bright top face, a dark
+   underside, and a cast shadow on the panel behind it. */
+.freezer::after {
   content: "";
   position: absolute;
-  left: 2.2cqw;
-  right: 2.2cqw;
-  bottom: 1.5cqw;
-  height: 1.15cqw;
-  border-radius: 0.6cqw;
-  background: linear-gradient(180deg, #8d9db5 0%, #56637c 55%, #333c4f 100%);
-  box-shadow: 0 0.25cqw 0.5cqw rgba(0, 0, 0, 0.55);
+  left: 2.4cqw;
+  right: 2.4cqw;
+  bottom: 1.6cqw;
+  height: 1.5cqw;
+  border-radius: 0.75cqw;
+  background: linear-gradient(180deg,
+    #b7c6dc 0%,
+    #8996ae 26%,
+    #4f5b74 62%,
+    #2b3446 100%);
+  box-shadow:
+    inset 0 0.16cqw 0 rgba(255, 255, 255, 0.4),
+    0 0.42cqw 0.8cqw rgba(0, 0, 0, 0.7);
 }
 
 /* The lower half carries the cavity and the swinging door.
