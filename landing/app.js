@@ -90,6 +90,7 @@
   /* ═══ 3. filtering ═══════════════════════════════════════ */
   const filters   = $('#filters');
   const results   = $('#results');
+  const clearBtn  = $('#clear-filters');
   const noResults = $('#no-results');
   const search    = $('#dish-search');
 
@@ -139,6 +140,12 @@
 
     noResults.hidden = shown > 0;
 
+    /* "Clear filters" only exists when there is something to clear.
+       A permanently-present button that usually does nothing teaches
+       people to ignore it. */
+    const narrowed = diets.length > 0 || q.length > 0 || !followingClock;
+    clearBtn.hidden = !narrowed;
+
     // Spoken by the <output> region — the whole point of filtering is
     // knowing how much you have left.
     const label = SERVICES.find((s) => s.id === service);
@@ -176,7 +183,11 @@
     selectService(currentService);
   }
 
-  $('#clear-filters').addEventListener('click', clearAll);
+  clearBtn.addEventListener('click', () => {
+    clearAll();
+    // focus would be left on a button that just removed itself
+    $('input[name="service"]:checked')?.focus();
+  });
   $('#reset-from-empty').addEventListener('click', () => {
     clearAll();
     search.focus();

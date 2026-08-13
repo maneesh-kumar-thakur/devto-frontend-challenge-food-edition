@@ -57,6 +57,59 @@ The clock re-checks every 30 seconds and rolls the menu over — but only for
 someone who hasn't taken manual control of the picker. Yanking the page out
 from under a person who deliberately chose "Evening" would be rude.
 
+### Sixteen dishes, five vessels
+
+Every plate on this page is CSS, and my first version was honestly poor: one
+bowl recipe rendered in sixteen different colours. It looked tidy and told you
+nothing. Colour alone can't say *soup* — but a **shape** can.
+
+So each dish declares a vessel instead:
+
+```html
+<li class="dish" data-form="mug" …>
+```
+
+```css
+.dish[data-form="plate"] .dish__art::before { … }   /* mound on a flat oval */
+.dish[data-form="stack"] .dish__art::before { … }   /* layers, on a plate    */
+.dish[data-form="tray"]  .dish__art::before { … }   /* browned, forked top   */
+.dish[data-form="mug"]   .dish__art::before { … }   /* + ::after is a handle */
+```
+
+Five forms — bowl, plate, stack, tray, mug — across sixteen dishes. Now the
+grid tells you at a glance that the grilled cheese comes with soup in a mug,
+that the pancakes are a stack, and that the mac and cheese was baked in a
+tray. Same amount of CSS, vastly more information.
+
+The lesson generalises past food: when you're differentiating a list of things
+visually, **spend your effort on silhouette before colour.** Shape survives
+being small, greyscale, and glanced at.
+
+### The `hidden` bug that broke my own progressive enhancement
+
+Worth its own section, because I'd written a whole paragraph in this post
+claiming the filter panel is invisible without JavaScript — and it wasn't.
+
+`hidden` is just `display: none` in the UA stylesheet, which means **any**
+author rule that sets `display` silently beats it. I had two:
+
+```css
+.btn     { display: inline-flex; }   /* un-hid "Clear filters"     */
+.filters { display: grid; }          /* un-hid the whole panel!    */
+```
+
+So with scripting off, the panel appeared anyway, full of dead controls — the
+exact failure I'd designed it to avoid. One line fixes it, and it's the only
+place on the page I'd defend an `!important`:
+
+```css
+[hidden] { display: none !important; }
+```
+
+I only caught it because I rendered the page with the `<script>` tag deleted
+and looked. Claiming progressive enhancement is easy; **testing** it means
+actually removing the script.
+
 ### Accessibility, and why each choice was made
 
 I tried to make every a11y decision a *design* decision rather than a
