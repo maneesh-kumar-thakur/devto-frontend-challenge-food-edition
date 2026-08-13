@@ -272,8 +272,10 @@ body {
   perspective: 90cqw;
   /* Pushing the vanishing point far to the right swings the open
      door's projection clear of the shelves, so the door reads as
-     a door instead of covering the picture. */
-  perspective-origin: 151% 50%;
+     a door instead of covering the picture. Pushed further still
+     (151% → 200%) to widen that projection: at 151% the door was
+     ~11cqw across and any detail on it turned to mush. */
+  perspective-origin: 200% 50%;
   transform-style: preserve-3d;
 }
 
@@ -884,6 +886,25 @@ body {
     inset 0 0 2.4cqw rgba(0, 0, 0, 0.6);
 }
 
+/* The cavity is throwing light at this face, so it has to land on
+   the bottles too — not just on the panel behind them. Painted over
+   the whole face as a last child, screened so it warms what's
+   underneath instead of washing it out. */
+.door__face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  border-radius: 1.4cqw;
+  background: linear-gradient(270deg,
+    rgba(255, 206, 148, 0.42) 0%,
+    rgba(255, 180, 108, 0.2) 34%,
+    rgba(255, 160, 80, 0.06) 62%,
+    transparent 84%);
+  mix-blend-mode: screen;
+}
+
 /* ============================================================
    STICKY NOTES
    Deliberately unreadable. At 2am in an unlit kitchen a note is a
@@ -1001,31 +1022,237 @@ body {
   transform: rotate(12deg);
 }
 
-/* door racks, each holding bottle silhouettes */
+/* ============================================================
+   DOOR BINS
+   Bottles stand in a bin whose front wall hides their lower half.
+   That occlusion is the entire reason a fridge door reads as a
+   fridge door and not as a shelf — you see necks and shoulders,
+   never whole bottles.
+   ============================================================ */
 .rack {
   position: absolute;
-  left: 8%;
-  right: 8%;
-  height: 9cqw;
+  left: 5%;
+  right: 5%;
+}
+.rack--top { top: 7%;  height: 21%; }
+.rack--mid { top: 33%; height: 23%; }
+.rack--low { top: 61%; height: 28%; }
+
+.bottles {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 0;
+  height: 100%;
   display: flex;
   align-items: flex-end;
-  justify-content: space-around;
-  border-bottom: 0.5cqw solid #2c3752;
-  box-shadow: 0 0.2cqw 0 rgba(255, 190, 120, 0.22);
+  justify-content: space-between;
 }
-.rack--top { top: 12%; }
-.rack--mid { top: 42%; }
-.rack--low { top: 70%; }
 
-.rack i {
-  width: 2.6cqw;
-  height: 7.4cqw;
-  border-radius: 0.9cqw 0.9cqw 0.35cqw 0.35cqw / 2.6cqw 2.6cqw 0.35cqw 0.35cqw;
-  background: linear-gradient(96deg, rgba(255, 205, 150, 0.4) 0 22%, transparent 46%),
-              linear-gradient(180deg, #24405c, #16283b);
+/* the bin itself: moulded plastic, catching warm light on its lip */
+.bin {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42%;
+  border-radius: 0.25cqw 0.25cqw 0.7cqw 0.7cqw;
+  background:
+    linear-gradient(180deg,
+      rgba(255, 226, 190, 0.28) 0%,
+      rgba(255, 255, 255, 0.05) 22%,
+      rgba(0, 0, 0, 0.26) 100%),
+    linear-gradient(180deg, #4a5d80 0%, #2a3750 60%, #1b2437 100%);
+  /* The bright top lip is what makes it a container rather than a
+     dark band: light lands on the rim you'd hook a finger over. */
+  box-shadow:
+    inset 0 0.34cqw 0 rgba(255, 214, 166, 0.75),
+    inset 0 -0.32cqw 0.7cqw rgba(0, 0, 0, 0.5),
+    0 0.4cqw 0.9cqw rgba(0, 0, 0, 0.55);
 }
-.rack--mid i { height: 5.6cqw; width: 3cqw; }
-.rack--low i { height: 6.4cqw; width: 4cqw; }
+.rack--low .bin { height: 48%; }
+
+/* ---------- bottles ----------------------------------------- */
+.btl {
+  position: relative;
+  align-self: flex-end;
+  border-radius: 0.45cqw 0.45cqw 0.3cqw 0.3cqw;
+}
+
+/* milk: wide body, stubby neck, a cap you can spot across a room */
+.btl--milk {
+  width: 25%;
+  height: 60%;
+  background:
+    linear-gradient(100deg, rgba(255, 255, 255, 0.55) 0 20%, transparent 46%),
+    linear-gradient(180deg, #f3f7fb 0%, #d4dde7 58%, #adb9c7 100%);
+}
+.btl--milk::before {
+  content: "";
+  position: absolute;
+  left: 27%;
+  right: 27%;
+  bottom: 100%;
+  height: 26%;
+  border-radius: 0.2cqw 0.2cqw 0 0;
+  background: linear-gradient(180deg, #e9eff6, #c6d1de);
+}
+.btl--milk::after {
+  content: "";
+  position: absolute;
+  left: 21%;
+  right: 21%;
+  bottom: 124%;
+  height: 11%;
+  border-radius: 0.18cqw;
+  background: linear-gradient(180deg, #56a0e0, #2f6299);
+}
+.btl--milk.btl--alt { height: 54%; }
+.btl--milk.btl--alt::after { background: linear-gradient(180deg, #e0645c, #9b3730); }
+
+/* water: tall, narrow, ribbed */
+.btl--water {
+  width: 16%;
+  height: 74%;
+  background:
+    repeating-linear-gradient(180deg,
+      rgba(255, 255, 255, 0.18) 0 0.16cqw,
+      transparent 0.16cqw 0.62cqw),
+    linear-gradient(100deg, rgba(255, 255, 255, 0.5) 0 22%, transparent 48%),
+    linear-gradient(180deg, #d4e9f4 0%, #a2c8db 56%, #74a3bb 100%);
+}
+.btl--water::before {
+  content: "";
+  position: absolute;
+  left: 32%;
+  right: 32%;
+  bottom: 100%;
+  height: 15%;
+  background: linear-gradient(180deg, #cfe4ef, #9dc0d3);
+}
+.btl--water::after {
+  content: "";
+  position: absolute;
+  left: 26%;
+  right: 26%;
+  bottom: 113%;
+  height: 7%;
+  border-radius: 0.14cqw;
+  background: linear-gradient(180deg, #4f8fc4, #2d5c8c);
+}
+.btl--water.btl--alt { height: 68%; }
+
+/* beer: long neck, brown glass, a pale label band */
+.btl--beer {
+  width: 15%;
+  height: 50%;
+  background:
+    linear-gradient(180deg, transparent 0 30%, rgba(226, 205, 156, 0.9) 30% 62%, transparent 62%),
+    linear-gradient(100deg, rgba(255, 222, 176, 0.45) 0 20%, transparent 46%),
+    linear-gradient(180deg, #8d5522 0%, #653a14 60%, #431f07 100%);
+}
+.btl--beer::before {
+  content: "";
+  position: absolute;
+  left: 33%;
+  right: 33%;
+  bottom: 100%;
+  height: 52%;
+  border-radius: 0.2cqw 0.2cqw 0 0;
+  background: linear-gradient(180deg, #7a4a1e, #5a3311);
+}
+.btl--beer::after {
+  content: "";
+  position: absolute;
+  left: 28%;
+  right: 28%;
+  bottom: 150%;
+  height: 8%;
+  border-radius: 0.14cqw;
+  background: linear-gradient(180deg, #c8a54e, #866526);
+}
+.btl--beer.btl--alt { height: 46%; }
+
+/* cola: dark glass, red band */
+.btl--cola {
+  width: 18%;
+  height: 52%;
+  background:
+    linear-gradient(180deg, transparent 0 32%, rgba(196, 44, 46, 0.92) 32% 60%, transparent 60%),
+    linear-gradient(100deg, rgba(255, 255, 255, 0.3) 0 18%, transparent 42%),
+    linear-gradient(180deg, #4d2519 0%, #2c1108 100%);
+}
+.btl--cola::before {
+  content: "";
+  position: absolute;
+  left: 34%;
+  right: 34%;
+  bottom: 100%;
+  height: 24%;
+  background: linear-gradient(180deg, #452016, #2c1108);
+}
+.btl--cola::after {
+  content: "";
+  position: absolute;
+  left: 29%;
+  right: 29%;
+  bottom: 122%;
+  height: 8%;
+  border-radius: 0.14cqw;
+  background: linear-gradient(180deg, #c9403f, #8b2422);
+}
+.btl--cola.btl--alt { height: 47%; }
+
+/* something orange, because a fridge door is never all one colour */
+.btl--soda {
+  width: 17%;
+  height: 56%;
+  background:
+    linear-gradient(180deg, transparent 0 34%, rgba(255, 236, 190, 0.85) 34% 58%, transparent 58%),
+    linear-gradient(100deg, rgba(255, 255, 255, 0.34) 0 18%, transparent 42%),
+    linear-gradient(180deg, #e2892a 0%, #b45c14 62%, #8a4109 100%);
+}
+.btl--soda::before {
+  content: "";
+  position: absolute;
+  left: 34%;
+  right: 34%;
+  bottom: 100%;
+  height: 22%;
+  background: linear-gradient(180deg, #d47c22, #a75410);
+}
+.btl--soda::after {
+  content: "";
+  position: absolute;
+  left: 29%;
+  right: 29%;
+  bottom: 120%;
+  height: 8%;
+  border-radius: 0.14cqw;
+  background: linear-gradient(180deg, #6fae4c, #3f7029);
+}
+.btl--soda.btl--alt { height: 50%; }
+
+/* a juice carton — no neck, no cap, just a box */
+.btl--juice {
+  width: 21%;
+  height: 64%;
+  border-radius: 0.15cqw;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0 7%, transparent 24%),
+    linear-gradient(180deg, transparent 0 44%, rgba(255, 236, 196, 0.6) 44% 56%, transparent 56%),
+    linear-gradient(180deg, #e59230 0%, #b8641b 100%);
+}
+.btl--juice::before {                /* folded gable top */
+  content: "";
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  bottom: 100%;
+  height: 13%;
+  clip-path: polygon(0 100%, 18% 0, 82% 0, 100% 100%);
+  background: linear-gradient(180deg, #d8862a, #a95a16);
+}
 
 /* the door's thickness: a lit strip on the free edge */
 .door__edge {
@@ -1218,7 +1445,7 @@ body {
 /* re-opening: transition rather than replay the load animation */
 .scene.is-open .fridge__door {
   animation: none;
-  transform: rotateY(-64deg);
+  transform: rotateY(-58deg);
   transition: transform 0.85s var(--ease-door);
 }
 .scene.is-open .spill,
@@ -1235,7 +1462,7 @@ body {
    ============================================================ */
 @keyframes door-open {
   from { transform: rotateY(-3deg); }
-  to   { transform: rotateY(-64deg); }
+  to   { transform: rotateY(-58deg); }
 }
 
 @keyframes light-up {
@@ -1272,7 +1499,7 @@ body {
   .scene.is-closed .fridge__door,
   .scene.is-open .fridge__door { transition-duration: 1ms; }
 
-  .fridge__door { animation: none; transform: rotateY(-64deg); }
+  .fridge__door { animation: none; transform: rotateY(-58deg); }
   .cavity__glow { animation: none; opacity: 1; }
   .spill { animation: none; opacity: 1; }
   .mist  { animation: none; opacity: 1; }

@@ -150,6 +150,43 @@ fridge is already near-white. There was nothing left to add. Cold air has to
 no blend mode at all. Blend modes aren't free wins; they only work when the
 backdrop has room to move in that direction.
 
+### The door bins, and fighting my own perspective
+
+The inside of the door is the best part of a fridge — milk, water, beer, the
+one bottle of something nobody remembers buying — and mine was three grey
+smears. The problem wasn't the drawing, it was that the door only projected
+about **11cqw wide** on screen. Anything painted on it turned to mush.
+
+The fix was to the *camera*, not the artwork. Pushing the vanishing point
+further right (`perspective-origin: 151% → 200%`) and easing the swing back
+from -64° to -58° widened the door's projection by roughly half, which is the
+difference between "detail is impossible here" and "detail is worth doing".
+
+Then the bins. The thing that makes a door read as a *door* isn't the bottles,
+it's the **occlusion** — you never see a whole bottle, only necks and
+shoulders standing above a moulded plastic lip:
+
+```css
+.bin {
+  height: 42%;                                        /* hides the lower half */
+  box-shadow: inset 0 0.34cqw 0 rgba(255,214,166,.75); /* light on the rim */
+}
+```
+
+That one bright inset line along the top is what turns a dark band into
+something you could hook a finger over. Without it the bottles look like
+they're standing on a shelf.
+
+Each bottle is one element and two pseudo-elements — body, neck, cap — so the
+silhouettes stay distinguishable at a glance: milk is squat with a coloured
+cap, water is tall and ribbed, beer has a long neck and a pale label band, the
+juice carton has a folded gable top and no cap at all.
+
+One more thing had to change: the door was rendering almost black, because I'd
+lit the *panel* but not the things standing on it. The cavity is throwing light
+at that face, so a warm gradient screened over the whole face as a last child
+puts that light back onto the bottles too.
+
 ### Depth when you have no room for it
 
 Comparing against reference photos, the thing my fridge was most obviously
