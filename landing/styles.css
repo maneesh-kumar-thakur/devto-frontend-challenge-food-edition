@@ -713,18 +713,27 @@ img, svg { max-width: 100%; }
     inset 0 0 0 0.3rem rgb(255 255 255 / 0.12),
     inset 0 -0.45rem 0.9rem rgb(0 0 0 / 0.3);
 }
-/* --- plate: a shallow ellipse with a mound of food on it --- */
+/* --- plate: circular, seen from above ---
+   This was a wide flat ellipse, which meant the food covered the
+   middle and the white survived only as two crescents at the sides —
+   it read as a plate with its ends sliced off. A circle viewed from
+   directly overhead keeps an unbroken rim all the way round, and it
+   matches the bowl, which is also near-circular. */
 .dish[data-form="plate"] .dish__art::before {
-  width: 66%;
-  aspect-ratio: 1 / 0.46;
+  width: 54%;
+  aspect-ratio: 1;
+  border-radius: 50%;
   background:
-    radial-gradient(ellipse 15% 26% at 38% 34%, rgb(255 255 255 / 0.3), transparent 70%),
-    radial-gradient(ellipse 34% 54% at 50% 38%, var(--food-a) 0 84%, transparent 86%),
-    radial-gradient(ellipse 44% 66% at 50% 44%, var(--food-b) 0 86%, transparent 88%),
-    radial-gradient(ellipse 50% 50% at 50% 50%, #eef2f7 0 74%, #b9c3d0 100%);
+    /* sheen across the rim */
+    radial-gradient(circle at 34% 26%, rgb(255 255 255 / 0.55), transparent 44%),
+    /* the food, sitting in the well */
+    radial-gradient(circle at 50% 50%, var(--food-a) 0 36%, transparent 37%),
+    radial-gradient(circle at 50% 50%, var(--food-b) 0 50%, transparent 51%),
+    /* the plate: a shallow well, then the rim */
+    radial-gradient(circle at 50% 50%, #e7edf4 0 58%, #f7fafd 61%, #c9d3de 100%);
   box-shadow:
-    0 0.7rem 1.4rem rgb(0 0 0 / 0.42),
-    inset 0 -0.2rem 0.5rem rgb(0 0 0 / 0.18);
+    0 0.8rem 1.6rem rgb(0 0 0 / 0.42),
+    inset 0 -0.22rem 0.6rem rgb(0 0 0 / 0.14);
 }
 
 /* A "stack" vessel used to live here. It was a mistake: a stack is a
