@@ -91,6 +91,8 @@
   const filters   = $('#filters');
   const results   = $('#results');
   const clearBtn  = $('#clear-filters');
+  const noResultsMsg = $('#no-results-msg');
+  const searchAllBtn = $('#search-all');
   const noResults = $('#no-results');
   const search    = $('#dish-search');
 
@@ -121,6 +123,36 @@
     return dietBoxes.filter((box) => box.checked).map((box) => box.dataset.diet);
   }
 
+  /* Nothing here — but is it somewhere else? If the same search and diet
+     filters WOULD match on another kitchen, say so and offer one click to
+     get there. A dead-end "no results" is a bad answer when the honest
+     one is "it's on the Evening menu". */
+  function describeEmptyState(service, diets, q) {
+    const elsewhere = dishes.filter((d) =>
+      diets.every((x) => d.diets.has(x)) && (!q || d.text.includes(q)));
+
+    // short kitchen labels: "the Evening menu" -> "Evening"
+    const kitchens = [...new Set(elsewhere.map((d) => d.service))]
+      .map((id) => SERVICES.find((s) => s.id === id)?.name.replace('the ', '').replace(' menu', ''))
+      .filter(Boolean);
+
+    if (service === 'all' || !kitchens.length) {
+      noResultsMsg.textContent = 'Nothing matches that, on any menu.';
+      searchAllBtn.hidden = true;
+      return;
+    }
+
+    const found = elsewhere.length === 1
+      ? 'there’s a match'
+      : `there are ${elsewhere.length} matches`;
+    const where = kitchens.length === 1
+      ? `on the ${kitchens[0]} menu`
+      : `on ${kitchens.slice(0, -1).join(', ')} and ${kitchens.at(-1)}`;
+
+    noResultsMsg.textContent = `Nothing on this menu — but ${found} ${where}.`;
+    searchAllBtn.hidden = false;
+  }
+
   function apply() {
     const service = $('input[name="service"]:checked')?.value ?? 'all';
     const diets   = activeDiets();
@@ -139,6 +171,8 @@
     }
 
     noResults.hidden = shown > 0;
+
+    if (shown === 0) describeEmptyState(service, diets, q);
 
     /* "Clear filters" only exists when there is something to clear.
        A permanently-present button that usually does nothing teaches
@@ -190,6 +224,13 @@
   });
   $('#reset-from-empty').addEventListener('click', () => {
     clearAll();
+    search.focus();
+  });
+
+  // Widen to every kitchen, keeping the search term and diet filters.
+  searchAllBtn.addEventListener('click', () => {
+    followingClock = false;
+    selectService('all');
     search.focus();
   });
 

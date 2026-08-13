@@ -82,7 +82,7 @@ Same CodePen panel mapping as above.
 ## 3. Open Late — landing page
 
 An imaginary 24-hour diner whose menu follows the visitor's real clock. Four
-kitchens, sixteen dishes, filtering by kitchen / diet / search, an hours table
+kitchens, six dishes each, filtering by kitchen / diet / search, an hours table
 that marks the service that's actually on, and a booking form.
 
 The hero is a simplified version of the Cutting Chai kulhad — same silhouette,
@@ -91,7 +91,7 @@ because both are sized in their own container units.
 
 ```
 landing/
-  index.html    all 16 dishes in static markup
+  index.html    all 24 dishes in static markup
   styles.css    tokens, both themes, every plate
   app.js        clock, filtering, form validation
 ```
@@ -106,7 +106,7 @@ for result announcements · native `<details>` for ingredients · native
 `forced-colors` fallback · `prefers-reduced-motion`.
 
 **Progressive enhancement:** the filter panel ships `hidden` and JS reveals it.
-With scripting off you get all sixteen dishes, each badged with its kitchen,
+With scripting off you get all twenty-four dishes, each badged with its kitchen,
 full ingredient lists, and a natively-validated form.
 
 ### Deploying

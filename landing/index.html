@@ -103,13 +103,13 @@
       <div class="section-head">
         <h2 id="menu-title">The menu, by the hour</h2>
         <p class="section-head__lede">
-          Sixteen things worth getting out of bed for. Every dish lists what
+          Twenty-four things worth getting out of bed for. Every dish lists what
           time we make it, how long it takes, and what&rsquo;s in it.
         </p>
       </div>
 
       <!-- Filters are hidden until JS confirms it can drive them.
-           With scripting off you get all sixteen dishes, each badged
+           With scripting off you get all twenty-four dishes, each badged
            with its service — which is a perfectly good menu. -->
       <div class="filters" id="filters" hidden>
 
@@ -153,7 +153,7 @@
       <!-- The native output element is the "result of a calculation"
            element and carries an implicit status role, so the count is
            announced politely after each change with no ARIA needed. -->
-      <output class="results" id="results">Showing all 16 dishes.</output>
+      <output class="results" id="results">Showing all 24 dishes.</output>
 
       <ul class="dishes" id="dishes">
 
@@ -245,6 +245,48 @@
           </article>
         </li>
 
+        <li class="dish" data-form="bowl" data-service="small" data-diet="veg" data-search="maggi instant noodles egg masala packet">
+          <article>
+            <div class="dish__art" style="--food-a:#eec96b; --food-b:#b8892c" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Small Hours &middot; 12am&ndash;5am</p>
+              <h3 class="dish__name">Midnight Maggi</h3>
+              <p class="dish__desc">Two minutes, allegedly. Closer to four, with an egg cracked in and the water not quite drained.</p>
+              <p class="dish__meta"><span class="dish__price">$6</span><span class="dish__time">5 min</span></p>
+              <ul class="tags"><li class="tag">Vegetarian</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Instant noodles, the masala sachet, egg, green chilli, spring onion.</p>
+                  <p><strong>Allergens.</strong> Gluten, egg, soy.</p>
+                  <p><strong>Why it works at 3am.</strong> It is the first thing most of us ever cooked alone.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-form="stack" data-service="small" data-diet="veg" data-search="chilli cheese toast grill bread">
+          <article>
+            <div class="dish__art" style="--food-a:#e8b04a; --food-b:#a86a1c" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Small Hours &middot; 12am&ndash;5am</p>
+              <h3 class="dish__name">Chilli Cheese Toast</h3>
+              <p class="dish__desc">Under the grill until the cheese blisters and catches at the edges. Cut into fingers.</p>
+              <p class="dish__meta"><span class="dish__price">$8</span><span class="dish__time">9 min</span></p>
+              <ul class="tags"><li class="tag">Vegetarian</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> White bread, cheddar, green chilli, red onion, butter, black pepper.</p>
+                  <p><strong>Allergens.</strong> Gluten, dairy.</p>
+                  <p><strong>Why it works at 3am.</strong> Nothing edible is faster under a hot grill.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
         <!-- ── Sunrise ───────────────────────────────────── -->
         <li class="dish" data-form="bowl" data-service="sunrise" data-diet="vegan gf" data-search="congee rice porridge jook ginger">
           <article>
@@ -324,6 +366,48 @@
                   <p><strong>Ingredients.</strong> Flour, buttermilk, egg, butter, baking soda, maple syrup.</p>
                   <p><strong>Allergens.</strong> Gluten, dairy, egg.</p>
                   <p><strong>Why it works at sunrise.</strong> Because somebody made these on weekends.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-form="plate" data-service="sunrise" data-diet="vegan gf" data-search="idli sambar rice lentil south indian steamed">
+          <article>
+            <div class="dish__art" style="--food-a:#f4efe4; --food-b:#ccc1ab" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Sunrise &middot; 5am&ndash;11am</p>
+              <h3 class="dish__name">Idli &amp; Sambar</h3>
+              <p class="dish__desc">Steamed soft enough to tear with one hand, dropped into sambar hot enough to matter.</p>
+              <p class="dish__meta"><span class="dish__price">$9</span><span class="dish__time">12 min</span></p>
+              <ul class="tags"><li class="tag">Vegan</li><li class="tag">Gluten-free</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Fermented rice and urad batter, toor dal, tamarind, drumstick, curry leaf, coconut chutney.</p>
+                  <p><strong>Allergens.</strong> None. Mustard seed in the tempering.</p>
+                  <p><strong>Why it works at sunrise.</strong> Fermented overnight, so breakfast was started yesterday.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-form="tray" data-service="sunrise" data-diet="veg gf" data-search="shakshuka eggs tomato pepper skillet baked">
+          <article>
+            <div class="dish__art" style="--food-a:#d9502f; --food-b:#9c2c16" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Sunrise &middot; 5am&ndash;11am</p>
+              <h3 class="dish__name">Shakshuka</h3>
+              <p class="dish__desc">Eggs baked into the sauce in the pan they were cooked in. Bread comes on the side to mop.</p>
+              <p class="dish__meta"><span class="dish__price">$12</span><span class="dish__time">16 min</span></p>
+              <ul class="tags"><li class="tag">Vegetarian</li><li class="tag">Gluten-free</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Plum tomatoes, red pepper, onion, cumin, paprika, eggs, coriander, feta.</p>
+                  <p><strong>Allergens.</strong> Egg, dairy. Bread on the side contains gluten &mdash; ask and we&rsquo;ll leave it off.</p>
+                  <p><strong>Why it works at sunrise.</strong> One pan, and it feeds however many turned up.</p>
                 </div>
               </details>
             </div>
@@ -415,6 +499,48 @@
           </article>
         </li>
 
+        <li class="dish" data-form="stack" data-service="afternoon" data-diet="" data-search="banh mi baguette pork pate pickle coriander vietnamese sandwich">
+          <article>
+            <div class="dish__art" style="--food-a:#e6c48a; --food-b:#a8763a" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Afternoon &middot; 11am&ndash;5pm</p>
+              <h3 class="dish__name">B&aacute;nh M&igrave;</h3>
+              <p class="dish__desc">A baguette with a thin, shattering crust. P&acirc;t&eacute;, pickled carrot, and far more coriander than looks sensible.</p>
+              <p class="dish__meta"><span class="dish__price">$11</span><span class="dish__time">9 min</span></p>
+              <ul class="tags"></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Rice-flour baguette, pork p&acirc;t&eacute;, roast pork, pickled carrot and daikon, cucumber, coriander, chilli, mayonnaise.</p>
+                  <p><strong>Allergens.</strong> Gluten, egg, soy.</p>
+                  <p><strong>Why it works in the afternoon.</strong> The only sandwich that is better standing up.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-form="plate" data-service="afternoon" data-diet="veg" data-search="aloo paratha curd yoghurt pickle butter flatbread potato">
+          <article>
+            <div class="dish__art" style="--food-a:#e0b269; --food-b:#a5722a" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Afternoon &middot; 11am&ndash;5pm</p>
+              <h3 class="dish__name">Aloo Paratha &amp; Curd</h3>
+              <p class="dish__desc">Rolled thin, stuffed thick, cooked on a griddle until it blisters. A knob of butter, cold curd, one green chilli.</p>
+              <p class="dish__meta"><span class="dish__price">$10</span><span class="dish__time">14 min</span></p>
+              <ul class="tags"><li class="tag">Vegetarian</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Wheat flour, potato, ajwain, coriander, green chilli, butter, set curd, mango pickle.</p>
+                  <p><strong>Allergens.</strong> Gluten, dairy, mustard (pickle).</p>
+                  <p><strong>Why it works in the afternoon.</strong> Eaten slowly, and nothing much gets done afterwards.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
         <!-- ── Evening ───────────────────────────────────── -->
         <li class="dish" data-form="tray" data-service="evening" data-diet="" data-search="shepherds pie lamb mash potato gravy">
           <article>
@@ -500,11 +626,61 @@
           </article>
         </li>
 
+        <li class="dish" data-form="bowl" data-service="evening" data-diet="gf" data-search="biryani rice chicken saffron handi dum layered">
+          <article>
+            <div class="dish__art" style="--food-a:#e5b45c; --food-b:#9d6a1e" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Evening &middot; 5pm&ndash;12am</p>
+              <h3 class="dish__name">Chicken Biryani</h3>
+              <p class="dish__desc">Sealed under dough and left alone. Opened at the table, which is the only correct way to serve it.</p>
+              <p class="dish__meta"><span class="dish__price">$16</span><span class="dish__time">30 min</span></p>
+              <ul class="tags"><li class="tag">Gluten-free</li></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Basmati, chicken thigh, yoghurt, saffron, fried onion, mint, whole spices, ghee.</p>
+                  <p><strong>Allergens.</strong> Dairy. The pastry seal contains gluten but is not eaten.</p>
+                  <p><strong>Why it works in the evening.</strong> It takes long enough that somebody had to decide, hours ago, that you were worth it.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
+        <li class="dish" data-form="plate" data-service="evening" data-diet="" data-search="fish and chips batter cod vinegar mushy peas fried">
+          <article>
+            <div class="dish__art" style="--food-a:#e3c07a; --food-b:#a87c33" aria-hidden="true"><i class="dish__steam"></i></div>
+            <div class="dish__body">
+              <p class="dish__service">Evening &middot; 5pm&ndash;12am</p>
+              <h3 class="dish__name">Fish &amp; Chips</h3>
+              <p class="dish__desc">Batter that cracks, chips that steam when you break one open, and enough vinegar to make your eyes water.</p>
+              <p class="dish__meta"><span class="dish__price">$16</span><span class="dish__time">18 min</span></p>
+              <ul class="tags"></ul>
+              <details class="dish__more">
+                <summary>What&rsquo;s in it</summary>
+                <div class="dish__more-body">
+                  <p><strong>Ingredients.</strong> Cod, beer batter, floury potatoes, beef dripping, malt vinegar, mushy peas, tartare.</p>
+                  <p><strong>Allergens.</strong> Gluten, fish, egg. Fried in dripping &mdash; not vegetarian.</p>
+                  <p><strong>Why it works in the evening.</strong> Best eaten outdoors, in bad weather, from paper.</p>
+                </div>
+              </details>
+            </div>
+          </article>
+        </li>
+
       </ul>
 
-      <p class="no-results" id="no-results" hidden>
-        Nothing matches that. <button class="link-btn" type="button" id="reset-from-empty">Clear the filters</button> and start again.
-      </p>
+      <!-- Empty state that knows whether the thing you searched for
+           exists on a DIFFERENT menu, and offers one click to go
+           there. "No results" is a dead end; "it's on the Evening
+           menu" is an answer. -->
+      <div class="no-results" id="no-results" hidden>
+        <p class="no-results__msg" id="no-results-msg">Nothing matches that.</p>
+        <p class="no-results__actions">
+          <button class="link-btn" type="button" id="search-all" hidden>Search every kitchen</button>
+          <button class="link-btn" type="button" id="reset-from-empty">Clear the filters</button>
+        </p>
+      </div>
 
     </div>
   </section>

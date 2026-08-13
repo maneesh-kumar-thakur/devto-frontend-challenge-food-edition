@@ -57,11 +57,11 @@ The clock re-checks every 30 seconds and rolls the menu over — but only for
 someone who hasn't taken manual control of the picker. Yanking the page out
 from under a person who deliberately chose "Evening" would be rude.
 
-### Sixteen dishes, five vessels
+### Twenty-four dishes, five vessels
 
 Every plate on this page is CSS, and my first version was honestly poor: one
-bowl recipe rendered in sixteen different colours. It looked tidy and told you
-nothing. Colour alone can't say *soup* — but a **shape** can.
+bowl recipe rendered in two dozen different colours. It looked tidy and told
+you nothing. Colour alone can't say *soup* — but a **shape** can.
 
 So each dish declares a vessel instead:
 
@@ -76,7 +76,7 @@ So each dish declares a vessel instead:
 .dish[data-form="mug"]   .dish__art::before { … }   /* + ::after is a handle */
 ```
 
-Five forms — bowl, plate, stack, tray, mug — across sixteen dishes. Now the
+Five forms — bowl, plate, stack, tray, mug — across twenty-four dishes. Now the
 grid tells you at a glance that the grilled cheese comes with soup in a mug,
 that the pancakes are a stack, and that the mac and cheese was baked in a
 tray. Same amount of CSS, vastly more information.
@@ -116,7 +116,7 @@ I tried to make every a11y decision a *design* decision rather than a
 retrofit:
 
 **The filters don't exist until they work.** They ship with `hidden` and JS
-removes it. With scripting off you get all sixteen dishes, each badged with the
+removes it. With scripting off you get all twenty-four dishes, each badged with the
 kitchen that cooks it — a perfectly good menu — instead of dead controls that
 lie about what they do.
 

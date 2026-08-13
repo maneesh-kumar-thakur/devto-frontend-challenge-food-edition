@@ -614,15 +614,24 @@ img, svg { max-width: 100%; }
   border-radius: var(--radius-lg);
   color: var(--text-dim);
 }
+.no-results__msg { color: var(--text); font-size: 1.05em; }
+.no-results__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 1.4rem;
+  margin: 0;
+}
 
 /* ── 7. dish cards ──────────────────────────────────────── */
-/* 16rem, not 17.5rem, so a 72rem wrap fits FOUR columns. Each kitchen
-   serves exactly four dishes, so a filtered menu now fills one clean
-   row instead of three-plus-an-orphan. */
+/* 20rem gives THREE columns in a 72rem wrap. Each kitchen serves six
+   dishes, so a filtered menu is exactly two full rows — no orphan card
+   sitting alone with half the row empty. The column count and the
+   dishes-per-kitchen have to be chosen together. */
 .dishes {
   display: grid;
   gap: 1.25rem;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
   list-style: none;
   margin: 0;
   padding: 0;
