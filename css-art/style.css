@@ -145,11 +145,11 @@ body {
 /* ---------- kitchen furniture, read only as silhouette ------- */
 .cabinets {
   position: absolute;
-  left: 54cqw;
+  left: 60cqw;
   top: 2cqw;
   display: flex;
   gap: 1cqw;
-  width: 46cqw;
+  width: 40cqw;
   height: 26cqw;
 }
 .cab {
@@ -175,9 +175,9 @@ body {
 
 .counter {
   position: absolute;
-  left: 54cqw;
+  left: 60cqw;
   top: 46cqw;
-  width: 46cqw;
+  width: 40cqw;
   height: 3cqw;
   background: linear-gradient(180deg, #1e273b 0%, #121927 45%, #0b101b 100%);
   border-radius: 0.4cqw 0 0 0;
@@ -226,7 +226,10 @@ body {
    ============================================================ */
 .fridge {
   position: absolute;
-  left: 12cqw;
+  /* far enough right that the open door's free edge clears the
+     scene's left frame edge — a door cropped by the frame has no
+     boundary of its own and reads as an ambiguous dark region */
+  left: 18cqw;
   top: 1cqw;
   width: 40cqw;
   height: 77cqw;
@@ -880,10 +883,15 @@ body {
       rgba(255, 206, 145, 0.34) 0%,
       rgba(255, 170, 96, 0.1) 26%,
       transparent 52%),
-    linear-gradient(180deg, #1c2436 0%, #141b29 55%, #0e141f 100%);
+    linear-gradient(180deg, #29354d 0%, #1e2739 55%, #161e2d 100%);
+  /* Moulded liner: a raised rim round the whole panel, lit on its
+     inner edge. It's what gives the door a boundary of its own
+     instead of the bins appearing to float on a dark rectangle. */
   box-shadow:
-    inset 0 0 0 0.3cqw #263047,
-    inset 0 0 2.4cqw rgba(0, 0, 0, 0.6);
+    inset 0 0 0 0.28cqw #3b4a68,
+    inset 0 0 0 0.62cqw #1a2233,
+    inset 0 0.16cqw 0 0.62cqw rgba(255, 208, 152, 0.3),
+    inset 0 0 2.6cqw rgba(0, 0, 0, 0.55);
 }
 
 /* The cavity is throwing light at this face, so it has to land on
@@ -1037,6 +1045,25 @@ body {
 .rack--top { top: 7%;  height: 21%; }
 .rack--mid { top: 33%; height: 23%; }
 .rack--low { top: 61%; height: 28%; }
+
+/* The recess the bottles actually stand in. Taller than the front
+   face, so a band of dark tray interior shows above it and behind
+   the bottles — without this the bottles read as balanced on a
+   ledge rather than standing in a tray. */
+.well {
+  position: absolute;
+  left: 1%;
+  right: 1%;
+  bottom: 0;
+  height: 60%;
+  border-radius: 0.3cqw 0.3cqw 0.5cqw 0.5cqw;
+  background:
+    /* the far wall of the tray catching a little light */
+    linear-gradient(180deg, rgba(255, 206, 150, 0.16) 0%, transparent 34%),
+    linear-gradient(180deg, #0d1420 0%, #16203a 62%, #1e2942 100%);
+  box-shadow: inset 0 0.35cqw 0.7cqw rgba(0, 0, 0, 0.75);
+}
+.rack--low .well { height: 66%; }
 
 .bottles {
   position: absolute;
@@ -1310,9 +1337,9 @@ body {
 /* Wash across the back wall. No clip-path at all — a bare radial
    falloff has no edges to give itself away. */
 .spill--wall {
-  left: 44cqw;
+  left: 50cqw;
   top: 2cqw;
-  width: 50cqw;
+  width: 46cqw;
   height: 62cqw;
   background: radial-gradient(96% 68% at 8% 46%,
     rgba(255, 196, 118, 0.3) 0%,
@@ -1323,9 +1350,9 @@ body {
 
 /* pool thrown across the floor, widening toward the viewer */
 .spill--floor {
-  left: 42cqw;
+  left: 48cqw;
   top: 47cqw;
-  width: 60cqw;
+  width: 56cqw;
   height: 35cqw;
   clip-path: polygon(6% 6%, 46% 0, 100% 44%, 100% 100%, 12% 100%);
   background: radial-gradient(98% 118% at 2% 4%,
@@ -1340,9 +1367,9 @@ body {
 
 /* the hot core right at the opening */
 .spill--hot {
-  left: 50cqw;
+  left: 56cqw;
   top: 15cqw;
-  width: 52cqw;
+  width: 48cqw;
   height: 58cqw;
   clip-path: polygon(0 12%, 100% 0, 100% 100%, 0 88%);
   background: radial-gradient(128% 66% at 0% 50%,
@@ -1358,9 +1385,9 @@ body {
 /* cold air rolling out over the floor */
 .mist {
   position: absolute;
-  left: 40cqw;
+  left: 46cqw;
   top: 64cqw;
-  width: 52cqw;
+  width: 50cqw;
   height: 14cqw;
   z-index: 8;
   pointer-events: none;

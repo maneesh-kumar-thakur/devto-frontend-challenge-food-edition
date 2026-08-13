@@ -174,8 +174,24 @@ shoulders standing above a moulded plastic lip:
 ```
 
 That one bright inset line along the top is what turns a dark band into
-something you could hook a finger over. Without it the bottles look like
-they're standing on a shelf.
+something you could hook a finger over. But it still wasn't enough on its own —
+the bottles read as *balanced on a ledge* rather than standing in a tray. What
+fixed it was a second element behind them, taller than the front face, so a
+band of dark tray interior shows above the lip:
+
+```css
+.well { height: 60%; }   /* the recess */
+.bin  { height: 42%; }   /* the front face over it */
+```
+
+Eighteen percent of visible darkness between the two, and suddenly the bottles
+are *in* something.
+
+And one framing mistake worth naming: the door's free edge was running off the
+left of the canvas. A cropped door has no boundary of its own, so it read as an
+ambiguous dark region with bins floating on it, no matter how well the bins were
+drawn. Moving the whole fridge 6cqw right — and every light cone with it —
+fixed more than another hour of shading would have.
 
 Each bottle is one element and two pseudo-elements — body, neck, cap — so the
 silhouettes stay distinguishable at a glance: milk is squat with a coloured
