@@ -111,18 +111,37 @@ full ingredient lists, and a natively-validated form.
 
 ### Deploying
 
-It's three static files — any host works:
+It's three static files — any host works.
+
+**Cloudflare Pages (direct upload).** One command, no Git involvement, and
+it works with the repo private:
+
+```bash
+npx wrangler login                                    # browser OAuth, once
+npx wrangler pages deploy ./landing --project-name=open-late
+# -> https://open-late.pages.dev
+```
+
+Or connect the repo in the Cloudflare dashboard instead — its GitHub App reads
+private repos too. Build command: none. Output directory: `landing`.
+
+Other options:
 
 ```bash
 # Netlify
 npx netlify-cli deploy --dir=landing --prod
 
-# GitHub Pages: commit and point Pages at /landing
+# GitHub Pages: make the repo public, then point Pages at main / root
+#   -> https://<user>.github.io/<repo>/landing/
 
 # Google Cloud Run (the challenge accepts a Cloud Run embed)
 #   add the Dockerfile below, then:
 gcloud run deploy open-late --source . --allow-unauthenticated --region us-central1
 ```
+
+Note that hosting only solves the **demo** URL. The `Source →` link in the
+landing post still needs the repo public — worth doing, since "read the code"
+is doing real work for the code-quality criterion.
 
 <details>
 <summary>Dockerfile for Cloud Run</summary>
