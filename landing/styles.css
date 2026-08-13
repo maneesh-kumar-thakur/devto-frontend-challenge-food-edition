@@ -788,25 +788,30 @@ img, svg { max-width: 100%; }
 /* The glyph sits ON the vessel and identifies the dish. The vessel
    supplies colour and depth; the glyph supplies "this is noodles".
    Stroke-only on currentColor, so one sprite serves both themes. */
+/* Centred explicitly. Left to its static position, an absolutely
+   positioned child of this grid landed low and off the vessel. */
 .dish__icon {
   position: absolute;
+  left: 50%;
+  top: 47%;
   z-index: 2;
-  width: 32%;
-  aspect-ratio: 1;
-  /* One ink colour, referenced by both stroke and fill through
-     currentColor, so a glyph can mix outlines and solids. */
+  width: 30%;
+  height: 30%;
+  transform: translate(-50%, -50%);
+  /* One ink colour. currentColor feeds `stroke` here and the solid
+     fills inside the symbols, so a glyph can mix outline and solid.
+     Note: only INHERITED properties reach <use> content — a rule like
+     `.dish__icon .solid` cannot select into that shadow tree at all,
+     so anything per-shape lives on the symbol as an attribute. */
   color: rgb(26 13 2 / 0.62);
-  fill: none;
-  stroke: currentColor;
   stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
   filter: drop-shadow(0 0.08rem 0 rgb(255 255 255 / 0.3));
   transition: transform 0.22s ease;
 }
-.dish__icon .solid { fill: currentColor; stroke: none; }
 [data-theme="day"] .dish__icon { color: rgb(40 22 6 / 0.68); }
-.dish > article:hover .dish__icon { transform: scale(1.07); }
+.dish > article:hover .dish__icon { transform: translate(-50%, -50%) scale(1.07); }
 
 .dish__steam {
   position: absolute;
