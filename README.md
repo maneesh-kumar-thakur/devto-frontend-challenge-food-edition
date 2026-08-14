@@ -113,14 +113,29 @@ full ingredient lists, and a natively-validated form.
 
 It's three static files — any host works.
 
-**Cloudflare Pages (direct upload).** One command, no Git involvement, and
-it works with the repo private:
+**Cloudflare Pages (direct upload).** Deploy the repo ROOT, not just
+`landing/`, and one command serves all three entries:
 
 ```bash
-npx wrangler login                                    # browser OAuth, once
-npx wrangler pages deploy ./landing --project-name=open-late
-# -> https://open-late.pages.dev
+npx wrangler login                                # browser OAuth, once
+npx wrangler pages deploy . --project-name=comfort-food
 ```
+
+```
+https://comfort-food.pages.dev/css-art/        Midnight Fridge Raid
+https://comfort-food.pages.dev/css-art-chai/   Cutting Chai
+https://comfort-food.pages.dev/landing/        Open Late
+```
+
+That matters beyond convenience: it removes CodePen from the critical path.
+The challenge accepts "direct image links with live demo URLs" as an
+embedding option, so each art post can carry a screenshot plus its live
+link and never depend on a CodePen embed rendering correctly.
+
+Worth knowing if you do use CodePen: its newer project-style editor (the one
+with a Files panel and a UUID in the URL) has no classic pen page — the
+public URL opens the editor. DEV's `{% codepen %}` tag is built for classic
+pens and their short slugs. If you want an embed, make a classic Pen.
 
 Or connect the repo in the Cloudflare dashboard instead — its GitHub App reads
 private repos too. Build command: none. Output directory: `landing`.
