@@ -198,6 +198,15 @@ Before publishing:
 Both prompts accept multiple entries and every valid submission earns a
 completion badge, so three posts is strictly better than one.
 
+## Licence
+
+[MIT](LICENSE) — use it, change it, ship it, sell it. The only condition is
+that the copyright notice travels with the source.
+
+That covers the code *and* the artwork here, which are the same thing: every
+shape in both CSS-art pieces is a div and a gradient, so there's nothing to
+licence separately.
+
 ## Judging criteria, and where each is earned
 
 | Criterion | Where |
