@@ -56,17 +56,22 @@ in the post with:
 The art is finished CSS on its own — the JS pane can be emptied and the picture
 still works, which is the point.
 
-**Verify the embed before publishing.** Paste the `{% codepen %}` line into a
-DEV draft and hit preview. CodePen has two editors: classic Pens give a short
-slug like `abcXYZ`, while the newer project-style editor (Files panel, UUID in
-the URL) has no classic pen page — its public URL opens the editor. DEV's tag
-was built for the classic form. If the preview doesn't render, remake it as a
-classic Pen (`pen.new`, not "New Project"); everything else about the paste is
-identical.
+**It has to be a CLASSIC Pen.** This is confirmed, not a precaution: DEV's
+`{% codepen %}` tag rejects CodePen's newer project-style editor outright with
+*"Whoops, something went wrong: Invalid CodePen URL"*. The tag validates the
+URL shape and only accepts a classic pen slug.
 
-Two things to clear out of a fresh pen before pasting: CodePen's starter
-`html::before { content: 'CodePen ♥ The Web'; background: rebeccapurple; }`
-boilerplate, and the default `<title>Pen</title>`.
+| | URL | DEV embed |
+|---|---|---|
+| Project editor | `codepen.io/user/pen/019ffcc6-745c-72fe-…` | **rejected** |
+| Classic Pen | `codepen.io/user/pen/abcXYZ` | works |
+
+Create classic pens from **[codepen.io/pen](https://codepen.io/pen)** — the
+three-panel HTML/CSS/JS editor. Not "New Project", which is the file-based one
+with the Files sidebar. A classic pen also starts with empty panels, so
+there's no `html::before { … rebeccapurple }` starter boilerplate to delete.
+
+Set the pen title in **Pen Settings**, since it shows in the embed.
 
 ---
 
