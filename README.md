@@ -37,7 +37,8 @@ throughout (zero media queries) · `prefers-reduced-motion`.
 
 ### Publishing to CodePen
 
-Create a new pen and paste each file into its matching panel:
+Both CSS-art pieces ship as CodePen embeds. Create a pen and paste each file
+into its matching panel:
 
 | File | CodePen panel |
 |---|---|
@@ -49,11 +50,23 @@ Then set the pen to a **wide preview** so the 5:4 scene has room, and embed it
 in the post with:
 
 ```
-{% codepen https://codepen.io/YOUR-USERNAME/pen/YOUR-PEN-ID %}
+{% codepen https://codepen.io/USERNAME/pen/PEN-ID %}
 ```
 
 The art is finished CSS on its own — the JS pane can be emptied and the picture
 still works, which is the point.
+
+**Verify the embed before publishing.** Paste the `{% codepen %}` line into a
+DEV draft and hit preview. CodePen has two editors: classic Pens give a short
+slug like `abcXYZ`, while the newer project-style editor (Files panel, UUID in
+the URL) has no classic pen page — its public URL opens the editor. DEV's tag
+was built for the classic form. If the preview doesn't render, remake it as a
+classic Pen (`pen.new`, not "New Project"); everything else about the paste is
+identical.
+
+Two things to clear out of a fresh pen before pasting: CodePen's starter
+`html::before { content: 'CodePen ♥ The Web'; background: rebeccapurple; }`
+boilerplate, and the default `<title>Pen</title>`.
 
 ---
 
@@ -113,29 +126,17 @@ full ingredient lists, and a natively-validated form.
 
 It's three static files — any host works.
 
-**Cloudflare Pages (direct upload).** Deploy the repo ROOT, not just
-`landing/`, and one command serves all three entries:
+**Cloudflare Pages (direct upload).** Only the landing page needs hosting —
+both CSS-art pieces ship as CodePen embeds:
 
 ```bash
 npx wrangler login                                # browser OAuth, once
-npx wrangler pages deploy . --project-name=comfort-food
+npx wrangler pages deploy ./landing --project-name=open-late
+# -> https://open-late.pages.dev
 ```
 
-```
-https://comfort-food.pages.dev/css-art/        Midnight Fridge Raid
-https://comfort-food.pages.dev/css-art-chai/   Cutting Chai
-https://comfort-food.pages.dev/landing/        Open Late
-```
-
-That matters beyond convenience: it removes CodePen from the critical path.
-The challenge accepts "direct image links with live demo URLs" as an
-embedding option, so each art post can carry a screenshot plus its live
-link and never depend on a CodePen embed rendering correctly.
-
-Worth knowing if you do use CodePen: its newer project-style editor (the one
-with a Files panel and a UUID in the URL) has no classic pen page — the
-public URL opens the editor. DEV's `{% codepen %}` tag is built for classic
-pens and their short slugs. If you want an embed, make a classic Pen.
+Or connect the repo in the Cloudflare dashboard instead — its GitHub App reads
+private repos too. Build command: none. Output directory: `landing`.
 
 Or connect the repo in the Cloudflare dashboard instead — its GitHub App reads
 private repos too. Build command: none. Output directory: `landing`.

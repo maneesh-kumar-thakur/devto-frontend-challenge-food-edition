@@ -31,17 +31,14 @@ No SVG, no images, no canvas.
 
 ## Demo
 
-**[Open the live demo →](YOUR-DEMO-URL)**
+{% codepen https://codepen.io/Maneesh-Thakur/pen/019ffcc6-745c-72fe-88f0-e59b41cb8fac %}
 
 Click **Close the fridge** to put the light out — the door swings shut and you
 get the other half of the picture: sticky notes you can't read and a few
 magnets, which is what the outside of a fridge door is actually for.
 
-<!-- Replace with a direct image link to a screenshot: -->
-![Midnight Fridge Raid — a dark kitchen at 2am lit only by an open refrigerator](YOUR-IMAGE-URL)
-
-<!-- If you prefer a CodePen embed instead: -->
-<!-- {% codepen https://codepen.io/YOUR-USERNAME/pen/YOUR-PEN-ID %} -->
+Best viewed with the preview pane wide. And if you want to test the claim that
+the JavaScript is optional: empty the JS panel. The picture is unchanged.
 
 ## Journey
 
