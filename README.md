@@ -41,7 +41,7 @@ throughout (zero media queries) · `prefers-reduced-motion`.
 
 ### Publishing the art posts — CodePen via `{% embed %}`
 
-Both art posts embed a CodePen. **Use `{% embed %}`, not `{% codepen %}`** —
+All four art posts embed a CodePen. **Use `{% embed %}`, not `{% codepen %}`** —
 this is the one combination that works, confirmed in a published post:
 
 ```
@@ -186,11 +186,12 @@ full ingredient lists, and a natively-validated form.
 ### Deploying
 
 Static files, no build step — any host works. **Only the landing post needs a
-host** — both art posts ship as CodePen embeds, so hosting is optional for them.
+host** — all four art posts ship as CodePen embeds, so hosting is optional for
+them.
 
 **GitHub Pages — no CLI, no new account.** The repo is already on GitHub, and
 the landing post's `Source →` link needs it public anyway. Settings → Pages →
-Source: *Deploy from a branch* → `main` / `/ (root)`. Serves all three entries:
+Source: *Deploy from a branch* → `main` / `/ (root)`. Serves all five entries:
 
 | Entry | Path |
 |---|---|
@@ -238,11 +239,16 @@ Then embed with `{% embed YOUR_CLOUD_RUN_URL %}`, or just link the live demo.
 
 ## 6. Submitting
 
-Drafts are in [`submissions/`](submissions/) with DEV front-matter:
+Drafts are in [`submissions/`](submissions/) with DEV front-matter.
 
-- [`1-css-art-midnight-fridge-raid.md`](submissions/1-css-art-midnight-fridge-raid.md)
-- [`2-perfect-landing-open-late.md`](submissions/2-perfect-landing-open-late.md)
-- [`3-css-art-cutting-chai.md`](submissions/3-css-art-cutting-chai.md)
+| Draft | Prompt | Status |
+|---|---|---|
+| [`1-css-art-midnight-fridge-raid.md`](submissions/1-css-art-midnight-fridge-raid.md) | CSS Art | **published** |
+| [`3-css-art-cutting-chai.md`](submissions/3-css-art-cutting-chai.md) | CSS Art | **published** |
+| [`4-css-art-soft-boil.md`](submissions/4-css-art-soft-boil.md) | CSS Art | **published** |
+| [`5-css-art-slow-turn.md`](submissions/5-css-art-slow-turn.md) | CSS Art | **published** |
+| [`2-perfect-landing-open-late.md`](submissions/2-perfect-landing-open-late.md) | Perfect Landing | needs a demo URL |
+| [`discussion-css-art-comfort-food.md`](submissions/discussion-css-art-comfort-food.md) | — | ready, not an entry |
 
 Before publishing:
 
@@ -250,15 +256,21 @@ Before publishing:
    post](https://dev.to/devteam/join-our-latest-frontend-challenge-comfort-food-edition-28a0)
    and paste the draft into it — the template's exact headings are what the
    judges expect, and they occasionally change between rounds.
-2. Replace every `YOUR-` placeholder: CodePen URLs, live demo URL, repo URL.
-3. Confirm the `#frontendchallenge` tag is present on all three.
-4. Fill in the cross-links — each draft has `(#)` placeholders pointing at its
-   sibling posts, which you can only complete once the others are published.
-   Publish, then go back and patch the links.
-5. Flip `published: false` → `true`.
+2. Embed the pen with `{% embed %}`, never `{% codepen %}` — see the section
+   above for why.
+3. Confirm the `#frontendchallenge` tag is present.
+4. Flip `published: false` → `true`.
+
+**Still outstanding:** `YOUR-DEMO-URL` and `YOUR-REPO` in the landing draft, and
+the link to that post from the chai draft — all three unblock the moment the
+landing page is hosted and the repo is public.
+
+Editing a draft here does **not** change an already-published post. The four
+art drafts have since gained links to each other; those links only exist on DEV
+if they are pasted into each post's editor by hand.
 
 Both prompts accept multiple entries and every valid submission earns a
-completion badge, so three posts is strictly better than one.
+completion badge, so five posts is strictly better than one.
 
 ## Licence
 
@@ -266,7 +278,7 @@ completion badge, so three posts is strictly better than one.
 that the copyright notice travels with the source.
 
 That covers the code *and* the artwork here, which are the same thing: every
-shape in both CSS-art pieces is a div and a gradient, so there's nothing to
+shape in all four CSS-art pieces is a div and a gradient, so there's nothing to
 licence separately.
 
 ## Judging criteria, and where each is earned
