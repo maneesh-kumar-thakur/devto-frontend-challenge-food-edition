@@ -28,7 +28,7 @@ canvas.
 ## Demo
 
 <!-- {% embed %}, not {% codepen %} — see the README. -->
-{% embed https://codepen.io/Maneesh-Thakur/pen/TANDOOR-PEN-URL %}
+{% embed https://codepen.io/editor/Maneesh-Thakur/pen/01a009fb-7131-7600-be1e-1187a1408104 %}
 
 Press **Take one out**. A bird leaves the rod, the cabinet falls out of focus,
 and a plated one rises into the foreground — onion rings, mint chutney in a
