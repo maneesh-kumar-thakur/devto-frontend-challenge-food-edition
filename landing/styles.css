@@ -64,8 +64,14 @@
   --text:      #2a2015;
   --text-dim:  #6a5942;
 
-  --accent:    #b45f00;
-  --accent-ink:#fff6e8;
+  /* #b45f00 was only 4.17:1 on --bg. Accent is not decoration here —
+     it colours every link, the hero eyebrow at 0.8rem and the dish
+     meta at 0.72rem — so it needs AA for NORMAL text (4.5), not the
+     3:1 that large text and UI borders get away with. This is the
+     lightest amber that clears 4.5 against --bg, --surface, and for
+     --accent-ink sitting on top of it. */
+  --accent:    #a55f00;   /* 4.50:1 on --bg, 4.77:1 on --surface */
+  --accent-ink:#fff6e8;   /* 4.63:1 on --accent */
   --neon:      #c0264b;
   --neon-2:    #0b6c8c;
 
