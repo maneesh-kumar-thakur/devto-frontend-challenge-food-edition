@@ -1,0 +1,1288 @@
+/* ============================================================
+   SLOW TURN
+   Nine skinless tandoori chickens on three rods, turning over a
+   low fire inside a vertical tandoor. Pure CSS — no SVG, no
+   images, no canvas. Every shape is a div, a gradient or a
+   shadow.
+
+   Sized entirely in `cqw` (1% of the scene's own width) off one
+   container query, so the whole picture scales to any viewport
+   with no media queries and no magic numbers.
+
+   THE ONE IDEA WORTH STEALING FROM THIS FILE
+   ------------------------------------------
+   The rods spin about their own long axis, and that axis runs
+   left-to-right across the screen. So the birds are rotating
+   towards and away from you — which in CSS is `rotateX`, and
+   `rotateX` on a flat shape squashes it and flips it like a sheet
+   of paper. It looks like nothing on earth.
+
+   But a chicken on a spit is an ellipsoid about that same axis,
+   so its SILHOUETTE barely changes as it turns. Watch a real
+   rotisserie: you read the rotation entirely off the surface —
+   char climbing over the crest and vanishing, new char rising
+   from underneath.
+
+   So the silhouette is held still, and the char scrolls VERTICALLY
+   inside it. Not one degree of rotation anywhere on the body.
+   ============================================================ */
+
+:root {
+  /* Skinless tandoori: the marinade IS the colour. Lit from below
+     by the fire, so every bird is brightest along its underside —
+     which is the opposite of how anything else in this set is lit. */
+  --tand-0: #f4903f;   /* underside, where the flame catches it */
+  --tand-1: #d84a1e;
+  --tand-2: #ad2c15;
+  --tand-3: #6f1a0a;   /* the top, furthest from the fire */
+  --char:   #290c04;
+  --bone:   #e8dac2;
+
+  --fire-0: #ffe7bb;
+  --fire-1: #ffab45;
+  --fire-2: #f4600f;
+  --fire-3: #9c1f04;
+
+  --steel-0: #99a2ac;
+  --steel-1: #5e666f;
+  --steel-2: #2f353c;
+
+  --case-0: #333941;
+  --case-1: #1c2128;
+  --case-2: #0f1216;
+  --case-3: #050709;
+
+  --ease: cubic-bezier(0.22, 0.9, 0.26, 1);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  gap: 1.5rem;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: radial-gradient(120% 90% at 50% 0%, #171319 0%, #08070a 72%);
+  color: #9a8d86;
+  font: 400 1rem/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.stage {
+  display: grid;
+  justify-items: center;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 60rem;
+}
+
+.caption {
+  margin: 0;
+  max-width: 34rem;
+  text-align: center;
+  font-size: clamp(0.85rem, 2.4vw, 1rem);
+  text-wrap: balance;
+}
+.caption strong { color: var(--tand-0); font-weight: 600; }
+
+/* ---------- the one interactive affordance ------------------ */
+.take {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0.55rem 1.15rem;
+  border: 1px solid #43342c;
+  border-radius: 999px;
+  background: #1b1512;
+  color: #d6c3b6;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.take:hover { background: #241b16; border-color: #7d5540; color: #f6e7db; }
+.take:focus-visible { outline: 3px solid var(--tand-0); outline-offset: 3px; }
+.take__dot {
+  width: 0.6rem; height: 0.6rem;
+  border-radius: 50%;
+  background: var(--fire-2);
+  box-shadow: 0 0 0.55rem var(--fire-3);
+}
+
+/* ============================================================
+   SCENE  —  100cqw wide, 74cqw tall
+   ============================================================ */
+.scene {
+  container-type: inline-size;
+  position: relative;
+  width: min(100%, calc((100vh - 15rem) * 1.35));
+  width: min(100%, calc((100dvh - 15rem) * 1.35));
+  aspect-ratio: 50 / 37;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: var(--case-3);
+  box-shadow: 0 0 0 1px #262024, 0 2.5rem 5rem -1rem #000;
+  isolation: isolate;
+}
+
+/* A cold, almost colourless room. The entire colour budget of this
+   picture is one fire, and it only reads as hot because there is
+   nothing warm anywhere near it. */
+.room {
+  position: absolute;
+  inset: 0 0 8cqw 0;
+  background:
+    radial-gradient(60% 70% at 50% 100%, #2a2630 0%, transparent 72%),
+    linear-gradient(#0a0c10 0%, #14161c 58%, #191c23 100%);
+}
+
+.floor {
+  position: absolute;
+  inset: 66cqw 0 0 0;
+  background: linear-gradient(#2c2731 0%, #16131a 26%, #0a080c 100%);
+  box-shadow: 0 -0.15cqw 0 #3d3542 inset;
+}
+
+/* light escaping the cabinet and pooling on the floor */
+.spill {
+  position: absolute;
+  left: 50%;
+  top: 63cqw;
+  width: 86cqw;
+  height: 14cqw;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255,140,50,0.42) 0%, rgba(244,96,15,0.16) 46%, transparent 78%);
+  filter: blur(1.6cqw);
+  mix-blend-mode: screen;
+  animation: firePulse 5.2s ease-in-out infinite;
+}
+
+/* ============================================================
+   THE CABINET
+   ============================================================ */
+.cabinet {
+  position: absolute;
+  left: 16cqw;
+  top: 2cqw;
+  width: 68cqw;
+  height: 66cqw;
+  border-radius: 1.4cqw;
+  background: linear-gradient(100deg, var(--case-0) 0%, var(--case-1) 26%, var(--case-2) 74%, var(--case-1) 100%);
+  box-shadow:
+    0 0 0 0.22cqw #454c55,
+    0 2cqw 4cqw -0.8cqw #000;
+}
+
+/* Everything inside the machine is clipped to this, which is also
+   what makes the bird being taken out simply leave the picture. */
+.cavity {
+  position: absolute;
+  inset: 4.5cqw;
+  overflow: hidden;
+  border-radius: 0.6cqw;
+  background: #0a0407;
+}
+
+.backwall {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(#160a09 0%, #241010 46%, #3a1a10 100%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 0.15cqw, transparent 0.15cqw 3cqw);
+}
+
+/* the fire filling the box with light, strongest at the bottom */
+.glow {
+  position: absolute;
+  inset: 0;
+  /* Pulled back from 0.62. The flames have to be brighter than the
+     light they cast, and this was crowding them — the ambient glow
+     was nearly as luminous as the fire making it. */
+  background: radial-gradient(78% 62% at 50% 106%, rgba(255,150,60,0.44) 0%, rgba(244,96,15,0.2) 38%, rgba(156,31,4,0.07) 66%, transparent 86%);
+  mix-blend-mode: screen;
+  animation: firePulse 5.2s ease-in-out infinite;
+}
+
+@keyframes firePulse {
+  0%, 100% { opacity: 0.86; }
+  38%      { opacity: 1; }
+  64%      { opacity: 0.92; }
+}
+
+/* ============================================================
+   RODS AND BIRDS
+   ============================================================ */
+.rack {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 10cqw;
+}
+.rack--1 { top: 5cqw; }
+.rack--2 { top: 18.5cqw; }
+.rack--3 { top: 32cqw; }
+
+/* the spit, passing behind the birds */
+.rod {
+  position: absolute;
+  left: -1cqw;
+  right: -1cqw;
+  top: 4.9cqw;
+  height: 0.62cqw;
+  border-radius: 999px;
+  background: linear-gradient(
+    var(--steel-2) 0%,
+    var(--steel-0) 32%,
+    var(--steel-1) 58%,
+    var(--steel-2) 100%
+  );
+  box-shadow: 0 0.18cqw 0.5cqw rgba(0,0,0,0.65);
+}
+
+.bird {
+  position: absolute;
+  left: var(--x, 0);
+  top: 0;
+  width: 18cqw;
+  height: 10cqw;
+  /* Each bird is individually unbalanced, so each wobbles on its
+     own offset — but only a degree or so. This is the ONLY
+     rotation on a bird, and it is not what sells the turning. */
+  animation: wobble 6.4s ease-in-out infinite;
+  animation-delay: var(--w, 0s);
+  transition: transform 1.3s var(--ease), opacity 1.3s ease;
+}
+
+@keyframes wobble {
+  0%, 100% { transform: rotate(-1.1deg) translateY(0); }
+  50%      { transform: rotate(1.1deg) translateY(0.22cqw); }
+}
+
+/* THE TORSO IS NOT WHAT MAKES THIS READ AS A CHICKEN.
+   The first version was one ovoid with a small leg stuck on and it
+   looked like a bread roll. Comparing against reference photos of a
+   rotisserie, the thing your eye actually locks onto is the
+   DRUMSTICKS — two of them, angled apart, bone tips out, pointing
+   back along the spit. The torso behind them can be close to a
+   plain ellipse and nobody looks twice.
+
+   So the body is built as overlapping masses sharing one gradient,
+   which reads as a single organic form far more reliably than any
+   single border-radius I could tune by hand: thigh bulge behind,
+   torso over it, wing patch, then the legs on top. */
+.bird__body {
+  position: absolute;
+  left: 0.8cqw;
+  top: 0.5cqw;
+  width: 12.2cqw;
+  height: 8.8cqw;
+  overflow: hidden;
+  border-radius: 48% 52% 46% 54% / 56% 58% 42% 44%;
+  background:
+    /* the fire is BELOW, so the underside is the lit face */
+    radial-gradient(72% 54% at 50% 108%, rgba(255,206,140,0.9) 0%, rgba(255,150,70,0.34) 44%, rgba(255,140,60,0) 74%),
+    linear-gradient(
+      var(--tand-3) 0%,
+      var(--tand-2) 34%,
+      var(--tand-1) 64%,
+      var(--tand-0) 100%
+    );
+  box-shadow:
+    inset 0 -0.5cqw 1.2cqw rgba(255,190,110,0.32),
+    inset 0 0.7cqw 1.4cqw rgba(20,4,2,0.55),
+    0 0.5cqw 1.2cqw rgba(0,0,0,0.5);
+}
+
+/* THE ROTATION.
+   300% tall and scrolling upward inside a clipped parent, so char
+   rises up the front, over the crest and out of sight, while fresh
+   char comes round from underneath. Seamless because the pattern
+   repeats every third of the element. */
+.bird__char {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -100%;
+  height: 300%;
+  background: repeating-linear-gradient(
+    177deg,
+    rgba(41,12,4,0)    0 2.4%,
+    rgba(41,12,4,0.62) 3.6% 5.1%,
+    rgba(41,12,4,0.18) 6.2% 7.4%,
+    rgba(41,12,4,0)    8.6% 11.1%
+  );
+  animation: turn 16s linear infinite;
+  animation-delay: var(--phase, 0s);
+}
+@keyframes turn {
+  to { transform: translateY(33.3333%); }
+}
+
+/* The fat thigh mass, sitting behind the torso and extending it
+   back along the spit. Same gradient as the body, so the two
+   overlapping shapes read as one animal rather than two blobs. */
+.bird__thigh {
+  position: absolute;
+  left: 8.2cqw;
+  top: 2cqw;
+  width: 7.2cqw;
+  height: 6.6cqw;
+  border-radius: 46% 54% 44% 56% / 52% 56% 44% 48%;
+  background:
+    radial-gradient(70% 56% at 46% 106%, rgba(255,198,132,0.8) 0%, rgba(255,150,70,0.28) 46%, rgba(255,140,60,0) 76%),
+    linear-gradient(var(--tand-3) 0%, var(--tand-2) 38%, var(--tand-1) 70%, var(--tand-0) 100%);
+  box-shadow: inset 0 0.6cqw 1.2cqw rgba(20,4,2,0.5);
+}
+
+/* THE DRUMSTICKS.
+   Fat at the thigh end, tapering to a thin ankle, bone knuckle
+   out. Two of them at different angles, one behind the body and
+   one in front — a trussed bird has them crossed and tied, and the
+   gap between them is what stops the rear reading as one lump.
+
+   transform-origin sits at the thigh end so the rotation swings
+   the ankle, not the whole stick. */
+.bird__leg {
+  position: absolute;
+  border-radius: 56% 44% 54% 46% / 60% 48% 52% 40%;
+  transform-origin: 8% 50%;
+  background:
+    /* lit from below like everything else in this cabinet */
+    radial-gradient(62% 66% at 34% 92%, rgba(255,206,142,0.8) 0%, rgba(255,160,80,0) 74%),
+    linear-gradient(150deg, var(--tand-3) 0%, var(--tand-2) 34%, var(--tand-1) 68%, var(--tand-0) 100%);
+  box-shadow: inset 0 0.28cqw 0.55cqw rgba(24,5,2,0.55);
+}
+
+/* the ankle always chars hardest — it is thinnest and closest to
+   the flame, and it is the one dark note that stops the leg
+   looking like a sausage */
+.bird__leg::before {
+  content: '';
+  position: absolute;
+  right: 11%;
+  top: 17%;
+  width: 31%;
+  height: 66%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(41,12,4,0.74) 0%, rgba(41,12,4,0) 80%);
+}
+
+/* THE KNUCKLE, not a fingernail.
+   The first attempt was long, flat and pale — 1.7cqw wide by
+   0.82cqw tall with a left-to-right gradient — and that is the
+   recipe for a nail, because a nail is exactly a flat pale oval
+   lying along the end of a finger.
+
+   A drumstick bone ends in a KNOB. So it is nearly round instead
+   of long, and the gradient is radial with the highlight up and
+   left, which turns a flat patch into something with a top and a
+   side. The inset shadow underneath does the rest. */
+.bird__leg::after {
+  content: '';
+  position: absolute;
+  right: -0.28cqw;
+  top: 50%;
+  width: 1.15cqw;
+  height: 1.05cqw;
+  transform: translateY(-50%);
+  border-radius: 46% 54% 50% 50% / 50%;
+  background: radial-gradient(62% 58% at 34% 30%,
+    #fcf5e6 0%,
+    #e2d3b4 44%,
+    #b09a76 78%,
+    #7d6a4e 100%);
+  box-shadow:
+    inset -0.08cqw -0.1cqw 0.2cqw rgba(70,52,30,0.55),
+    0 0.1cqw 0.26cqw rgba(0,0,0,0.55);
+}
+
+.bird__leg--near {
+  left: 11.8cqw;
+  top: 3.8cqw;
+  width: 6.6cqw;
+  height: 2.7cqw;
+  transform: rotate(-15deg);
+}
+/* the far leg is smaller, darker and drawn behind the body —
+   perspective for free, with no 3D anywhere */
+.bird__leg--far {
+  left: 11.2cqw;
+  top: 5.4cqw;
+  width: 6cqw;
+  height: 2.4cqw;
+  transform: rotate(13deg);
+  filter: brightness(0.72);
+}
+
+/* the folded wing: mostly a darker patch and one hard lit edge */
+.bird__wing {
+  position: absolute;
+  left: 3cqw;
+  top: 4cqw;
+  width: 6.4cqw;
+  height: 3.6cqw;
+  border-radius: 58% 42% 50% 50% / 64% 60% 40% 36%;
+  transform: rotate(6deg);
+  background: linear-gradient(160deg, rgba(111,26,10,0.92) 0%, rgba(173,44,21,0.48) 58%, rgba(216,74,30,0) 100%);
+  box-shadow: inset 0 -0.28cqw 0.55cqw rgba(255,175,95,0.26);
+}
+
+/* the neck end, trussed shut — a small stub is all it takes to
+   stop the front reading as the same shape as the back */
+.bird__neck {
+  position: absolute;
+  left: -0.3cqw;
+  top: 3.1cqw;
+  width: 2.9cqw;
+  height: 2.6cqw;
+  border-radius: 54% 46% 50% 50% / 56% 52% 48% 44%;
+  transform: rotate(-8deg);
+  background:
+    radial-gradient(64% 60% at 44% 100%, rgba(255,190,124,0.62) 0%, rgba(255,150,70,0) 76%),
+    linear-gradient(160deg, var(--tand-3) 0%, var(--tand-2) 56%, var(--tand-1) 100%);
+  box-shadow: inset 0 0.24cqw 0.5cqw rgba(22,5,2,0.5);
+}
+
+/* ---------- taking one out ---------------------------------- */
+/* It slides along the rod, lifts, and is gone. The cavity clip
+   does the rest — and the gap it leaves stays a gap. */
+/* Down and to the right, towards where the plate rises from —
+   so the bird leaving the rod and the bird arriving on the plate
+   read as the same bird, not two events. */
+.scene.is-taken .bird--out {
+  transform: translate(7cqw, 8cqw) rotate(-13deg) scale(0.93);
+  opacity: 0;
+}
+
+/* ============================================================
+   FAT, FIRE AND SMOKE
+   ============================================================ */
+.drips { position: absolute; inset: 0; pointer-events: none; }
+.drips i {
+  position: absolute;
+  top: 12cqw;
+  left: calc(7cqw + var(--i) * 11cqw);
+  width: 0.5cqw;
+  height: 1.5cqw;
+  border-radius: 50% 50% 46% 46% / 34% 34% 66% 66%;
+  background: linear-gradient(rgba(255,214,150,0.15), rgba(255,190,110,0.85));
+  opacity: 0;
+  animation: drip calc(3.4s + var(--i) * 0.42s) ease-in infinite;
+  animation-delay: calc(var(--i) * -0.83s);
+}
+@keyframes drip {
+  0%   { transform: translateY(0)    scaleY(0.6); opacity: 0; }
+  8%   { opacity: 0.9; }
+  88%  { opacity: 0.75; }
+  100% { transform: translateY(31cqw) scaleY(1.5); opacity: 0; }
+}
+
+.fire {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 45cqw;
+  height: 12cqw;
+}
+
+/* the charcoal bed, breathing at its own rate */
+.fire__bed {
+  position: absolute;
+  left: 1cqw;
+  right: 1cqw;
+  bottom: 0.6cqw;
+  height: 2.6cqw;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(255,150,60,0.92) 0 1.6cqw,
+      rgba(120,22,6,0.9)    1.6cqw 3cqw),
+    linear-gradient(var(--fire-2), var(--fire-3));
+  filter: blur(0.24cqw);
+  animation: firePulse 3.7s ease-in-out infinite;
+}
+
+/* WHY THE FLAMES WERE STILL BLURRED — two bugs, not bad tuning.
+   ------------------------------------------------------------
+   1. `filter` INHERITS DOWN THE TREE. The previous version put
+      blur(0.3cqw) on .flame and blur(0.13cqw) on the core inside
+      it, expecting a soft halo around a sharp centre. But a filter
+      on a parent rasterises the parent AND all its descendants, so
+      the "sharp" core was actually being blurred 0.3 + 0.13. There
+      was never a hard edge anywhere in the flame to see.
+
+   2. `mix-blend-mode: screen` ON TOP OF AN ALREADY-BRIGHT BACKDROP
+      does almost nothing. Screen ADDS light, and .glow has already
+      flooded the bottom of the cabinet with orange, so the flames
+      were adding brightness to a region that had little headroom
+      left — washing out exactly where they should be sharpest.
+
+   The fix for both: the parent carries NO filter and NO blend mode
+   at all. ::before is the halo and owns its own blur; ::after is
+   the core and owns a much smaller one. Because ::after paints
+   after ::before, the core sits on top with nothing softening it. */
+.flame {
+  position: absolute;
+  bottom: 1.2cqw;
+  left: calc(-1.5cqw + var(--i) * 9cqw);
+  width: 10cqw;
+  height: 12cqw;
+  transform-origin: 50% 100%;
+  animation: flicker calc(1.5s + var(--i) * 0.19s) ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.37s);
+}
+
+/* the halo — soft, and allowed to bleed past the tongue */
+.flame::before {
+  content: '';
+  position: absolute;
+  inset: -6% -16% 0 -16%;
+  border-radius: 50% 50% 36% 36% / 72% 72% 28% 28%;
+  background: radial-gradient(56% 68% at 50% 92%,
+    rgba(255,226,168,0.8) 0%,
+    rgba(255,150,60,0.54) 34%,
+    rgba(226,74,10,0.3)   62%,
+    rgba(156,31,4,0)      88%);
+  filter: blur(0.8cqw);
+}
+
+/* the core — nearly sharp, opaque, and brightest at the base where
+   the fuel is. Nothing blurs this but its own 0.08cqw. */
+.flame::after {
+  content: '';
+  position: absolute;
+  left: 23%;
+  right: 23%;
+  bottom: 2%;
+  height: 74%;
+  border-radius: 50% 50% 42% 42% / 80% 80% 20% 20%;
+  background: linear-gradient(
+    rgba(255,236,190,0)    0%,
+    rgba(255,222,146,0.6)  22%,
+    rgba(255,212,116,0.94) 54%,
+    rgba(255,240,208,1)    84%,
+    rgba(255,252,242,1)    100%);
+  filter: blur(0.08cqw);
+}
+@keyframes flicker {
+  0%, 100% { transform: scaleY(0.78) scaleX(1);    opacity: 0.72; }
+  28%      { transform: scaleY(1.12) scaleX(0.9);  opacity: 0.95; }
+  55%      { transform: scaleY(0.92) scaleX(1.06); opacity: 0.82; }
+  78%      { transform: scaleY(1.04) scaleX(0.95); opacity: 0.9;  }
+}
+
+.smoke { position: absolute; inset: 0; pointer-events: none; }
+.smoke i {
+  position: absolute;
+  left: calc(50% + var(--x, 0cqw));
+  bottom: 10cqw;
+  width: var(--w, 5cqw);
+  height: var(--w, 5cqw);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(196,178,168,0.3) 0%, rgba(196,178,168,0.08) 62%, transparent 100%);
+  filter: blur(1.1cqw);
+  opacity: 0;
+  animation: smokeRise var(--d, 9s) ease-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+/* fallback, so the cabinet is alive with the JS pane emptied */
+.smoke i:nth-child(1) { --x: -18cqw; --w: 4.4cqw; --d: 8.6s;  --delay: -1.2s; --drift:  5cqw; }
+.smoke i:nth-child(2) { --x:  -7cqw; --w: 5.6cqw; --d: 10.4s; --delay: -4.4s; --drift: -4cqw; }
+.smoke i:nth-child(3) { --x:   4cqw; --w: 4.9cqw; --d: 9.2s;  --delay: -7.1s; --drift:  6cqw; }
+.smoke i:nth-child(4) { --x:  15cqw; --w: 6.1cqw; --d: 11.2s; --delay: -2.6s; --drift: -5cqw; }
+.smoke i:nth-child(5) { --x:  -1cqw; --w: 4.1cqw; --d: 9.8s;  --delay: -6.0s; --drift:  3cqw; }
+
+@keyframes smokeRise {
+  0%   { transform: translate(0, 0) scale(0.5); opacity: 0; }
+  16%  { opacity: 0.5; }
+  72%  { opacity: 0.2; }
+  100% { transform: translate(var(--drift, 4cqw), -46cqw) scale(2.3); opacity: 0; }
+}
+
+/* ============================================================
+   THE DOOR YOU ARE LOOKING THROUGH
+   Same painted-glass approach as the Soft Boil piece: nothing is
+   actually transparent, the interior is drawn first and a wall of
+   highlights sits over the top of it.
+   ============================================================ */
+.glass {
+  position: absolute;
+  inset: 4.5cqw;
+  pointer-events: none;
+  border-radius: 0.6cqw;
+  background: linear-gradient(
+    104deg,
+    rgba(255,255,255,0.16) 0%,
+    rgba(255,255,255,0.04) 6%,
+    rgba(255,255,255,0.00) 15%,
+    rgba(255,255,255,0.00) 43%,
+    rgba(255,241,226,0.06) 50%,
+    rgba(255,255,255,0.00) 58%,
+    rgba(255,255,255,0.00) 86%,
+    rgba(255,255,255,0.04) 93%,
+    rgba(255,255,255,0.13) 100%
+  );
+  box-shadow: inset 0 0 3cqw rgba(255,150,70,0.12);
+}
+
+.doorframe {
+  position: absolute;
+  inset: 3.4cqw;
+  pointer-events: none;
+  border-radius: 0.9cqw;
+  border: 1.1cqw solid;
+  border-color: #3c434c #262b31 #1a1e23 #262b31;
+  box-shadow:
+    inset 0 0 0 0.14cqw rgba(255,255,255,0.10),
+    0 0 2.4cqw rgba(255,140,50,0.14);
+}
+
+.handle {
+  position: absolute;
+  right: 0.6cqw;
+  top: 22cqw;
+  width: 1.5cqw;
+  height: 20cqw;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--steel-2) 0%, var(--steel-0) 42%, var(--steel-1) 72%, var(--steel-2) 100%);
+  box-shadow: 0 0.4cqw 1cqw rgba(0,0,0,0.7);
+}
+
+.panel {
+  position: absolute;
+  left: 5cqw;
+  right: 5cqw;
+  bottom: 0.9cqw;
+  height: 2.8cqw;
+  display: flex;
+  align-items: center;
+  gap: 1.6cqw;
+}
+.panel__led {
+  width: 0.85cqw; height: 0.85cqw;
+  border-radius: 50%;
+  background: var(--fire-2);
+  box-shadow: 0 0 1.2cqw var(--fire-3);
+  animation: firePulse 5.2s ease-in-out infinite;
+}
+.panel__dial {
+  width: 2.2cqw; height: 2.2cqw;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #4d545d, #23282e);
+  box-shadow: inset 0 0 0 0.14cqw rgba(255,255,255,0.14), 0 0.2cqw 0.4cqw #000;
+}
+.panel__mark {
+  width: 3.4cqw; height: 0.34cqw;
+  border-radius: 999px;
+  background: #39404a;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(80% 70% at 50% 48%, transparent 40%, rgba(0,0,0,0.6) 100%);
+}
+
+/* ============================================================
+   THE PLATE
+   ============================================================ */
+.plate {
+  position: absolute;
+  left: 16cqw;
+  top: 42cqw;
+  width: 68cqw;
+  height: 29cqw;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(32cqw) scale(0.94);
+  transition:
+    transform 1.15s var(--ease),
+    opacity 0.62s ease;
+}
+.scene.is-taken .plate {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Push the machine back so the plate can be the subject. Rack
+   focus, done with two filters — and it is what buys the room to
+   put the plate over the fire without losing anything. */
+.cabinet {
+  transition: filter 1s ease, transform 1s var(--ease);
+}
+.scene.is-taken .cabinet {
+  filter: blur(0.45cqw) brightness(0.58) saturate(0.82);
+  transform: scale(0.985);
+}
+
+/* A white plate is never white. It is a very pale grey that picks
+   up whatever is lighting it — here, a fire — so the top edge runs
+   warm and only the near rim reads as truly white. */
+.plate__body {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(60% 90% at 50% 6%, rgba(255,196,138,0.5) 0%, rgba(255,170,100,0) 62%),
+    linear-gradient(#fdfefe 0%, #f0f3f7 34%, #dde3ea 68%, #bcc4ce 100%);
+  box-shadow:
+    inset 0 -0.7cqw 1.6cqw rgba(112,124,142,0.5),
+    inset 0 0.6cqw 0.9cqw rgba(255,255,255,0.95),
+    0 1.6cqw 3cqw rgba(0,0,0,0.6),
+    0 0.3cqw 0 rgba(255,255,255,0.35);
+}
+
+.plate__well {
+  position: absolute;
+  inset: 3.4cqw 8.5cqw;
+  border-radius: 50%;
+  background:
+    radial-gradient(70% 90% at 50% 0%, rgba(255,186,126,0.34) 0%, rgba(255,170,100,0) 66%),
+    linear-gradient(#eef1f6 0%, #e2e7ee 58%, #ced5df 100%);
+  box-shadow:
+    inset 0 0.5cqw 1.1cqw rgba(112,124,142,0.45),
+    inset 0 -0.3cqw 0.5cqw rgba(255,255,255,0.8);
+}
+
+/* Onion rings drawn as bordered ellipses — the border IS the ring,
+   so there is no inner element and no hole to punch. */
+/* Eight rings, placed by hand rather than by formula — five along
+   the front where they frame the bird, three tucked behind it so
+   only their top arcs show above the shoulder. Evenly-spaced rings
+   from a calc() read as a diagram; these read as a handful thrown
+   down. */
+.onions i {
+  position: absolute;
+  width: 10cqw;
+  height: 3.8cqw;
+  border: 0.46cqw solid #dcc8e8;
+  border-radius: 50%;
+  box-shadow:
+    0 0.22cqw 0.45cqw rgba(0,0,0,0.34),
+    inset 0 0 0 0.12cqw rgba(255,255,255,0.7);
+}
+.onions i:nth-child(1) { left: 13cqw; top: 21.5cqw; transform: rotate(-12deg); }
+.onions i:nth-child(2) { left: 22cqw; top: 23.5cqw; transform: rotate(  7deg); }
+.onions i:nth-child(3) { left: 32cqw; top: 24.4cqw; transform: rotate( -4deg); }
+.onions i:nth-child(4) { left: 41cqw; top: 23.4cqw; transform: rotate( 10deg); }
+.onions i:nth-child(5) { left: 48cqw; top: 20.8cqw; transform: rotate(-15deg); }
+/* behind the bird */
+.onions i:nth-child(6) { left: 16cqw; top:  3.6cqw; transform: rotate( 13deg); }
+.onions i:nth-child(7) { left: 30cqw; top:  2.4cqw; transform: rotate( -7deg); }
+.onions i:nth-child(8) { left: 43cqw; top:  3.2cqw; transform: rotate( 17deg); }
+
+/* ---------- the plated bird --------------------------------- */
+/* Off the spit and resting on its side, so the legs come UP and
+   across rather than straight back. That change of angle is most
+   of what distinguishes a plated bird from a cooking one.
+
+   This is the most-worked object in the set, because it is the one
+   the viewer is invited to look AT rather than past. A silhouette
+   and a colour are enough for a bird thirty centimetres away
+   inside a machine. They are not enough for one filling a plate in
+   the foreground — and what was missing there was never outline,
+   it was SURFACE. */
+.plated {
+  position: absolute;
+  left: 16.2cqw;
+  top: 1.5cqw;
+  width: 44cqw;
+  height: 24cqw;
+}
+
+/* Contact shadow. Without it the bird floats, and no amount of
+   detail on the bird itself will fix that. */
+.plated__shadow {
+  position: absolute;
+  left: 0.6cqw;
+  top: 15.3cqw;
+  width: 38cqw;
+  height: 7.6cqw;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(24,14,8,0.6) 0%, rgba(24,14,8,0.26) 54%, transparent 84%);
+  filter: blur(0.6cqw);
+}
+
+.plated__body {
+  position: absolute;
+  left: 0;
+  top: 3.9cqw;
+  width: 29cqw;
+  height: 16.8cqw;
+  overflow: hidden;
+  border-radius: 48% 52% 44% 56% / 54% 58% 42% 46%;
+  background:
+    /* CHAR, and it is the most important layer on this element.
+       Roasting does not brown a bird evenly — it burns in PATCHES,
+       hardest wherever the flame actually licked it. Those hard
+       black islands sitting on the red are most of what says "this
+       came off a fire" rather than "this was painted red", which
+       is exactly how the flat version read.
+
+       Seven of them, all different sizes, none of them centred on
+       anything. Regular spacing would undo the whole effect. */
+    radial-gradient(21% 25% at 24% 28%, rgba(18,5,2,0.9)  0%, rgba(18,5,2,0.46) 54%, rgba(18,5,2,0) 78%),
+    radial-gradient(15% 19% at 49% 14%, rgba(18,5,2,0.82) 0%, rgba(18,5,2,0) 76%),
+    radial-gradient(18% 22% at 68% 44%, rgba(18,5,2,0.86) 0%, rgba(18,5,2,0.4)  56%, rgba(18,5,2,0) 80%),
+    radial-gradient(12% 16% at 36% 65%, rgba(18,5,2,0.74) 0%, rgba(18,5,2,0) 78%),
+    radial-gradient(13% 13% at 13% 55%, rgba(18,5,2,0.64) 0%, rgba(18,5,2,0) 80%),
+    radial-gradient(10% 14% at 57% 77%, rgba(18,5,2,0.78) 0%, rgba(18,5,2,0) 76%),
+    radial-gradient( 9% 11% at 83% 23%, rgba(18,5,2,0.72) 0%, rgba(18,5,2,0) 78%),
+    /* on a plate the light is from above, not below — the one
+       lighting change that says "this is out of the machine" */
+    radial-gradient(64% 58% at 42% 6%, rgba(255,214,158,0.85) 0%, rgba(255,170,96,0.22) 46%, rgba(255,150,70,0) 76%),
+    radial-gradient(38% 30% at 68% 74%, rgba(41,12,4,0.5) 0%, rgba(41,12,4,0) 78%),
+    linear-gradient(200deg, var(--tand-0) 0%, var(--tand-1) 38%, var(--tand-2) 72%, var(--tand-3) 100%);
+  box-shadow:
+    inset 0 0.7cqw 1.3cqw rgba(255,196,132,0.3),
+    inset 0 -0.6cqw 1.2cqw rgba(24,5,2,0.55),
+    inset -0.8cqw 0 1.4cqw rgba(24,5,2,0.4);
+}
+
+/* BLISTERING.
+   Tandoori skin is not smooth — it is covered in small raised
+   blisters, and a perfectly even gradient is the single biggest
+   tell that something was drawn rather than cooked.
+
+   Three tiled dot-grids at deliberately mismatched sizes. Because
+   the tiles never line up, the pattern they beat out reads as
+   random, which is far cheaper than fifty hand-placed gradients
+   and at this scale indistinguishable from it. */
+.plated__mottle {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255,201,138,0.30) 0 24%, transparent 27%),
+    radial-gradient(circle, rgba(16,4,1,0.34)      0 20%, transparent 23%),
+    radial-gradient(circle, rgba(255,168,96,0.22)  0 17%, transparent 20%);
+  background-size: 2.15cqw 1.62cqw, 1.63cqw 2.27cqw, 1.19cqw 1.07cqw;
+  background-position: 0 0, 0.63cqw 0.44cqw, 0.31cqw 0.79cqw;
+  opacity: 0.75;
+}
+
+/* The breast is TWO lobes, not one dome — a single ellipse is
+   exactly why the earlier version read as a bread roll. This is
+   the higher, lighter lobe; .plated__keel is the seam. */
+.plated__breast {
+  position: absolute;
+  left: 4%;
+  top: 1%;
+  width: 64%;
+  height: 58%;
+  border-radius: 52% 48% 46% 54% / 58% 56% 44% 42%;
+  background: radial-gradient(66% 62% at 38% 20%,
+    rgba(255,186,112,0.5) 0%,
+    rgba(255,150,74,0.2)  44%,
+    rgba(255,140,60,0)    76%);
+}
+
+.plated__keel {
+  position: absolute;
+  left: 33%;
+  top: 4%;
+  width: 2.4%;
+  height: 54%;
+  border-radius: 50%;
+  transform: rotate(9deg);
+  background: linear-gradient(rgba(28,8,3,0) 0%, rgba(28,8,3,0.62) 34%, rgba(28,8,3,0.5) 70%, rgba(28,8,3,0) 100%);
+  filter: blur(0.22cqw);
+}
+
+/* faint scorch striping off the cage. Kept low — a spit bird chars
+   in patches, so this is texture, not the main event. */
+.plated__grill {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(72deg,
+    rgba(18,5,2,0)    0 1.7cqw,
+    rgba(18,5,2,0.26) 1.85cqw 2.35cqw,
+    rgba(18,5,2,0)    2.5cqw 4.4cqw);
+  opacity: 0.5;
+}
+
+/* WET. It is glistening with fat, and the specular is what carries
+   that: a broad soft sheen on the high point of the breast, plus
+   tight sparkles where it is wettest. */
+.plated__gloss {
+  position: absolute;
+  left: 10%;
+  top: 6%;
+  width: 48%;
+  height: 28%;
+  border-radius: 50%;
+  transform: rotate(-15deg);
+  background: radial-gradient(closest-side,
+    rgba(255,240,218,0.52) 0%,
+    rgba(255,232,200,0.16) 50%,
+    transparent 100%);
+  filter: blur(0.34cqw);
+}
+.plated__spark {
+  position: absolute;
+  left: 22%;
+  top: 17%;
+  width: 0.5cqw;
+  height: 0.34cqw;
+  border-radius: 50%;
+  background: rgba(255,248,232,0.9);
+  filter: blur(0.1cqw);
+  box-shadow:
+    3.1cqw  1.4cqw 0 -0.06cqw rgba(255,244,224,0.72),
+    6.8cqw -0.5cqw 0 -0.1cqw  rgba(255,248,232,0.6),
+    9.4cqw  2.6cqw 0 -0.08cqw rgba(255,240,214,0.55);
+}
+
+.plated__wing {
+  position: absolute;
+  left: 5.3cqw;
+  top: 8.6cqw;
+  width: 11.6cqw;
+  height: 7.4cqw;
+  border-radius: 58% 42% 50% 50% / 64% 60% 40% 36%;
+  transform: rotate(9deg);
+  background:
+    radial-gradient(40% 44% at 30% 24%, rgba(255,186,110,0.34) 0%, rgba(255,186,110,0) 74%),
+    linear-gradient(160deg, rgba(111,26,10,0.92) 0%, rgba(173,44,21,0.44) 60%, rgba(216,74,30,0) 100%);
+  box-shadow:
+    inset 0 0.3cqw 0.6cqw rgba(255,186,110,0.24),
+    inset 0 -0.2cqw 0.5cqw rgba(20,5,2,0.5);
+}
+
+/* The thigh, as its own mass. A drumstick springing straight out
+   of the torso was the other thing reading as wrong — a real leg
+   has a fat thigh between the two. */
+.plated__thigh {
+  position: absolute;
+  left: 16.7cqw;
+  top: 7cqw;
+  width: 12cqw;
+  height: 10.2cqw;
+  border-radius: 46% 54% 42% 58% / 52% 56% 44% 48%;
+  transform: rotate(-8deg);
+  background:
+    radial-gradient(16% 22% at 62% 34%, rgba(18,5,2,0.7) 0%, rgba(18,5,2,0) 78%),
+    radial-gradient(13% 18% at 34% 70%, rgba(18,5,2,0.6) 0%, rgba(18,5,2,0) 80%),
+    radial-gradient(62% 58% at 40% 14%, rgba(255,206,146,0.7) 0%, rgba(255,160,80,0) 74%),
+    linear-gradient(200deg, var(--tand-0) 0%, var(--tand-1) 40%, var(--tand-2) 74%, var(--tand-3) 100%);
+  box-shadow:
+    inset 0 0.5cqw 1cqw rgba(255,186,116,0.24),
+    inset 0 -0.5cqw 1cqw rgba(22,5,2,0.55);
+}
+
+/* the crease where thigh meets body — one dark crescent, and it is
+   the whole reason the two masses read as one animal */
+.plated__joint {
+  position: absolute;
+  left: 15.8cqw;
+  top: 7.9cqw;
+  width: 3cqw;
+  height: 8.4cqw;
+  border-radius: 50%;
+  transform: rotate(-7deg);
+  background: radial-gradient(closest-side, rgba(24,7,2,0.62) 0%, rgba(24,7,2,0) 78%);
+  filter: blur(0.34cqw);
+}
+
+.plated__leg {
+  position: absolute;
+  border-radius: 56% 44% 54% 46% / 60% 48% 52% 40%;
+  transform-origin: 8% 50%;
+  background:
+    /* drumsticks catch it worst — they stick out furthest */
+    radial-gradient(20% 34% at 34% 62%, rgba(18,5,2,0.82) 0%, rgba(18,5,2,0) 78%),
+    radial-gradient(14% 26% at 62% 30%, rgba(18,5,2,0.7)  0%, rgba(18,5,2,0) 80%),
+    radial-gradient(60% 64% at 38% 16%, rgba(255,210,150,0.78) 0%, rgba(255,160,80,0) 76%),
+    linear-gradient(200deg, var(--tand-0) 0%, var(--tand-1) 40%, var(--tand-2) 74%, var(--tand-3) 100%);
+  box-shadow:
+    inset 0 0.3cqw 0.6cqw rgba(255,190,120,0.26),
+    inset 0 -0.3cqw 0.6cqw rgba(24,5,2,0.5);
+}
+.plated__leg::before {
+  content: '';
+  position: absolute;
+  right: 11%;
+  top: 17%;
+  width: 31%;
+  height: 66%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(41,12,4,0.7) 0%, rgba(41,12,4,0) 80%);
+}
+.plated__leg::after {
+  content: '';
+  position: absolute;
+  right: -0.3cqw;
+  top: 50%;
+  width: 1.85cqw;
+  height: 1.7cqw;
+  transform: translateY(-50%);
+  border-radius: 46% 54% 50% 50% / 50%;
+  background: radial-gradient(62% 58% at 34% 28%, #fdf7ea 0%, #e5d7ba 44%, #b39d79 78%, #806d51 100%);
+  box-shadow:
+    inset -0.08cqw -0.1cqw 0.2cqw rgba(70,52,30,0.55),
+    /* a band of cartilage where the bone leaves the meat */
+    -0.34cqw 0 0 -0.42cqw rgba(214,186,146,0.85),
+    0 0.1cqw 0.28cqw rgba(0,0,0,0.5);
+}
+.plated__leg--near {
+  left: 21.3cqw;
+  top: 6.7cqw;
+  width: 16.2cqw;
+  height: 5.5cqw;
+  transform: rotate(-34deg);
+}
+.plated__leg--far {
+  left: 20.4cqw;
+  top: 9.5cqw;
+  width: 14.6cqw;
+  height: 5cqw;
+  transform: rotate(-13deg);
+  filter: brightness(0.76);
+}
+
+/* kitchen twine, still on. Two turns, so it reads as tied rather
+   than as a scratch on the picture. */
+.plated__truss {
+  position: absolute;
+  left: 10.7cqw;
+  top: 5.3cqw;
+  width: 0.5cqw;
+  height: 13.2cqw;
+  border-radius: 999px;
+  transform: rotate(7deg);
+  background: linear-gradient(
+    rgba(226,206,168,0)    0%,
+    rgba(230,212,176,0.72) 24%,
+    rgba(198,176,136,0.8)  62%,
+    rgba(226,206,168,0)    100%);
+  box-shadow: 3cqw 0 0 0 rgba(214,192,154,0.34);
+}
+
+.plated__neck {
+  position: absolute;
+  left: -1.4cqw;
+  top: 9.5cqw;
+  width: 4.9cqw;
+  height: 4.6cqw;
+  border-radius: 54% 46% 48% 52% / 56% 52% 48% 44%;
+  transform: rotate(-12deg);
+  background:
+    radial-gradient(60% 58% at 46% 20%, rgba(255,196,134,0.56) 0%, rgba(255,150,70,0) 78%),
+    linear-gradient(190deg, var(--tand-1) 0%, var(--tand-2) 54%, var(--tand-3) 100%);
+  box-shadow: inset 0 -0.3cqw 0.6cqw rgba(22,5,2,0.55);
+}
+
+/* ---------- garnish ----------------------------------------- */
+/* A lemon wedge is a rind ring with flesh inside it, and the flesh
+   is a repeating-conic-gradient anchored at the bottom centre —
+   which is exactly what citrus segments are. */
+.lemon {
+  position: absolute;
+  width: 7.6cqw;
+  height: 4.2cqw;
+  border-radius: 50% 50% 10% 10% / 96% 96% 16% 16%;
+  background: linear-gradient(#efdf62 0%, #cdb524 62%, #a7911a 100%);
+  box-shadow: 0 0.3cqw 0.6cqw rgba(0,0,0,0.42);
+}
+.lemon--a { left: 3cqw; top: 10.4cqw; transform: rotate(  6deg); }
+.lemon--b { left: 5cqw; top: 16.6cqw; transform: rotate(-15deg); }
+.lemon::before {
+  content: '';
+  position: absolute;
+  inset: 0.52cqw 0.46cqw 0 0.46cqw;
+  border-radius: 50% 50% 10% 10% / 96% 96% 16% 16%;
+  background:
+    repeating-conic-gradient(from 180deg at 50% 100%,
+      rgba(255,255,255,0.9) 0deg 1.6deg,
+      rgba(255,255,255,0)   1.6deg 22.5deg),
+    radial-gradient(120% 150% at 50% 100%, #fffbd8 0%, #f9e874 46%, #eed544 78%);
+}
+
+/* Mint chutney in its own ramekin, which is how it actually turns
+   up. A small bowl is two ellipses: the rim, and the sauce sunk
+   inside it with an inset shadow doing the depth. */
+.mintbowl {
+  position: absolute;
+  left: 53cqw;
+  top: 10.5cqw;
+  width: 12cqw;
+  height: 7.2cqw;
+  border-radius: 50%;
+  background: linear-gradient(#ffffff 0%, #eef1f6 46%, #cbd3dd 100%);
+  box-shadow:
+    0 0.7cqw 1.3cqw rgba(0,0,0,0.5),
+    inset 0 0.34cqw 0.6cqw rgba(255,255,255,0.95),
+    inset 0 -0.3cqw 0.6cqw rgba(120,132,148,0.4);
+}
+.mintbowl::before {
+  content: '';
+  position: absolute;
+  inset: 1.15cqw 1.25cqw;
+  border-radius: 50%;
+  background:
+    radial-gradient(58% 58% at 34% 26%, rgba(198,228,146,0.5) 0%, rgba(198,228,146,0) 72%),
+    linear-gradient(150deg, #7fb03c 0%, #4e7f22 56%, #2c5310 100%);
+  box-shadow: inset 0 0.4cqw 0.7cqw rgba(16,36,4,0.65);
+}
+
+/* Mayo, drizzled. One stroke plus four box-shadow copies of it —
+   a drizzle is a repeated mark, so it costs one element. */
+.mayo {
+  position: absolute;
+  left: 20cqw;
+  top: 24.5cqw;
+  width: 4.6cqw;
+  height: 0.78cqw;
+  border-radius: 999px;
+  transform: rotate(-6deg);
+  background: linear-gradient(#fffdf4 0%, #f3e8ce 62%, #ddcda6 100%);
+  box-shadow:
+     5.5cqw  0.85cqw 0 -0.05cqw #f7efd9,
+    10.8cqw -0.42cqw 0 -0.02cqw #fffdf4,
+    16.1cqw  1.05cqw 0 -0.08cqw #f0e3c6,
+    21.2cqw  0.18cqw 0 -0.04cqw #fdf8e9;
+}
+
+/* Coriander, scattered ON the bird as well as around it — leaves
+   land where they land, and a ring of them round the rim would
+   look arranged rather than thrown. */
+/* SPRIGS, not leaves.
+   Loose leaves scattered on a plate look like they fell off
+   something. Coriander goes on in twigs — a stem with a couple of
+   leaflets at the tip — so the <i> is the stem and its two
+   pseudo-elements are the leaflets. Ten of them, longer than the
+   old leaves were, at ten different angles. */
+.herbs i {
+  position: absolute;
+  width: 5.6cqw;
+  height: 0.38cqw;
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    rgba(78,138,34,0) 0%,
+    rgba(78,138,34,0.85) 34%,
+    #3f7418 100%);
+}
+.herbs i::before,
+.herbs i::after {
+  content: '';
+  position: absolute;
+  width: 3.1cqw;
+  height: 1.6cqw;
+  border-radius: 50% 8% 50% 8%;
+  background: linear-gradient(150deg, #8dc44a 0%, #4d8a20 60%, #2c5810 100%);
+  box-shadow: 0 0.16cqw 0.32cqw rgba(0,0,0,0.45);
+}
+.herbs i::before { right: -0.7cqw; top: -1.2cqw; transform: rotate(-28deg); }
+.herbs i::after  { right: -0.1cqw; top:  0.05cqw; transform: rotate( 22deg); }
+
+.herbs i:nth-child(1)  { left: 19cqw; top:  7.2cqw; transform: rotate(-29deg); }
+.herbs i:nth-child(2)  { left: 28cqw; top:  4.6cqw; transform: rotate( 13deg); }
+.herbs i:nth-child(3)  { left: 36cqw; top:  6.8cqw; transform: rotate( -8deg); }
+.herbs i:nth-child(4)  { left: 24cqw; top: 12.4cqw; transform: rotate( 37deg); }
+.herbs i:nth-child(5)  { left: 41cqw; top: 11.2cqw; transform: rotate(-23deg); }
+.herbs i:nth-child(6)  { left: 15cqw; top: 16.2cqw; transform: rotate( 26deg); }
+.herbs i:nth-child(7)  { left: 45cqw; top: 16.8cqw; transform: rotate(-36deg); }
+.herbs i:nth-child(8)  { left: 31cqw; top: 17.6cqw; transform: rotate(  9deg); }
+.herbs i:nth-child(9)  { left: 11cqw; top: 12.6cqw; transform: rotate(-14deg); }
+.herbs i:nth-child(10) { left: 49cqw; top:  6.4cqw; transform: rotate( 31deg); }
+
+/* chaat masala, thrown on at the last second. Eleven specks from
+   one element, because box-shadow takes a list. */
+.dust {
+  position: absolute;
+  left: 24cqw;
+  top: 4.5cqw;
+  width: 0.34cqw;
+  height: 0.34cqw;
+  border-radius: 50%;
+  background: #c2521c;
+  box-shadow:
+     1.9cqw  1.2cqw 0 -0.04cqw #a8431a,
+     4.1cqw -0.6cqw 0 -0.08cqw #d4642a,
+     6.4cqw  2.1cqw 0 -0.02cqw #9c3d16,
+     8.2cqw  0.4cqw 0 -0.1cqw  #c2521c,
+    10.6cqw  2.8cqw 0 -0.05cqw #b04a1c,
+    12.1cqw -0.2cqw 0 -0.09cqw #d4642a,
+    14.4cqw  1.7cqw 0 -0.03cqw #a8431a,
+    16.8cqw  3.2cqw 0 -0.07cqw #c2521c,
+    18.3cqw  0.9cqw 0 -0.05cqw #963a14,
+    20.7cqw  2.4cqw 0 -0.08cqw #d4642a,
+    22.9cqw  1.1cqw 0 -0.04cqw #b04a1c;
+}
+
+/* VAPOUR off the plated bird.
+   Six columns rather than three, and roughly twice as opaque — it
+   is the only thing in the foreground that moves once the plate
+   has landed, so if it is subtle it may as well not be there.
+
+   It rises off the bird's back, not off the plate rim, so the
+   starting positions track the torso rather than being spread
+   evenly across the dish. */
+.platesteam i {
+  position: absolute;
+  top: 4cqw;
+  width: var(--w, 4cqw);
+  height: var(--w, 4cqw);
+  border-radius: 50%;
+  background: radial-gradient(closest-side,
+    rgba(248,242,236,0.58) 0%,
+    rgba(244,236,230,0.18) 58%,
+    transparent 100%);
+  filter: blur(0.8cqw);
+  opacity: 0;
+  animation: plateSteam var(--d, 6.4s) ease-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+.platesteam i:nth-child(1) { left: 20cqw; --w: 3.6cqw; --d: 6.2s; --delay: -0.3s; --pd:  3.5cqw; }
+.platesteam i:nth-child(2) { left: 26cqw; --w: 4.8cqw; --d: 7.6s; --delay: -2.4s; --pd: -2.8cqw; }
+.platesteam i:nth-child(3) { left: 32cqw; --w: 4.1cqw; --d: 6.8s; --delay: -4.7s; --pd:  4.2cqw; }
+.platesteam i:nth-child(4) { left: 38cqw; --w: 5.2cqw; --d: 8.1s; --delay: -1.6s; --pd: -3.6cqw; }
+.platesteam i:nth-child(5) { left: 44cqw; --w: 3.9cqw; --d: 7.1s; --delay: -5.5s; --pd:  2.4cqw; }
+.platesteam i:nth-child(6) { left: 29cqw; --w: 4.4cqw; --d: 6.6s; --delay: -3.4s; --pd: -4.4cqw; }
+
+@keyframes plateSteam {
+  0%   { transform: translate(0, 0) scale(0.45); opacity: 0; }
+  16%  { opacity: 0.72; }
+  62%  { opacity: 0.34; }
+  100% { transform: translate(var(--pd, 2cqw), -19cqw) scale(2.4); opacity: 0; }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   Nine turning birds and seven flames is a great deal of movement.
+   Everything freezes at a pose that still reads as cooking, rather
+   than at an empty one — and the button still works.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .bird, .bird__char, .flame, .fire__bed, .glow, .spill, .panel__led {
+    animation: none;
+  }
+  .drips i {
+    animation: none;
+    opacity: 0.6;
+    transform: translateY(calc(6cqw + var(--i) * 4cqw)) scaleY(1.2);
+  }
+  .smoke i {
+    animation: none;
+    opacity: 0.28;
+    transform: translate(var(--drift, 3cqw), -24cqw) scale(1.7);
+  }
+  .bird { transition: opacity 0.2s ease; }
+  .scene.is-taken .bird--out { transform: none; }
+
+  /* the plate still arrives, it just does not fly in */
+  .plate { transform: none; transition: opacity 0.25s ease; }
+  .scene.is-taken .plate { transform: none; }
+  .cabinet { transition: none; }
+  .platesteam i {
+    animation: none;
+    opacity: 0.3;
+    transform: translate(var(--pd, 2cqw), -7cqw) scale(1.5);
+  }
+
+  .take { transition: none; }
+}

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Slow Turn — CSS Art</title>
+  <meta name="description" content="Pure-CSS art: nine skinless tandoori chickens turning slowly on three rods above a low fire, seen through the glass of a vertical tandoor. No SVG, no images, no canvas.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="stage">
+
+    <div
+      class="scene"
+      id="scene"
+      role="img"
+      aria-label="A vertical tandoor cabinet seen front-on through its glass door. Three horizontal rods each carry three skinless tandoori chickens, deep red with blackened edges and trussed drumsticks pointing back along the spit, turning slowly above a low bed of flames at the base of the cabinet. Smoke drifts up between the rods and fat drips down into the fire."
+    >
+
+      <!-- ── the setting ──────────────────────────────────────── -->
+      <div class="room" aria-hidden="true"></div>
+      <div class="floor" aria-hidden="true"></div>
+
+      <!-- warm light thrown out of the cabinet onto the floor -->
+      <div class="spill" aria-hidden="true"></div>
+
+      <!-- ── the cabinet ──────────────────────────────────────── -->
+      <div class="cabinet" aria-hidden="true">
+
+        <div class="cavity">
+          <div class="backwall"></div>
+          <div class="glow"></div>
+
+          <!-- Three rods. --phase keeps every bird ON A ROD turning
+               together, because it is one rod — and offsets the rods
+               from each other so the cabinet isn't in lockstep.
+
+               Element order inside a bird is the draw order, and it
+               is anatomy: far drumstick, thigh mass, body, wing,
+               near drumstick, neck. The far leg goes behind the
+               body and the near one in front, which is most of what
+               makes it read as three dimensional. -->
+          <div class="rack rack--1" style="--phase: 0s">
+            <div class="rod"></div>
+            <div class="bird" style="--x: 0cqw;    --w: 0s">
+              <div class="bird__leg bird__leg--far"></div>
+              <div class="bird__thigh"></div>
+              <div class="bird__body"><div class="bird__char"></div></div>
+              <div class="bird__wing"></div>
+              <div class="bird__leg bird__leg--near"></div>
+              <div class="bird__neck"></div>
+            </div>
+            <div class="bird" style="--x: 19.5cqw; --w: -0.4s">
+              <div class="bird__leg bird__leg--far"></div>
+              <div class="bird__thigh"></div>
+              <div class="bird__body"><div class="bird__char"></div></div>
+              <div class="bird__wing"></div>
+              <div class="bird__leg bird__leg--near"></div>
+              <div class="bird__neck"></div>
+            </div>
+            <div class="bird bird--out" style="--x: 39cqw; --w: -0.9s">
+              <div class="bird__leg bird__leg--far"></div>
+              <div class="bird__thigh"></div>
+              <div class="bird__body"><div class="bird__char"></div></div>
+              <div class="bird__wing"></div>
+              <div class="bird__leg bird__leg--near"></div>
+              <div class="bird__neck"></div>
+            </div>
+          </div>
+
+          <div class="rack rack--2" style="--phase: -5.3s">
+            <div class="rod"></div>
+            <div class="bird" style="--x: 0cqw;    --w: -1.3s">
+              <div class="bird__leg bird__leg--far"></div>
+              <div class="bird__thigh"></div>
+              <div class="bird__body"><div class="bird__char"></div></div>
+              <div class="bird__wing"></div>
+              <div class="bird__leg bird__leg--near"></div>
+              <div class="bird__neck"></div>
+            </div>
+            <div class="bird" style="--x: 19.5cqw; --w: -0.2s">
+              <div class="bird__leg bird__leg--far"></div>
+              <div class="bird__thigh"></div>
+              <div class="bird__body"><div class="bird__char"></div></div>
+              <div class="bird__wing"></div>
+              <div class="bird__leg bird__leg--near"></div>
+              <div class="bird__neck"></div>
+            </div>
+            <div class="bird" style="--x: 39cqw;   --w: -1.7s">
+              <div class="bird__leg bird__leg--far"></div>
+              <div class="bird__thigh"></div>
+              <div class="bird__body"><div class="bird__char"></div></div>
+              <div class="bird__wing"></div>
+              <div class="bird__leg bird__leg--near"></div>
+              <div class="bird__neck"></div>
+            </div>
+          </div>
+
+          <div class="rack rack--3" style="--phase: -10.7s">
+            <div class="rod"></div>
+            <div class="bird" style="--x: 0cqw;    --w: -0.7s">
+              <div class="bird__leg bird__leg--far"></div>
+              <div class="bird__thigh"></div>
+              <div class="bird__body"><div class="bird__char"></div></div>
+              <div class="bird__wing"></div>
+              <div class="bird__leg bird__leg--near"></div>
+              <div class="bird__neck"></div>
+            </div>
+            <div class="bird" style="--x: 19.5cqw; --w: -1.5s">
+              <div class="bird__leg bird__leg--far"></div>
+              <div class="bird__thigh"></div>
+              <div class="bird__body"><div class="bird__char"></div></div>
+              <div class="bird__wing"></div>
+              <div class="bird__leg bird__leg--near"></div>
+              <div class="bird__neck"></div>
+            </div>
+            <div class="bird" style="--x: 39cqw;   --w: -0.3s">
+              <div class="bird__leg bird__leg--far"></div>
+              <div class="bird__thigh"></div>
+              <div class="bird__body"><div class="bird__char"></div></div>
+              <div class="bird__wing"></div>
+              <div class="bird__leg bird__leg--near"></div>
+              <div class="bird__neck"></div>
+            </div>
+          </div>
+
+          <!-- fat coming off the birds, into the fire -->
+          <div class="drips">
+            <i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i>
+            <i style="--i:3"></i><i style="--i:4"></i>
+          </div>
+
+          <!-- ── the fire ───────────────────────────────────────── -->
+          <div class="fire">
+            <div class="fire__bed"></div>
+            <i class="flame" style="--i:0"></i><i class="flame" style="--i:1"></i>
+            <i class="flame" style="--i:2"></i><i class="flame" style="--i:3"></i>
+            <i class="flame" style="--i:4"></i><i class="flame" style="--i:5"></i>
+            <i class="flame" style="--i:6"></i>
+          </div>
+
+          <div class="smoke">
+            <i></i><i></i><i></i><i></i><i></i>
+          </div>
+        </div>
+
+        <!-- the door you are looking through -->
+        <div class="glass"></div>
+        <div class="doorframe"></div>
+        <div class="handle"></div>
+
+        <div class="panel">
+          <span class="panel__led"></span>
+          <span class="panel__dial"></span>
+          <span class="panel__mark"></span>
+          <span class="panel__mark"></span>
+        </div>
+      </div>
+
+      <!-- ── the plate ────────────────────────────────────────── -->
+      <!-- Hidden below the frame until you take one out, then it
+           rises into the foreground while the tandoor falls out of
+           focus behind it. A rack focus, which is also what makes it
+           acceptable for the plate to cover the fire: the fire has
+           stopped being the subject. -->
+      <div class="plate" aria-hidden="true">
+        <div class="plate__body">
+          <div class="plate__well"></div>
+        </div>
+
+        <!-- a bed of raw onion rings, which is how this is served -->
+        <div class="onions">
+          <i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i>
+        </div>
+
+        <!-- mayo, drizzled across the front of the plate -->
+        <div class="mayo"></div>
+
+        <!-- Draw order is anatomy, back to front: contact shadow,
+             far leg, torso (with its surface layers inside it),
+             wing, near thigh, the crease where that thigh meets the
+             body, near leg, trussing string, neck. -->
+        <div class="plated">
+          <div class="plated__shadow"></div>
+          <div class="plated__leg plated__leg--far"></div>
+          <div class="plated__body">
+            <div class="plated__mottle"></div>
+            <div class="plated__breast"></div>
+            <div class="plated__keel"></div>
+            <div class="plated__grill"></div>
+            <div class="plated__gloss"></div>
+            <div class="plated__spark"></div>
+          </div>
+          <div class="plated__wing"></div>
+          <div class="plated__thigh"></div>
+          <div class="plated__joint"></div>
+          <div class="plated__leg plated__leg--near"></div>
+          <div class="plated__truss"></div>
+          <div class="plated__neck"></div>
+        </div>
+
+        <div class="lemon lemon--a"></div>
+        <div class="lemon lemon--b"></div>
+
+        <!-- mint chutney, in its own ramekin -->
+        <div class="mintbowl"></div>
+
+        <!-- Coriander, scattered over the bird as well as the plate.
+             Each <i> is a stem; its two pseudo-elements are the
+             leaflets at the tip, which is what makes it a sprig
+             rather than a floating leaf. -->
+        <div class="herbs">
+          <i></i><i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i><i></i>
+        </div>
+
+        <div class="dust"></div>
+
+        <!-- it came off a fire ninety seconds ago -->
+        <div class="platesteam">
+          <i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+      </div>
+
+      <div class="vignette" aria-hidden="true"></div>
+    </div>
+
+    <p class="caption">
+      <strong>Slow Turn</strong> &mdash; nine birds, one fire, and the twenty
+      minutes you spend watching them go round because it is not ready yet.
+    </p>
+
+    <button class="take" id="take" type="button" aria-pressed="false">
+      <span class="take__dot" aria-hidden="true"></span>
+      <span id="take-label">Take one out</span>
+    </button>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
