@@ -1,12 +1,12 @@
 ---
-title: "Three comfort foods, drawn in pure CSS"
+title: "Four comfort foods, drawn in pure CSS"
 published: false
 tags: discuss, css, webdev
 cover_image: 
 ---
 
-Three entries for the Comfort Food Edition. No SVG, no images, no canvas —
-every shape in all three is a `div`, a gradient, a `clip-path` or a shadow.
+Four entries for the Comfort Food Edition. No SVG, no images, no canvas —
+every shape in all four is a `div`, a gradient, a `clip-path` or a shadow.
 
 ## 🌙 Midnight Fridge Raid
 
@@ -45,3 +45,16 @@ Glass so you can actually see the boil, and an induction ring because it puts
 the only warm thing in the picture *underneath* the water.
 
 **[Read it →](https://dev.to/maneesh_thakur_d16c2852fa/soft-boil-six-minutes-and-you-cannot-get-it-wrong-5dj6)**
+
+## 🔥 Slow Turn
+
+Nine skinless tandoori chickens on three rods, turning slowly over a low fire
+behind the glass of a vertical tandoor.
+
+The comfort isn't the eating, it's the waiting — standing at the window while
+nine birds go round, knowing yours isn't ready, watching anyway.
+
+The rods spin on an axis pointing straight at you, so nothing rotates at all:
+the silhouette is held still and the char scrolls vertically inside it.
+
+**[Read it →](SLOW-TURN-POST-URL)**

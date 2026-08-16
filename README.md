@@ -1,6 +1,6 @@
 # DEV Frontend Challenge — Comfort Food Edition
 
-Four entries, one idea: **comfort food is defined by the hour you need it,
+Five entries, one idea: **comfort food is defined by the hour you need it,
 not by the recipe.**
 
 | | Entry | Prompt |
@@ -8,13 +8,16 @@ not by the recipe.**
 | 🌙 | [Midnight Fridge Raid](css-art/) | CSS Art: Comfort Food |
 | ☕ | [Cutting Chai](css-art-chai/) | CSS Art: Comfort Food |
 | 🥚 | [Soft Boil](css-art-eggs/) | CSS Art: Comfort Food |
+| 🔥 | [Slow Turn](css-art-tandoor/) | CSS Art: Comfort Food |
 | 🍽️ | [Open Late](landing/) | Perfect Landing: Comfort Food |
 
-The challenge allows multiple entries per prompt, so all three CSS-art pieces
-go in as separate posts — 2am leftovers, 4pm chai and the six-minute egg are
-three answers to the same question, and none competes with the others.
+The challenge allows multiple entries per prompt, so all four CSS-art pieces go
+in as separate posts — 2am leftovers, 4pm chai, the six-minute egg and the
+twenty minutes at the tandoor window are four answers to the same question, and
+none competes with the others.
 
-Deadline: **16 August, 11:59pm PDT**. Tag all three posts `#frontendchallenge`.
+Deadline: **16 August, 11:59pm PDT** — which is **17 August, 12:29pm IST**.
+Tag all five posts `#frontendchallenge`.
 
 ---
 
@@ -122,7 +125,35 @@ Same CodePen panel mapping as above.
 
 ---
 
-## 4. Open Late — landing page
+## 4. Slow Turn — CSS art
+
+Nine skinless tandoori chickens on three rods above a low fire, behind the
+glass of a vertical tandoor. Take one out and it is plated in the foreground.
+
+```
+css-art-tandoor/
+  index.html    markup only
+  style.css     the whole picture
+  script.js     ~55 lines: scatter the smoke + take one out
+```
+
+**Techniques on show:** rotation sold entirely by scrolling the surface, with
+the silhouette held still and zero degrees of rotate on any bird · a rack focus
+that blurs the machine so the plate can own the foreground · blistered skin
+from three tiled dot-grids at mismatched sizes · citrus segments from a
+`repeating-conic-gradient` anchored at the wedge's base · `cqw` throughout ·
+`prefers-reduced-motion` · `aria-label` that swaps with the state.
+
+The two to steal: **`filter` on a parent rasterises every descendant**, so a
+blurred parent with a "sharp" child is not sharp — halo and core must be
+`::before` and `::after`, each owning its own filter. And **`mix-blend-mode:
+screen` needs headroom**; over an already-bright backdrop it does nothing.
+
+Same CodePen panel mapping as above.
+
+---
+
+## 5. Open Late — landing page
 
 An imaginary 24-hour diner whose menu follows the visitor's real clock. Four
 kitchens, six dishes each, filtering by kitchen / diet / search, an hours table
@@ -166,6 +197,7 @@ Source: *Deploy from a branch* → `main` / `/ (root)`. Serves all three entries
 | Midnight Fridge Raid | `/css-art/` |
 | Cutting Chai | `/css-art-chai/` |
 | Soft Boil | `/css-art-eggs/` |
+| Slow Turn | `/css-art-tandoor/` |
 | Open Late (landing) | `/landing/` |
 
 under `https://maneesh-kumar-thakur.github.io/devto-frontend-challenge-food-edition/`.
@@ -204,7 +236,7 @@ Then embed with `{% embed YOUR_CLOUD_RUN_URL %}`, or just link the live demo.
 
 ---
 
-## 5. Submitting
+## 6. Submitting
 
 Drafts are in [`submissions/`](submissions/) with DEV front-matter:
 
