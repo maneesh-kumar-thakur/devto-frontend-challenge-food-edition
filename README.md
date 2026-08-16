@@ -1,6 +1,6 @@
 # DEV Frontend Challenge — Comfort Food Edition
 
-Five entries, one idea: **comfort food is defined by the hour you need it,
+Six entries, one idea: **comfort food is defined by the hour you need it,
 not by the recipe.**
 
 | | Entry | Prompt |
@@ -9,15 +9,16 @@ not by the recipe.**
 | ☕ | [Cutting Chai](css-art-chai/) | CSS Art: Comfort Food |
 | 🥚 | [Soft Boil](css-art-eggs/) | CSS Art: Comfort Food |
 | 🔥 | [Slow Turn](css-art-tandoor/) | CSS Art: Comfort Food |
+| 🍱 | [The Dabba](css-art-dabba/) | CSS Art: Comfort Food |
 | 🍽️ | [Open Late](landing/) | Perfect Landing: Comfort Food |
 
-The challenge allows multiple entries per prompt, so all four CSS-art pieces go
-in as separate posts — 2am leftovers, 4pm chai, the six-minute egg and the
-twenty minutes at the tandoor window are four answers to the same question, and
-none competes with the others.
+The challenge allows multiple entries per prompt, so all five CSS-art pieces go
+in as separate posts — 2am leftovers, 4pm chai, the six-minute egg, the twenty
+minutes at the tandoor window and the box somebody packed for you are five
+answers to the same question, and none competes with the others.
 
 Deadline: **16 August, 11:59pm PDT** — which is **17 August, 12:29pm IST**.
-Tag all five posts `#frontendchallenge`.
+Tag all six posts `#frontendchallenge`.
 
 ---
 
@@ -41,7 +42,7 @@ throughout (zero media queries) · `prefers-reduced-motion`.
 
 ### Publishing the art posts — CodePen via `{% embed %}`
 
-All four art posts embed a CodePen. **Use `{% embed %}`, not `{% codepen %}`** —
+All five art posts embed a CodePen. **Use `{% embed %}`, not `{% codepen %}`** —
 this is the one combination that works, confirmed in a published post:
 
 ```
@@ -153,7 +154,34 @@ Same CodePen panel mapping as above.
 
 ---
 
-## 5. Open Late — landing page
+## 5. The Dabba — CSS art
+
+A four-tier steel tiffin carrier, opened: dal, rice, a stack of chapatis and a
+vegetable sabzi, three boxes out on the table and one still in the frame.
+
+```
+css-art-dabba/
+  index.html    markup only
+  style.css     the whole picture
+  script.js     ~55 lines: scatter the steam + pack it up
+```
+
+**Techniques on show:** a fourteen-stop unevenly-spaced reflection band, because
+a polished cylinder is a mirror and not a colour · horizontal grain crossing
+vertical bands for anisotropy · one band slid to a different offset per box so
+no two tins mirror the same room · an arc built from two elements running
+different curves · a contact shadow that stays down while its box rises ·
+`cqw` throughout · `prefers-reduced-motion` · `aria-label` that swaps with state.
+
+The one to steal: **reversing a sequence is not playing it backwards.** Closing
+runs dal → rice → chapatis → lid → clamp; opening has to run the other way, so
+the delays are declared on both states rather than shared.
+
+Same CodePen panel mapping as above.
+
+---
+
+## 6. Open Late — landing page
 
 An imaginary 24-hour diner whose menu follows the visitor's real clock. Four
 kitchens, six dishes each, filtering by kitchen / diet / search, an hours table
@@ -186,12 +214,12 @@ full ingredient lists, and a natively-validated form.
 ### Deploying
 
 Static files, no build step — any host works. **Only the landing post needs a
-host** — all four art posts ship as CodePen embeds, so hosting is optional for
+host** — all five art posts ship as CodePen embeds, so hosting is optional for
 them.
 
 **GitHub Pages — no CLI, no new account.** The repo is already on GitHub, and
 the landing post's `Source →` link needs it public anyway. Settings → Pages →
-Source: *Deploy from a branch* → `main` / `/ (root)`. Serves all five entries:
+Source: *Deploy from a branch* → `main` / `/ (root)`. Serves all six entries:
 
 | Entry | Path |
 |---|---|
@@ -199,6 +227,7 @@ Source: *Deploy from a branch* → `main` / `/ (root)`. Serves all five entries:
 | Cutting Chai | `/css-art-chai/` |
 | Soft Boil | `/css-art-eggs/` |
 | Slow Turn | `/css-art-tandoor/` |
+| The Dabba | `/css-art-dabba/` |
 | Open Late (landing) | `/landing/` |
 
 under `https://maneesh-kumar-thakur.github.io/devto-frontend-challenge-food-edition/`.
@@ -237,7 +266,7 @@ Then embed with `{% embed YOUR_CLOUD_RUN_URL %}`, or just link the live demo.
 
 ---
 
-## 6. Submitting
+## 7. Submitting
 
 Drafts are in [`submissions/`](submissions/) with DEV front-matter.
 
@@ -247,6 +276,7 @@ Drafts are in [`submissions/`](submissions/) with DEV front-matter.
 | [`3-css-art-cutting-chai.md`](submissions/3-css-art-cutting-chai.md) | CSS Art | **published** |
 | [`4-css-art-soft-boil.md`](submissions/4-css-art-soft-boil.md) | CSS Art | **published** |
 | [`5-css-art-slow-turn.md`](submissions/5-css-art-slow-turn.md) | CSS Art | **published** |
+| [`6-css-art-the-dabba.md`](submissions/6-css-art-the-dabba.md) | CSS Art | ready to post |
 | [`2-perfect-landing-open-late.md`](submissions/2-perfect-landing-open-late.md) | Perfect Landing | needs a demo URL |
 | [`discussion-css-art-comfort-food.md`](submissions/discussion-css-art-comfort-food.md) | — | ready, not an entry |
 
@@ -270,7 +300,7 @@ art drafts have since gained links to each other; those links only exist on DEV
 if they are pasted into each post's editor by hand.
 
 Both prompts accept multiple entries and every valid submission earns a
-completion badge, so five posts is strictly better than one.
+completion badge, so six posts is strictly better than one.
 
 ## Licence
 
@@ -278,7 +308,7 @@ completion badge, so five posts is strictly better than one.
 that the copyright notice travels with the source.
 
 That covers the code *and* the artwork here, which are the same thing: every
-shape in all four CSS-art pieces is a div and a gradient, so there's nothing to
+shape in all five CSS-art pieces is a div and a gradient, so there's nothing to
 licence separately.
 
 ## Judging criteria, and where each is earned

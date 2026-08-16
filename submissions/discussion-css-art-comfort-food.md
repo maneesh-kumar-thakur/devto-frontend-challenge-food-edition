@@ -1,12 +1,12 @@
 ---
-title: "Four comfort foods, drawn in pure CSS"
+title: "Five comfort foods, drawn in pure CSS"
 published: false
 tags: discuss, css, webdev
 cover_image: 
 ---
 
-Four entries for the Comfort Food Edition. No SVG, no images, no canvas —
-every shape in all four is a `div`, a gradient, a `clip-path` or a shadow.
+Five entries for the Comfort Food Edition. No SVG, no images, no canvas —
+every shape in all five is a `div`, a gradient, a `clip-path` or a shadow.
 
 ## 🌙 Midnight Fridge Raid
 
@@ -58,3 +58,16 @@ The rods spin on an axis pointing straight at you, so nothing rotates at all:
 the silhouette is held still and the char scrolls vertically inside it.
 
 **[Read it →](https://dev.to/maneesh_thakur_d16c2852fa/slow-turn-nine-birds-one-fire-and-twenty-minutes-of-waiting-1k17)**
+
+## 🍱 The Dabba
+
+A four-tier steel tiffin carrier, opened on a table — dal, rice, a stack of
+chapatis and a vegetable sabzi, all still steaming.
+
+The other four answered "the dish you grew up eating" with a dish. This one
+answers it with the box, because nobody ever packed one of these for themselves.
+
+Steel is the one material where the usual approach fails: a polished cylinder
+is a mirror, so what you draw is the room reflected in it, not the tin.
+
+**[Read it →](THE-DABBA-POST-URL)**
