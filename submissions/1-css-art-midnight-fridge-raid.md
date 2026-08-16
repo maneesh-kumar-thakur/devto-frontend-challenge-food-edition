@@ -31,7 +31,8 @@ No SVG, no images, no canvas.
 
 ## Demo
 
-{% codepen https://codepen.io/Maneesh-Thakur/pen/CLASSIC-PEN-SLUG %}
+<!-- {% embed %}, not {% codepen %} — see the README. -->
+{% embed https://codepen.io/Maneesh-Thakur/pen/019ffcc6-745c-72fe-88f0-e59b41cb8fac %}
 
 Click **Close the fridge** to put the light out — the door swings shut and you
 get the other half of the picture: sticky notes you can't read and a few

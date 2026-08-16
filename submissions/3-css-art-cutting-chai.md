@@ -29,7 +29,9 @@ images, no canvas.
 
 ## Demo
 
-{% codepen https://codepen.io/YOUR-USERNAME/pen/YOUR-PEN-ID %}
+<!-- {% embed %}, not {% codepen %} — see the README. Paste the chai pen's URL,
+     copied from the address bar the same way the fridge one was. -->
+{% embed https://codepen.io/Maneesh-Thakur/pen/CHAI-PEN-URL %}
 
 Press **Dunk the biscuit**. You know you want to.
 
