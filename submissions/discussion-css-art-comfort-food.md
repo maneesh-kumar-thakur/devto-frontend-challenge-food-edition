@@ -57,4 +57,4 @@ nine birds go round, knowing yours isn't ready, watching anyway.
 The rods spin on an axis pointing straight at you, so nothing rotates at all:
 the silhouette is held still and the char scrolls vertically inside it.
 
-**[Read it →](SLOW-TURN-POST-URL)**
+**[Read it →](https://dev.to/maneesh_thakur_d16c2852fa/slow-turn-nine-birds-one-fire-and-twenty-minutes-of-waiting-1k17)**
