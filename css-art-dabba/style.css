@@ -1,0 +1,874 @@
+/* ============================================================
+   THE DABBA
+   A four-tier steel tiffin carrier, unpacked: three boxes lifted
+   out and steaming — dal, rice and a stack of chapatis — with a
+   vegetable sabzi still in the frame. Pure CSS — no SVG, no
+   images, no canvas. Every shape is a div, a gradient or a
+   shadow.
+
+   Sized entirely in `cqw` (1% of the scene's own width) off one
+   container query, so the whole picture scales to any viewport
+   with no media queries and no magic numbers.
+
+   THE ONE IDEA WORTH STEALING FROM THIS FILE
+   ------------------------------------------
+   Steel is not grey, and it is not a two-stop gradient. A metal
+   cylinder is a MIRROR bent into a curve, so what you are drawing
+   is not the object — it is the room reflected in it, squeezed
+   into vertical bands. Bright where it catches the window, dark
+   where it catches the shadow under the table, bright again at
+   the edge where the curve turns away.
+
+   That is why --steel-band has fourteen stops and no even spacing
+   anywhere. A smooth light-to-dark ramp reads as painted plastic
+   every single time.
+
+   The second half is anisotropy: brushed metal scatters light
+   ALONG the grain, so the highlight smears in one direction
+   instead of pooling in a spot. On a spun tin the grain runs
+   around the cylinder, so the grain layer is horizontal while the
+   reflection bands are vertical. Those two crossing at right
+   angles are what makes it read as steel rather than chrome.
+
+   GEOMETRY, so the packed positions can be re-derived rather than
+   nudged. Every box is 26 x 11cqw, because a tiffin's tiers are
+   identical and the eye notices immediately if they are not, and
+   four of them have to fit under the handle. Carrier is CENTRED
+   at x32-58 so the packed stack sits mid-frame.
+
+     slots (x32)   base y48   s3 y37   s2 y26   s1 y15
+     sabzi  x32 y48 -> stays in the frame, only its mouth shuts
+     dal    x2  y45 -> s3 : translate(+30,  -8)
+     rice   x66 y45 -> s2 : translate(-34, -19)
+     roti   x6  y59 -> s1 : translate(+26, -44)
+     lid    centre (81.5, 64) -> (45, 16.4), scaleY(0.62)
+
+   Boxes are 11cqw deep and their MOUTHS are 8cqw — nearly as tall
+   as the box. That is not an accident. At the old 4:1 mouth there
+   was no vertical room for anything with a shape in it: uniform
+   textures like dal and rice read fine, but chapatis and a chunky
+   sabzi turned to mush. Opening the mouth up is the same as
+   raising the camera, and food needs to be looked down into.
+
+   X and Y are split across .box and .box__lift so they can run
+   different curves and trace an arc — see CHOREOGRAPHY below.
+   ============================================================ */
+
+:root {
+  --steel-0: #f8fbfe;
+  --steel-1: #c6cfd7;
+  --steel-2: #7b858d;
+  --steel-3: #4b535a;
+  --steel-4: #292f34;
+
+  --dal-0: #f3bd48;
+  --dal-1: #dc9a2c;
+  --dal-2: #b5741b;
+  --dal-3: #83500e;
+  --ghee:  #ffe488;
+  --herb:  #5f9c2c;
+
+  --rice-0: #fdfaf3;
+  --rice-1: #eee5d4;
+  --rice-2: #cec2ab;
+  --rice-3: #9c907a;
+
+  --wood-0: #4a4038;
+  --wood-1: #332c26;
+  --wood-2: #1e1a16;
+
+  --ease: cubic-bezier(0.34, 0.02, 0.2, 1);
+
+  --steel-band: linear-gradient(90deg,
+    #3d454b  0%,
+    #78838c  5%,
+    #c2cbd3 13%,
+    #eff4f9 19%,
+    #a9b4bc 27%,
+    #6d777f 37%,
+    #586169 45%,
+    #919ba4 55%,
+    #dce3e9 63%,
+    #f8fbfe 69%,
+    #b3bdc5 77%,
+    #778189 85%,
+    #474f56 93%,
+    #6a737b 100%);
+
+  --steel-grain: repeating-linear-gradient(0deg,
+    rgba(255,255,255,0.06) 0 0.07cqw,
+    rgba(0,0,0,0.055)      0.07cqw 0.15cqw,
+    transparent            0.15cqw 0.33cqw);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  gap: 1.5rem;
+  padding: clamp(1rem, 4vw, 3rem);
+  background: radial-gradient(120% 90% at 50% 0%, #191d21 0%, #08090b 72%);
+  color: #939ba3;
+  font: 400 1rem/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.stage {
+  display: grid;
+  justify-items: center;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 60rem;
+}
+
+.caption {
+  margin: 0;
+  max-width: 34rem;
+  text-align: center;
+  font-size: clamp(0.85rem, 2.4vw, 1rem);
+  text-wrap: balance;
+}
+.caption strong { color: var(--dal-0); font-weight: 600; }
+
+/* ---------- the one interactive affordance ------------------ */
+.pack {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0.55rem 1.15rem;
+  border: 1px solid #3a4249;
+  border-radius: 999px;
+  background: #161a1e;
+  color: #c8d1d9;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.pack:hover { background: #1e2429; border-color: #5c666e; color: #eef4fa; }
+.pack:focus-visible { outline: 3px solid var(--dal-0); outline-offset: 3px; }
+.pack__dot {
+  width: 0.6rem; height: 0.6rem;
+  border-radius: 50%;
+  background: var(--dal-1);
+  box-shadow: 0 0 0.55rem var(--dal-2);
+  transition: background 0.9s ease, box-shadow 0.9s ease;
+}
+.pack[aria-pressed="true"] .pack__dot { background: #454e56; box-shadow: none; }
+
+/* ============================================================
+   SCENE  —  100cqw wide, 74cqw tall
+   ============================================================ */
+.scene {
+  container-type: inline-size;
+  position: relative;
+  width: min(100%, calc((100vh - 15rem) * 1.35));
+  width: min(100%, calc((100dvh - 15rem) * 1.35));
+  aspect-ratio: 50 / 37;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: #0b0d0f;
+  box-shadow: 0 0 0 1px #23282c, 0 2.5rem 5rem -1rem #000;
+  isolation: isolate;
+}
+
+/* Cool, flat morning light — a kitchen counter at 7am while
+   somebody packs this. Steel needs a COLD room to reflect, and it
+   leaves the food as the only warm thing in the frame. */
+.room {
+  position: absolute;
+  inset: 0 0 30cqw 0;
+  background:
+    radial-gradient(58% 78% at 26% 8%, rgba(214,231,244,0.16) 0%, transparent 66%),
+    linear-gradient(#1d232a 0%, #262d35 52%, #2e363f 100%);
+}
+
+.table {
+  position: absolute;
+  inset: 44cqw 0 0 0;
+  background: linear-gradient(var(--wood-0) 0%, var(--wood-1) 14%, var(--wood-2) 70%, #131110 100%);
+  box-shadow: 0 -0.16cqw 0 #5d5147 inset;
+}
+
+/* This was a brown ellipse meant to be a folded cloth, and at this
+   size it read as a stain on the table — a shape with no fabric in
+   it is just a blob. Replaced with what it was really for: a pool
+   of warm light under the group, tying three separate objects to
+   one surface and giving the dark half of the frame something to
+   do. Screened, so it lifts the wood rather than painting on it. */
+.cloth {
+  position: absolute;
+  left: 4cqw;
+  top: 42cqw;
+  width: 92cqw;
+  height: 30cqw;
+  border-radius: 50%;
+  background: radial-gradient(closest-side,
+    rgba(255,214,158,0.17) 0%,
+    rgba(255,196,132,0.07) 46%,
+    transparent 78%);
+  filter: blur(2.2cqw);
+  mix-blend-mode: screen;
+}
+
+/* ============================================================
+   THE CARRIER
+   ============================================================ */
+/* The handle is a thick-bordered ellipse with its bottom clipped
+   away — an arc, with no path anywhere. */
+.carrier__handle {
+  position: absolute;
+  left: 31.6cqw;
+  top: 0cqw;
+  width: 26cqw;
+  height: 12cqw;
+  border-radius: 50%;
+  border: 1.6cqw solid;
+  border-color: var(--steel-1) var(--steel-2) transparent var(--steel-2);
+  clip-path: inset(0 0 52% 0);
+  filter: drop-shadow(0 0.3cqw 0.5cqw rgba(0,0,0,0.55));
+}
+
+.carrier__post {
+  position: absolute;
+  top: 5cqw;
+  width: 1.3cqw;
+  height: 56cqw;
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    var(--steel-4) 0%, var(--steel-1) 34%, var(--steel-0) 48%, var(--steel-2) 66%, var(--steel-4) 100%);
+  box-shadow: 0 0.3cqw 0.7cqw rgba(0,0,0,0.6);
+}
+.carrier__post--l { left: 31cqw; }
+.carrier__post--r { left: 57.7cqw; }
+
+/* Pushed up out of the way while the dabba is open — which is
+   also what gives it somewhere to travel from. */
+.carrier__yoke {
+  position: absolute;
+  left: 30cqw;
+  top: 7cqw;
+  width: 29.5cqw;
+  height: 1.9cqw;
+  border-radius: 999px;
+  background: linear-gradient(var(--steel-0) 0%, var(--steel-1) 30%, var(--steel-2) 62%, var(--steel-4) 100%);
+  box-shadow: 0 0.4cqw 0.8cqw rgba(0,0,0,0.55);
+
+}
+
+.carrier__foot {
+  position: absolute;
+  left: 30cqw;
+  top: 59cqw;
+  width: 29.5cqw;
+  height: 2.2cqw;
+  border-radius: 999px;
+  background: linear-gradient(var(--steel-1) 0%, var(--steel-2) 42%, var(--steel-4) 100%);
+  box-shadow: 0 0.7cqw 1.4cqw rgba(0,0,0,0.65);
+}
+
+/* ============================================================
+   STEEL BOXES
+   .tier is the one that stays in the frame; .box is one that has
+   been lifted out. Same body, but a .box has a mouth you can see
+   into and a .tier does not.
+   ============================================================ */
+
+.box__body {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5cqw / 1.2cqw;
+  background: var(--steel-band);
+  /* the cylinder turns away top and bottom too, which vertical
+     bands cannot express on their own */
+  box-shadow:
+    inset 0 0.9cqw 1.6cqw rgba(255,255,255,0.16),
+    inset 0 -1.1cqw 1.8cqw rgba(0,0,0,0.5),
+    0 0.6cqw 1.3cqw rgba(0,0,0,0.5);
+}
+
+/* Three cylinders showing the IDENTICAL reflection is the other
+   thing that reads as computer-generated — real objects stand in
+   different places and therefore mirror different parts of the
+   room. Oversizing the band to 118% and sliding each one to a
+   different offset gives each box its own reflection out of one
+   shared gradient. */
+.box__body { background-size: 118% 100%; }
+.box--sabzi   .box__body { background-position: 40% 50%; }
+.box--dal     .box__body { background-position:  6% 50%; }
+.box--rice    .box__body { background-position: 76% 50%; }
+.box--chapati .box__body { background-position: 22% 50%; }
+
+.box__grain {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5cqw / 1.2cqw;
+  background: var(--steel-grain);
+  opacity: 0.85;
+}
+
+
+/* ---------- the three boxes that come out ------------------- */
+/* COMPOSITION.
+   The first arrangement put carrier, dal and rice in a row with
+   clear air between them, which is an exploded diagram, not a
+   photograph. Real still lifes OVERLAP — occlusion is most of what
+   builds depth. So the dal box now laps over the carrier and the
+   rice box laps over the dal, each one lower in frame than the
+   last, because lower reads as nearer.
+
+   The rice box also sits at scale(1.06). It is the same box, so it
+   cannot be a different size once stacked — but at rest, nearer
+   things are bigger, and that 6% is the difference between two
+   objects and two objects at different distances. */
+.box {
+  position: absolute;
+  width: 26cqw;
+  height: 11cqw;
+}
+.box--sabzi   { left: 32cqw; top: 48cqw; }
+.box--dal     { left: 2cqw;  top: 45cqw; }
+.box--rice    { left: 66cqw; top: 45cqw; }
+.box--chapati { left: 6cqw;  top: 59cqw; transform: scale(1.06); }
+
+/* Contact shadow, pooled on the table. It lives on .box while the
+   vertical travel lives on .box__lift, which means the shadow
+   STAYS DOWN as the box rises — the single cheapest way to make a
+   lift read as a lift rather than as a slide. */
+.box::before {
+  content: '';
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  bottom: -1.8cqw;
+  height: 4.4cqw;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(6,5,3,0.66) 0%, rgba(6,5,3,0.26) 56%, transparent 84%);
+  filter: blur(0.75cqw);
+  transition: opacity 0.5s ease;
+}
+
+/* Reflection. A steel box on a hard table throws a soft smear of
+   its own brightness downward — not a mirror image, just enough
+   light under the object to say the surface is not felt. This and
+   the contact shadow together are what stop the boxes looking
+   pasted onto the background, which they did. */
+.box::after,
+.lid::after {
+  content: '';
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 100%;
+  height: 6.5cqw;
+  border-radius: 0 0 46% 46% / 0 0 100% 100%;
+  background: linear-gradient(rgba(196,208,220,0.17), rgba(196,208,220,0));
+  filter: blur(0.55cqw);
+  transition: opacity 0.5s ease;
+}
+.lid::after { height: 4cqw; }
+
+/* the vertical half of the journey, on its own element so it can
+   run a different curve from the horizontal and trace an arc */
+.box__lift {
+  position: absolute;
+  inset: 0;
+}
+
+/* Everything you can see INTO. Fades on packing, because a box
+   with another box stacked on it shows you nothing. */
+/* Opened up from 5.4cqw to 7.2cqw. At 4.8:1 the mouth was so flat
+   there was nowhere for the food to be — and the food is the only
+   colour in the picture, so squeezing it was the wrong economy. */
+.box__mouth {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -2.6cqw;
+  height: 8cqw;
+}
+
+.box__rim {
+  position: absolute;
+  left: -0.9cqw;
+  right: -0.9cqw;
+  top: -0.5cqw;
+  height: 9cqw;
+  border-radius: 50%;
+  border: 0.62cqw solid;
+  border-color: #f2f6fa #8d979f #5b646c #a8b2ba;
+  box-shadow:
+    0 0.4cqw 0.9cqw rgba(0,0,0,0.5),
+    inset 0 0 0.6cqw rgba(255,255,255,0.4);
+}
+
+/* `overflow: hidden` here is what stops the food spilling past the
+   rim when it is drawn as a plain ellipse. */
+.well {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #14110c;
+}
+.well__shadow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0.8cqw 1.1cqw rgba(0,0,0,0.72);
+}
+
+/* ---------- dal --------------------------------------------- */
+.dal {
+  position: absolute;
+  inset: 0.4cqw 0.55cqw 0 0.55cqw;
+  border-radius: 50%;
+  background:
+    radial-gradient(18% 42% at 24% 46%, rgba(131,80,14,0.5)  0%, transparent 74%),
+    radial-gradient(14% 36% at 62% 60%, rgba(131,80,14,0.42) 0%, transparent 76%),
+    radial-gradient(12% 30% at 80% 38%, rgba(255,225,140,0.4) 0%, transparent 78%),
+    radial-gradient(60% 90% at 42% 20%, var(--dal-0) 0%, var(--dal-1) 46%, var(--dal-2) 82%, var(--dal-3) 100%);
+}
+/* poured on, not stirred in, so it sits off-centre */
+.ghee {
+  position: absolute;
+  left: 33%;
+  top: 32%;
+  width: 27%;
+  height: 42%;
+  border-radius: 54% 46% 48% 52% / 58% 52% 48% 42%;
+  background:
+    radial-gradient(50% 46% at 36% 30%, rgba(255,255,235,0.9) 0%, rgba(255,236,150,0.5) 52%, rgba(255,228,136,0) 100%),
+    linear-gradient(140deg, var(--ghee) 0%, #f0c04a 100%);
+}
+.seeds i {
+  position: absolute;
+  width: 1.4cqw;
+  height: 0.62cqw;
+  border-radius: 50% 8% 50% 8%;
+  background: linear-gradient(150deg, #7cb93a 0%, var(--herb) 58%, #35630f 100%);
+}
+.seeds i:nth-child(1) { left: 18%; top: 40%; transform: rotate(-24deg); }
+.seeds i:nth-child(2) { left: 34%; top: 64%; transform: rotate( 18deg); }
+.seeds i:nth-child(3) { left: 54%; top: 28%; transform: rotate( -8deg); }
+.seeds i:nth-child(4) { left: 68%; top: 58%; transform: rotate( 34deg); }
+.seeds i:nth-child(5) { left: 82%; top: 38%; transform: rotate(-30deg); }
+
+/* ---------- rice -------------------------------------------- */
+/* Grains, from two tiled dot-grids at mismatched sizes — the same
+   trick as the blistering on the tandoor birds, but with the tiles
+   stretched WIDE so each dot comes out as a grain rather than a
+   speck. Because the two grids never align, what they beat out
+   reads as scattered. */
+.rice {
+  position: absolute;
+  inset: 0.4cqw 0.55cqw 0 0.55cqw;
+  border-radius: 50%;
+  background:
+    radial-gradient(22% 44% at 30% 36%, rgba(255,255,255,0.6) 0%, transparent 74%),
+    radial-gradient(16% 34% at 68% 56%, rgba(156,144,122,0.4) 0%, transparent 76%),
+    linear-gradient(190deg, var(--rice-0) 0%, var(--rice-1) 48%, var(--rice-2) 82%, var(--rice-3) 100%);
+}
+/* THE TILE TRICK FAILS AT THIS SCALE.
+   Two mismatched dot-grids worked for blistered skin, where the
+   marks are tiny and crowded. Here the dots are big enough to see
+   individually, so the eye locks onto the lattice and reads MESH
+   rather than rice — which is exactly what it did.
+
+   Three fixes: a third grid at a prime-ish size so no two ever
+   line up, all of them turned down to a shimmer, and one of them
+   rotated off-axis so there is no shared horizontal to latch on
+   to. The grids are now texture UNDER the grains, not the grains
+   themselves. */
+.rice::after {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  border-radius: 50%;
+  transform: rotate(-9deg);
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.5)  0 22%, transparent 27%),
+    radial-gradient(circle, rgba(150,138,116,0.3)  0 18%, transparent 23%),
+    radial-gradient(circle, rgba(255,252,244,0.34) 0 15%, transparent 20%);
+  background-size: 1.07cqw 0.61cqw, 0.83cqw 0.47cqw, 0.59cqw 0.39cqw;
+  background-position: 0 0, 0.37cqw 0.23cqw, 0.19cqw 0.31cqw;
+  opacity: 0.4;
+}
+/* a few drawn individually, so the eye has something definite */
+.grains i {
+  position: absolute;
+  width: 1.5cqw;
+  height: 0.5cqw;
+  border-radius: 999px;
+  background: linear-gradient(160deg, #ffffff 0%, var(--rice-1) 62%, var(--rice-2) 100%);
+  box-shadow: 0 0.06cqw 0.12cqw rgba(90,80,64,0.4);
+}
+.grains i:nth-child(1)  { left:  9%; top: 44%; transform: rotate(-18deg); }
+.grains i:nth-child(2)  { left: 17%; top: 62%; transform: rotate( 26deg); }
+.grains i:nth-child(3)  { left: 24%; top: 33%; transform: rotate(  6deg); }
+.grains i:nth-child(4)  { left: 31%; top: 55%; transform: rotate(-34deg); }
+.grains i:nth-child(5)  { left: 38%; top: 39%; transform: rotate( 14deg); }
+.grains i:nth-child(6)  { left: 44%; top: 67%; transform: rotate(-47deg); }
+.grains i:nth-child(7)  { left: 51%; top: 30%; transform: rotate( 21deg); }
+.grains i:nth-child(8)  { left: 57%; top: 52%; transform: rotate( -8deg); }
+.grains i:nth-child(9)  { left: 64%; top: 65%; transform: rotate( 38deg); }
+.grains i:nth-child(10) { left: 70%; top: 36%; transform: rotate(-25deg); }
+.grains i:nth-child(11) { left: 77%; top: 57%; transform: rotate( 11deg); }
+.grains i:nth-child(12) { left: 83%; top: 41%; transform: rotate(-40deg); }
+.grains i:nth-child(13) { left: 89%; top: 60%; transform: rotate( 30deg); }
+.grains i:nth-child(14) { left: 46%; top: 45%; transform: rotate( -3deg); }
+
+/* ---------- chapatis ---------------------------------------- */
+/* WHY THIS IS NOT FOUR FOLDED TRIANGLES ANY MORE.
+   A quarter-fold is a sector, and a sector viewed at this shallow
+   an angle is an ambiguous shape — it could be bread, could be a
+   wedge of anything. Four of them side by side, all the same pale
+   wheat, merged into one smear no matter how much they were
+   outlined or fanned.
+
+   A STACK is unambiguous. Round flatbread piled flat is the most
+   recognisable form bread takes, and the layer edges peeking out
+   along the front do all the work of saying "there are several of
+   these" — which four separate shapes were failing to say.
+
+   So: four discs, each nudged up 0.6cqw from the one below so the
+   pile shows its thickness at the near edge, and the top one
+   folded in half and laid across, which is both the fold that was
+   asked for and the thing that stops the stack reading as a single
+   pancake. */
+.rotis {
+  position: absolute;
+  inset: 0;
+}
+
+/* the discs. Slightly different widths and a degree or two of
+   rotation each, because nobody rolls four identical chapatis. */
+.rotis i {
+  position: absolute;
+  border-radius: 50%;
+  background:
+    /* blistered scorch, heavier towards the rim where the tawa
+       catches it hardest */
+    radial-gradient( 9%  22% at 22% 42%, rgba(112,68,20,0.6)  0%, transparent 70%),
+    radial-gradient( 7%  18% at 74% 58%, rgba(112,68,20,0.5)  0%, transparent 72%),
+    radial-gradient(11%  26% at 52% 30%, rgba(132,86,30,0.42) 0%, transparent 74%),
+    radial-gradient( 6%  16% at 38% 68%, rgba(96,58,16,0.46)  0%, transparent 72%),
+    radial-gradient( 8%  20% at 86% 34%, rgba(112,68,20,0.44) 0%, transparent 72%),
+    /* the puffed middle is always paler than the rim */
+    radial-gradient(58% 62% at 46% 40%, #f7e8c2 0%, #e8d29b 52%, #cbae76 84%, #ac8c56 100%);
+  box-shadow:
+    0 0.16cqw 0.34cqw rgba(52,32,10,0.55),
+    inset 0 -0.18cqw 0.34cqw rgba(120,84,40,0.4);
+}
+.rotis i:nth-child(1) { left: 1.2cqw; top: 2.1cqw; width: 23.2cqw; height: 6.3cqw; transform: rotate( 2deg);   }
+.rotis i:nth-child(2) { left: 1.7cqw; top: 1.5cqw; width: 22.4cqw; height: 6.2cqw; transform: rotate(-1.5deg); }
+.rotis i:nth-child(3) { left: 1.1cqw; top: 0.9cqw; width: 23.6cqw; height: 6.3cqw; transform: rotate( 1deg);   }
+.rotis i:nth-child(4) { left: 1.9cqw; top: 0.3cqw; width: 22.1cqw; height: 6.1cqw; transform: rotate(-2.5deg); }
+
+/* One folded in half and laid across the pile. A half-fold seen
+   from above is a dome — flat edge towards you, curve away — which
+   is a single border-radius and reads immediately as folded in a
+   way the quarter-sector never did. */
+.roti-fold {
+  position: absolute;
+  left: 5.4cqw;
+  top: 0.5cqw;
+  width: 15.4cqw;
+  height: 4.6cqw;
+  border-radius: 50% 50% 10% 10% / 94% 94% 22% 22%;
+  transform: rotate(-6deg);
+  background:
+    radial-gradient( 8% 20% at 30% 52%, rgba(112,68,20,0.55) 0%, transparent 72%),
+    radial-gradient(10% 24% at 66% 38%, rgba(132,86,30,0.46) 0%, transparent 74%),
+    radial-gradient( 6% 16% at 48% 70%, rgba(96,58,16,0.5)   0%, transparent 72%),
+    linear-gradient(168deg, #f9ecca 0%, #ecd8a4 44%, #d2b57e 78%, #b0905c 100%);
+  box-shadow:
+    0 0.3cqw 0.55cqw rgba(48,30,10,0.55),
+    inset 0 -0.2cqw 0.4cqw rgba(126,90,44,0.42);
+}
+/* the fold itself — a hard crease along the straight edge, which
+   is the one line that says this is folded and not just smaller */
+.roti-fold::after {
+  content: '';
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  bottom: 0.1cqw;
+  height: 0.5cqw;
+  border-radius: 999px;
+  background: linear-gradient(90deg,
+    rgba(150,110,60,0) 0%,
+    rgba(122,84,38,0.72) 18%,
+    rgba(96,62,22,0.8) 50%,
+    rgba(122,84,38,0.7) 82%,
+    rgba(150,110,60,0) 100%);
+}
+
+/* ---------- vegetable sabzi --------------------------------- */
+.sabzi {
+  position: absolute;
+  inset: 0.35cqw 0.5cqw 0 0.5cqw;
+  border-radius: 50%;
+  background:
+    radial-gradient(16% 38% at 28% 48%, rgba(88,38,8,0.5)  0%, transparent 74%),
+    radial-gradient(13% 32% at 66% 58%, rgba(88,38,8,0.42) 0%, transparent 76%),
+    radial-gradient(11% 28% at 82% 36%, rgba(255,180,90,0.34) 0%, transparent 78%),
+    radial-gradient(60% 90% at 44% 22%, #d4761f 0%, #b8571a 44%, #8f3f12 80%, #5f2708 100%);
+}
+/* Chunks, not a purée. A curry reads as a curry because you can
+   pick out what is in it — so every piece is a different colour,
+   a different size and a different shape. */
+.veg i {
+  position: absolute;
+  box-shadow: 0 0.16cqw 0.3cqw rgba(30,12,2,0.55);
+}
+/* Every chunk carries a wet highlight up and left. That one shared
+   detail is what makes them read as pieces sitting IN gravy rather
+   than as coloured shapes printed on it. */
+.veg .veg--potato {
+  width: 4.2cqw; height: 3cqw;
+  border-radius: 34% 40% 32% 38% / 42% 36% 44% 38%;
+  background:
+    radial-gradient(38% 40% at 30% 24%, rgba(255,252,232,0.85) 0%, transparent 68%),
+    linear-gradient(150deg, #fbecb6 0%, #eed58e 46%, #c9a659 100%);
+}
+.veg .veg--tomato {
+  width: 3.4cqw; height: 2.4cqw;
+  border-radius: 46% 54% 42% 58% / 56% 48% 52% 44%;
+  background:
+    radial-gradient(36% 38% at 32% 26%, rgba(255,230,214,0.72) 0%, transparent 66%),
+    linear-gradient(150deg, #e8623a 0%, #c9361a 54%, #8e1f0d 100%);
+}
+.veg .veg--carrot {
+  width: 3.6cqw; height: 2cqw;
+  border-radius: 38% 38% 38% 38% / 50%;
+  background:
+    radial-gradient(40% 42% at 30% 26%, rgba(255,236,198,0.7) 0%, transparent 66%),
+    linear-gradient(150deg, #fba338 0%, #dd7418 58%, #a94d0e 100%);
+}
+.veg .veg--pea {
+  width: 1.7cqw; height: 1.55cqw;
+  border-radius: 50%;
+  background:
+    radial-gradient(40% 40% at 32% 26%, rgba(238,255,214,0.9) 0%, transparent 62%),
+    linear-gradient(150deg, #93d857 0%, #5f9c2c 56%, #35620f 100%);
+}
+.veg .veg--herb {
+  width: 2.8cqw; height: 1.2cqw;
+  border-radius: 50% 8% 50% 8%;
+  background: linear-gradient(150deg, #8ecb46 0%, var(--herb) 58%, #35630f 100%);
+}
+.veg i:nth-child(1) { left:  8%; top: 30%; transform: rotate(-14deg); }
+.veg i:nth-child(2) { left: 58%; top: 46%; transform: rotate( 22deg); }
+.veg i:nth-child(3) { left: 30%; top: 52%; transform: rotate(  8deg); }
+.veg i:nth-child(4) { left: 76%; top: 24%; transform: rotate(-26deg); }
+.veg i:nth-child(5) { left: 45%; top: 22%; transform: rotate( 16deg); }
+.veg i:nth-child(6) { left: 24%; top: 22%; }
+.veg i:nth-child(7) { left: 52%; top: 66%; }
+.veg i:nth-child(8) { left: 87%; top: 52%; }
+.veg i:nth-child(9) { left: 38%; top: 68%; transform: rotate(-32deg); }
+
+/* ============================================================
+   THE LID
+   ============================================================ */
+.lid {
+  position: absolute;
+  left: 68cqw;
+  top: 60cqw;
+  width: 27cqw;
+  height: 8cqw;
+  transform: rotate(-5deg);
+  transform-origin: 50% 50%;
+}
+.lid::before {
+  content: '';
+  position: absolute;
+  left: -6%;
+  right: -6%;
+  bottom: -1.2cqw;
+  height: 3.4cqw;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(6,5,3,0.6) 0%, rgba(6,5,3,0.22) 58%, transparent 84%);
+  filter: blur(0.7cqw);
+}
+.lid__face {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(58% 58% at 34% 26%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 62%),
+    var(--steel-band);
+  box-shadow:
+    inset 0 0 0 0.4cqw rgba(255,255,255,0.28),
+    0 1cqw 1.8cqw rgba(0,0,0,0.6);
+}
+.lid__grain {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  /* a pressed lid's grain runs in rings, so this one is conic */
+  background: repeating-conic-gradient(from 0deg at 50% 50%,
+    rgba(255,255,255,0.05) 0deg 1.1deg,
+    rgba(0,0,0,0.045)      1.1deg 2.3deg);
+  opacity: 0.8;
+}
+.lid__knob {
+  position: absolute;
+  left: 39%;
+  top: 32%;
+  width: 22%;
+  height: 34%;
+  border-radius: 50%;
+  background: linear-gradient(150deg, var(--steel-0) 0%, var(--steel-1) 40%, var(--steel-3) 100%);
+  box-shadow:
+    inset 0 -0.3cqw 0.5cqw rgba(0,0,0,0.4),
+    0 0.3cqw 0.6cqw rgba(0,0,0,0.5);
+}
+
+/* ============================================================
+   STEAM  —  one column per open box
+   ============================================================ */
+.steam {
+  position: absolute;
+  width: 30cqw;
+  height: 24cqw;
+  transform: translateX(-50%);
+  pointer-events: none;
+  transition: opacity 0.9s ease;
+}
+.steam--dal     { left: 15cqw; top: 21cqw; }
+.steam--rice    { left: 79cqw; top: 21cqw; }
+.steam--sabzi   { left: 45cqw; top: 24cqw; }
+.steam--chapati { left: 19cqw; top: 35cqw; opacity: 0.55; }
+
+.steam i {
+  position: absolute;
+  left: calc(50% + var(--x, 0cqw));
+  bottom: 0;
+  width: var(--w, 3.2cqw);
+  height: var(--w, 3.2cqw);
+  border-radius: 50%;
+  /* was barely visible against a dark room — steam off hot food is
+     the only thing here that says the food is hot */
+  background: radial-gradient(closest-side, rgba(240,247,252,0.72) 0%, rgba(236,244,250,0.2) 58%, transparent 100%);
+  filter: blur(0.7cqw);
+  opacity: 0;
+  animation: steamRise var(--d, 7s) ease-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+/* fallback, so both columns are alive with the JS pane emptied */
+.steam i:nth-child(1) { --x: -6cqw; --w: 2.8cqw; --d: 6.6s; --delay: -0.5s; --drift:  4cqw; }
+.steam i:nth-child(2) { --x: -2cqw; --w: 3.6cqw; --d: 8.0s; --delay: -3.0s; --drift: -3cqw; }
+.steam i:nth-child(3) { --x:  2cqw; --w: 3.1cqw; --d: 7.1s; --delay: -5.2s; --drift:  5cqw; }
+.steam i:nth-child(4) { --x:  6cqw; --w: 3.9cqw; --d: 8.6s; --delay: -1.9s; --drift: -4cqw; }
+.steam i:nth-child(5) { --x:  0cqw; --w: 2.6cqw; --d: 7.4s; --delay: -6.1s; --drift:  3cqw; }
+/* the rice column runs on its own clocks, or the two read as one */
+.steam--rice i:nth-child(1) { --d: 7.8s; --delay: -2.2s; }
+.steam--rice i:nth-child(2) { --d: 6.9s; --delay: -5.7s; }
+.steam--rice i:nth-child(3) { --d: 8.3s; --delay: -0.8s; }
+.steam--rice i:nth-child(4) { --d: 7.2s; --delay: -4.4s; }
+.steam--rice i:nth-child(5) { --d: 6.4s; --delay: -6.8s; }
+
+@keyframes steamRise {
+  0%   { transform: translate(0, 0) scale(0.5); opacity: 0; }
+  18%  { opacity: 0.8; }
+  70%  { opacity: 0.36; }
+  100% { transform: translate(var(--drift, 3cqw), -21cqw) scale(2.2); opacity: 0; }
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(82% 74% at 48% 44%, transparent 42%, rgba(0,0,0,0.62) 100%);
+}
+
+/* ============================================================
+   PACKED UP
+   The three loose boxes travel back into the carrier, the sabzi
+   box shuts where it stands, the lid goes on and the
+   clamp slides down onto it. Four things moving on one class, all
+   derived from the geometry in the header comment:
+
+     dal   x40 y40 -> x10 y31   = translate(-30cqw,  -9cqw)
+     rice  x69 y48 -> x10 y18   = translate(-59cqw, -30cqw)
+     lid   centre (18.5, 64) -> (23, 18.3), and scaleY(0.62)
+           because the tier mouth is 46cqw higher up and therefore
+           much nearer eye level, so the same circle is far more
+           foreshortened there. Without that scale it is a disc
+           sliding across the picture rather than a lid going on.
+     yoke  seated lid top edge = 18.3 - (8 * 0.62)/2 = 15.82
+           yoke bottom at rest = 10 + 1.9 = 11.9  ->  +3.9cqw
+   ============================================================ */
+/* ---------- CHOREOGRAPHY ------------------------------------
+   The first version moved all four objects simultaneously on the
+   same 1.15s curve, which is why closing the dabba felt like a
+   machine rather than like hands. Two changes fix it.
+
+   ARC, not a straight line. Horizontal travel lives on .box and
+   vertical on .box__lift, running different curves — X on a plain
+   ease, Y with a slight overshoot — so the path bends and the box
+   settles instead of arriving. Nothing in the physical world moves
+   diagonally in a straight line at constant proportion.
+
+   SEQUENCE, not a chord. You cannot put the lid on before the
+   boxes are in, so it does not: dal, then rice, then the mouths
+   go dark, then the lid, then the clamp. Roughly 1.9s in total.
+   Opening reverses the order — clamp, lid, rice, dal, food, steam
+   — which is why the delays are declared on both states rather
+   than shared. Reversing a sequence is not the same as playing it
+   backwards, and CSS will not work that out for you.
+   ------------------------------------------------------------ */
+:root {
+  --travel-x: cubic-bezier(0.42, 0, 0.22, 1);
+  --travel-y: cubic-bezier(0.34, 1.18, 0.60, 1);   /* settles */
+}
+
+/* OPENING — unpack, outward-in reversed */
+.box            { transition: transform 0.8s var(--travel-x) 0.9s; }
+.box__lift      { transition: transform 0.8s var(--travel-y) 1.0s; }
+.box--chapati        { transition-delay: 0.75s; }
+.box--chapati .box__lift { transition-delay: 0.85s; }
+.box--rice           { transition-delay: 0.95s; }
+.box--rice .box__lift    { transition-delay: 1.05s; }
+.box--dal            { transition-delay: 1.15s; }
+.box--dal .box__lift     { transition-delay: 1.25s; }
+.box__mouth     { transition: opacity 0.45s ease 1.3s; }
+.lid            { transition: transform 0.8s var(--travel-x) 0.3s; }
+.carrier__yoke  { transition: transform 0.6s var(--travel-x) 0s; }
+.steam          { transition: opacity 1s ease 1.6s; }
+
+/* CLOSING — pack, and the order inverts */
+.scene.is-packed .box--dal     { transform: translateX( 30cqw); transition-delay: 0.15s; }
+.scene.is-packed .box--rice    { transform: translateX(-34cqw); transition-delay: 0.3s; }
+.scene.is-packed .box--chapati { transform: translateX( 26cqw) scale(1); transition-delay: 0.45s; }
+.scene.is-packed .box--dal     .box__lift { transform: translateY( -8cqw);   transition-delay: 0.2s; }
+.scene.is-packed .box--rice    .box__lift { transform: translateY(-19cqw);   transition-delay: 0.35s; }
+.scene.is-packed .box--chapati .box__lift { transform: translateY(-44cqw);   transition-delay: 0.5s; }
+.scene.is-packed .box::before,
+.scene.is-packed .box::after { opacity: 0; transition-delay: 0.35s; }
+.scene.is-packed .box__mouth  { opacity: 0; transition-delay: 0.75s; }
+/* the sabzi box never travels; only its lid-less mouth closes */
+.scene.is-packed .box--sabzi .box__mouth { transition-delay: 0.9s; }
+.scene.is-packed .lid { transform: translate(-36.5cqw, -47.6cqw) rotate(0deg) scaleY(0.62); transition-delay: 0.85s; }
+.scene.is-packed .carrier__yoke { transform: translateY(5cqw); transition-delay: 1.5s; }
+.scene.is-packed .steam { opacity: 0; transition: opacity 0.4s ease 0s; }
+
+/* ============================================================
+   REDUCED MOTION
+   Both states stay reachable — they just arrive instead of
+   travelling. Less movement, not less picture.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .steam i {
+    animation: none;
+    opacity: 0.32;
+    transform: translate(var(--drift, 3cqw), -11cqw) scale(1.6);
+  }
+  .box, .lid, .carrier__yoke, .box__mouth { transition: none; }
+  .pack { transition: none; }
+}

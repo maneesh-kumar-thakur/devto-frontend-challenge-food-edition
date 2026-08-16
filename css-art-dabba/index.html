@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Dabba — CSS Art</title>
+  <meta name="description" content="Pure-CSS art: a four-tier steel tiffin carrier unpacked — dal, rice, a stack of chapatis and a vegetable sabzi, all steaming. No SVG, no images, no canvas.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="stage">
+
+    <div
+      class="scene"
+      id="scene"
+      role="img"
+      aria-label="A four-tier steel tiffin carrier standing open on a table. The bottom box is still in the wire frame and holds a vegetable sabzi of potato, tomato, peas and carrot. Three boxes have been lifted out and set down around it: dal with a pool of melted ghee, steamed rice, and a stack of four chapatis with the top one folded in half. All four are steaming, and the lid lies flat on the table."
+    >
+
+      <!-- ── the setting ──────────────────────────────────────── -->
+      <div class="room" aria-hidden="true"></div>
+      <div class="table" aria-hidden="true"></div>
+      <div class="cloth" aria-hidden="true"></div>
+
+      <!-- ── the wire carrier ─────────────────────────────────── -->
+      <div class="carrier__handle" aria-hidden="true"></div>
+      <div class="carrier__post carrier__post--l" aria-hidden="true"></div>
+      <div class="carrier__post carrier__post--r" aria-hidden="true"></div>
+
+      <!-- ══ THE FOUR BOXES ═══════════════════════════════════════
+           DOM order is stacking order, bottom to top, and it has to
+           serve BOTH states: in the frame the upper boxes must paint
+           over the lower ones, and on the table the nearer ones must
+           paint over the further ones. One order happens to do both.
+
+           The sabzi box never leaves the frame. That is deliberate:
+           four boxes out would leave the carrier an empty cage, and
+           an open box in the base slot is physically honest because
+           there is nothing stacked on it to be in the way.
+           ═══════════════════════════════════════════════════════ -->
+
+      <div class="box box--sabzi" aria-hidden="true">
+        <div class="box__lift">
+          <div class="box__body"></div>
+          <div class="box__grain"></div>
+          <div class="box__mouth">
+            <div class="well">
+              <div class="sabzi"></div>
+              <div class="veg">
+                <i class="veg--potato"></i><i class="veg--potato"></i>
+                <i class="veg--tomato"></i><i class="veg--tomato"></i>
+                <i class="veg--carrot"></i>
+                <i class="veg--pea"></i><i class="veg--pea"></i><i class="veg--pea"></i>
+                <i class="veg--herb"></i>
+              </div>
+              <div class="well__shadow"></div>
+            </div>
+            <div class="box__rim"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box box--dal" aria-hidden="true">
+        <div class="box__lift">
+          <div class="box__body"></div>
+          <div class="box__grain"></div>
+          <div class="box__mouth">
+            <div class="well">
+              <div class="dal"></div>
+              <div class="ghee"></div>
+              <div class="seeds"><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="well__shadow"></div>
+            </div>
+            <div class="box__rim"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box box--rice" aria-hidden="true">
+        <div class="box__lift">
+          <div class="box__body"></div>
+          <div class="box__grain"></div>
+          <div class="box__mouth">
+            <div class="well">
+              <div class="rice"></div>
+              <div class="grains">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <div class="well__shadow"></div>
+            </div>
+            <div class="box__rim"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapatis as a STACK, which is how they actually travel: four
+           round ones piled flat, each offset a little so the layer
+           edges show along the front, and the top one folded in half
+           and laid across. A quarter-fold sector, which this was
+           before, is an ambiguous shape at this viewing angle. -->
+      <div class="box box--chapati" aria-hidden="true">
+        <div class="box__lift">
+          <div class="box__body"></div>
+          <div class="box__grain"></div>
+          <div class="box__mouth">
+            <div class="well">
+              <div class="rotis">
+                <i></i><i></i><i></i><i></i>
+                <span class="roti-fold"></span>
+              </div>
+              <div class="well__shadow"></div>
+            </div>
+            <div class="box__rim"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="carrier__foot" aria-hidden="true"></div>
+
+      <!-- ── the lid, flat on the table ───────────────────────── -->
+      <div class="lid" aria-hidden="true">
+        <div class="lid__face"></div>
+        <div class="lid__grain"></div>
+        <div class="lid__knob"></div>
+      </div>
+
+      <!-- Drawn after the lid on purpose: it comes down and rests ON
+           it, so painting it earlier would put it behind at the one
+           moment it needs to be in front. -->
+      <div class="carrier__yoke" aria-hidden="true"></div>
+
+      <!-- ── steam, one column per open box ───────────────────── -->
+      <div class="steam steam--dal" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="steam steam--rice" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="steam steam--sabzi" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="steam steam--chapati" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+
+      <div class="vignette" aria-hidden="true"></div>
+    </div>
+
+    <p class="caption">
+      <strong>The Dabba</strong> &mdash; dal, rice, roti, sabzi. The dish you
+      grew up eating, in the box somebody packed it in for you.
+    </p>
+
+    <button class="pack" id="pack" type="button" aria-pressed="false">
+      <span class="pack__dot" aria-hidden="true"></span>
+      <span id="pack-label">Pack it up</span>
+    </button>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
