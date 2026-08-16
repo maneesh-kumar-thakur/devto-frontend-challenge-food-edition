@@ -164,10 +164,12 @@ hiding it — reduced motion means *less movement*, not *less picture*.
 
 ---
 
-This is my second CSS Art entry this round, alongside
+This is one of my five CSS Art entries this round, alongside
 [Midnight Fridge Raid](https://dev.to/maneesh_thakur_d16c2852fa/midnight-fridge-raid-comfort-food-isnt-a-dish-its-2am-1l04),
-[Soft Boil](https://dev.to/maneesh_thakur_d16c2852fa/soft-boil-six-minutes-and-you-cannot-get-it-wrong-5dj6)
+[Soft Boil](https://dev.to/maneesh_thakur_d16c2852fa/soft-boil-six-minutes-and-you-cannot-get-it-wrong-5dj6),
 [Slow Turn](https://dev.to/maneesh_thakur_d16c2852fa/slow-turn-nine-birds-one-fire-and-twenty-minutes-of-waiting-1k17)
 and [The Dabba](https://dev.to/maneesh_thakur_d16c2852fa/the-dabba-the-box-somebody-packed-for-you-before-you-were-awake-19l7).
 Five very different answers to the same question: comfort food isn't a
 recipe, it's a time of day.
+
+Code is MIT licensed and on [GitHub](https://github.com/maneesh-kumar-thakur/devto-frontend-challenge-food-edition).

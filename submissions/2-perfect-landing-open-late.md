@@ -211,3 +211,5 @@ Worth adding to your own checklist.
 
 Thanks for reading. The whole thing is three files and no dependencies, so
 it's easy to pull apart if any of it is useful to you.
+
+Code is MIT licensed and on [GitHub](https://github.com/maneesh-kumar-thakur/devto-frontend-challenge-food-edition).
