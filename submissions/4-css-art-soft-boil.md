@@ -31,9 +31,8 @@ canvas.
 
 ## Demo
 
-<!-- {% embed %}, not {% codepen %} — see the README. Paste the pen URL,
-     copied from the address bar the same way the other two were. -->
-{% embed https://codepen.io/Maneesh-Thakur/pen/EGGS-PEN-URL %}
+<!-- {% embed %}, not {% codepen %} — see the README. -->
+{% embed https://codepen.io/editor/Maneesh-Thakur/pen/01a00952-4692-7510-92f4-e94d150044e0 %}
 
 Press **Turn off the heat** and give it a few seconds. The ring dies back, the
 bubbles thin out, and the eggs slowly stop moving — then put it back on and
