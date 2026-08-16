@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Soft Boil — CSS Art</title>
+  <meta name="description" content="Pure-CSS art: five eggs at a rolling boil in a glass bowl on an induction hob. No SVG, no images, no canvas.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="stage">
+
+    <div
+      class="scene"
+      id="scene"
+      role="img"
+      aria-label="Five white eggs at a rolling boil inside a clear glass bowl on an induction hob. The element ring glows orange beneath the glass, bubbles stream up through the water, and steam drifts off the surface."
+    >
+
+      <!-- ── the setting ──────────────────────────────────────── -->
+      <div class="room" aria-hidden="true"></div>
+      <div class="counter" aria-hidden="true"></div>
+
+      <!-- ── the induction hob ────────────────────────────────── -->
+      <div class="hob" aria-hidden="true">
+        <div class="hob__sheen"></div>
+        <div class="hob__ring"></div>
+        <div class="hob__panel">
+          <span class="hob__led"></span>
+          <span class="hob__mark"></span>
+          <span class="hob__mark"></span>
+        </div>
+      </div>
+
+      <!-- heat spilling out from under the bowl, onto the hob glass -->
+      <div class="spill" aria-hidden="true"></div>
+
+      <!-- ── the bowl ─────────────────────────────────────────── -->
+      <div class="bowl" aria-hidden="true">
+
+        <!-- everything that lives *in* the water is clipped by this
+             element's own border-radius, so nothing can escape the
+             glass silhouette no matter how far it drifts -->
+        <div class="water">
+          <div class="water__body"></div>
+          <div class="water__heat"></div>
+
+          <!-- five eggs. --i seeds the hand-authored fallback motion;
+               the JS overwrites all of it with real randomness. -->
+          <div class="egg egg--1" style="--i:0"></div>
+          <div class="egg egg--2" style="--i:1"></div>
+          <div class="egg egg--3" style="--i:2"></div>
+          <div class="egg egg--4" style="--i:3"></div>
+          <div class="egg egg--5" style="--i:4"></div>
+
+          <!-- the rolling boil -->
+          <div class="bubbles">
+            <i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i>
+            <i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i>
+            <i style="--i:6"></i><i style="--i:7"></i><i style="--i:8"></i>
+            <i style="--i:9"></i><i style="--i:10"></i><i style="--i:11"></i>
+            <i style="--i:12"></i><i style="--i:13"></i>
+          </div>
+
+          <!-- the churn where the boil breaks the surface -->
+          <div class="churn">
+            <i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i>
+            <i style="--i:3"></i><i style="--i:4"></i>
+          </div>
+
+          <div class="water__line"></div>
+        </div>
+
+        <!-- the front wall of the glass, over the top of the water -->
+        <div class="glass"></div>
+        <div class="glass__edge"></div>
+        <div class="rim"></div>
+      </div>
+
+      <!-- ── steam ────────────────────────────────────────────── -->
+      <div class="steam" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+
+      <div class="vignette" aria-hidden="true"></div>
+    </div>
+
+    <p class="caption">
+      <strong>Soft Boil</strong> &mdash; six minutes, one pan, no skill required.
+      The comfort is that you cannot get it wrong.
+    </p>
+
+    <button class="heat" id="heat" type="button" aria-pressed="false">
+      <span class="heat__dot" aria-hidden="true"></span>
+      <span id="heat-label">Turn off the heat</span>
+    </button>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
