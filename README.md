@@ -1,5 +1,7 @@
 # DEV Frontend Challenge — Comfort Food Edition
 
+**[MIT licensed](LICENSE)** · no dependencies · no build step · no image files
+
 Six entries, one idea: **comfort food is defined by the hour you need it,
 not by the recipe.**
 
