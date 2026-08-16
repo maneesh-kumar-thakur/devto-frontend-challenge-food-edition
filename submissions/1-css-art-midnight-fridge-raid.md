@@ -206,5 +206,9 @@ reduced motion means *less movement*, not *less picture*.
 source in it. Light is the most rewarding thing CSS draws, and it does more
 for a picture than any amount of detail work on the objects.
 
-Code is MIT licensed and on [GitHub](YOUR-REPO). Its companion piece, a
-kulhad of chai, is [over here](#).
+Code is MIT licensed and on
+[GitHub](https://github.com/maneesh-kumar-thakur/devto-frontend-challenge-food-edition).
+Its companion pieces: a
+[kulhad of cutting chai](https://dev.to/maneesh_thakur_d16c2852fa/cutting-chai-the-comfort-food-that-isnt-food-drawn-in-css-1c27)
+and
+[five eggs at a rolling boil](https://dev.to/maneesh_thakur_d16c2852fa/soft-boil-six-minutes-and-you-cannot-get-it-wrong-5dj6).

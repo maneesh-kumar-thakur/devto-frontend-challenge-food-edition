@@ -165,6 +165,9 @@ hiding it — reduced motion means *less movement*, not *less picture*.
 
 ---
 
-This is my second CSS Art entry this round, alongside [Midnight Fridge
-Raid](#). Two very different answers to the same question: comfort food isn't
-a recipe, it's a time of day.
+This is my second CSS Art entry this round, alongside
+[Midnight Fridge Raid](https://dev.to/maneesh_thakur_d16c2852fa/midnight-fridge-raid-comfort-food-isnt-a-dish-its-2am-1l04)
+and
+[Soft Boil](https://dev.to/maneesh_thakur_d16c2852fa/soft-boil-six-minutes-and-you-cannot-get-it-wrong-5dj6).
+Three very different answers to the same question: comfort food isn't a
+recipe, it's a time of day.

@@ -303,6 +303,8 @@ make it a *number* rather than a boolean. Registering one custom property with
 of two lines of transition — and left the JavaScript with nothing to do but
 toggle a class.
 
-Code is MIT licensed and on [GitHub](YOUR-REPO). Its companion pieces: a
+Code is MIT licensed and on
+[GitHub](https://github.com/maneesh-kumar-thakur/devto-frontend-challenge-food-edition).
+Its companion pieces: a
 [midnight fridge raid](https://dev.to/maneesh_thakur_d16c2852fa/midnight-fridge-raid-comfort-food-isnt-a-dish-its-2am-1l04)
 and a [kulhad of cutting chai](https://dev.to/maneesh_thakur_d16c2852fa/cutting-chai-the-comfort-food-that-isnt-food-drawn-in-css-1c27).

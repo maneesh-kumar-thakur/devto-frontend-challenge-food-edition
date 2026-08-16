@@ -17,9 +17,13 @@ soft eggs. The page reads your actual clock, picks the kitchen that's cooking,
 highlights the right row in the hours table, and tells you what it did. You can
 override it and look ahead at any other service.
 
-It's the companion piece to my CSS art entry, [Midnight Fridge
-Raid](#) — same idea, that comfort food is defined by the hour you need it,
-not by the cuisine.
+It's the companion piece to my CSS art entries —
+[Midnight Fridge Raid](https://dev.to/maneesh_thakur_d16c2852fa/midnight-fridge-raid-comfort-food-isnt-a-dish-its-2am-1l04),
+[Cutting Chai](https://dev.to/maneesh_thakur_d16c2852fa/cutting-chai-the-comfort-food-that-isnt-food-drawn-in-css-1c27)
+and
+[Soft Boil](https://dev.to/maneesh_thakur_d16c2852fa/soft-boil-six-minutes-and-you-cannot-get-it-wrong-5dj6)
+— same idea, that comfort food is defined by the hour you need it, not by the
+cuisine.
 
 No framework. No build step. No image files — every plate on the page is
 two radial gradients and a shadow.

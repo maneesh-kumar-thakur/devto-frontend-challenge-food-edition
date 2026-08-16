@@ -1,12 +1,12 @@
 ---
-title: "Two comfort foods, drawn in pure CSS"
+title: "Three comfort foods, drawn in pure CSS"
 published: false
 tags: discuss, css, webdev
 cover_image: 
 ---
 
-Two entries for the Comfort Food Edition. No SVG, no images, no canvas — every
-shape in both is a `div`, a gradient, a `clip-path` or a shadow.
+Three entries for the Comfort Food Edition. No SVG, no images, no canvas —
+every shape in all three is a `div`, a gradient, a `clip-path` or a shadow.
 
 ## 🌙 Midnight Fridge Raid
 
@@ -32,3 +32,16 @@ Unglazed clay was the whole reason for picking it: matte is far kinder to
 layered gradients than glass will ever be.
 
 **[Read it →](https://dev.to/maneesh_thakur_d16c2852fa/cutting-chai-the-comfort-food-that-isnt-food-drawn-in-css-1c27)**
+
+## 🥚 Soft Boil
+
+Five eggs at a rolling boil in a clear glass bowl, on an induction hob that
+glows underneath.
+
+Boiled eggs are what you make when you cannot cook — six minutes, one pan, and
+the comfort is precisely that it isn't possible to get wrong.
+
+Glass so you can actually see the boil, and an induction ring because it puts
+the only warm thing in the picture *underneath* the water.
+
+**[Read it →](https://dev.to/maneesh_thakur_d16c2852fa/soft-boil-six-minutes-and-you-cannot-get-it-wrong-5dj6)**
