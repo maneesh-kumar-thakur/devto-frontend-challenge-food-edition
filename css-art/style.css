@@ -5,7 +5,8 @@
 
    The whole scene is sized in `cqw` (1% of the scene's own width)
    off a single container query, so it scales to any viewport
-   without a media query or a magic-number breakpoint anywhere.
+   without a width breakpoint or a magic number anywhere. (The one
+   @media in this file is prefers-reduced-motion.)
    ============================================================ */
 
 /* ---------- tokens ------------------------------------------ */

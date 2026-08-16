@@ -38,7 +38,7 @@ css-art/
 **Techniques on show:** radial light cones anchored at the source ·
 `clip-path` + `mask-image` feathering · `mix-blend-mode: screen` ·
 3D `perspective` with an offset `perspective-origin` · `cqw` container units
-throughout (zero media queries) · `prefers-reduced-motion`.
+throughout (no width breakpoints) · `prefers-reduced-motion`.
 
 ### Publishing the art posts — CodePen via `{% embed %}`
 
@@ -198,7 +198,8 @@ landing/
   app.js        clock, filtering, form validation
 ```
 
-Zero dependencies, zero build step, no image files.
+Zero dependencies, zero build step, no image files — the dish icons are
+inline SVG, which is the one place in the repo any SVG appears.
 
 **Accessibility:** skip link · landmarks with `aria-labelledby` · real radios
 and checkboxes in `fieldset`s, styled as chips via `:has()` · native `<output>`
@@ -344,7 +345,7 @@ licence separately.
 | Criterion | Where |
 |---|---|
 | **CSS Art** — creativity | Five answers to one question, none of them a plate of food: a moment (2am fridge), a ritual (4pm chai), a fallback (six-minute egg), a wait (the tandoor window), and a container (the dabba) |
-| **CSS Art** — effective use of CSS | `@property`-registered numbers that can be *transitioned* · rotation sold by scrolling a surface rather than rotating anything · painted glass with no `backdrop-filter` · a fourteen-stop reflection band for steel · `repeating-conic-gradient` citrus · radial light cones, mask feathering, 3D perspective · `cqw` throughout, zero media queries in any of the five |
+| **CSS Art** — effective use of CSS | `@property`-registered numbers that can be *transitioned* · rotation sold by scrolling a surface rather than rotating anything · painted glass with no `backdrop-filter` · a fourteen-stop reflection band for steel · `repeating-conic-gradient` citrus · radial light cones, mask feathering, 3D perspective · `cqw` throughout, so none of the five contains a width breakpoint |
 | **CSS Art** — aesthetic outcome | Every piece has one light source and one warm accent against a cold room; the set reads as a series rather than five unrelated drawings |
 | **Landing** — accessibility | See the list above; every choice is a design decision, not a retrofit |
 | **Landing** — usability / UX | The clock removes a decision: you never scroll past breakfast |

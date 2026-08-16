@@ -261,7 +261,8 @@ Whichever limit bites first wins.
 ### One container query, zero breakpoints
 
 Every dimension is in `cqw` off a single `container-type: inline-size`. The
-whole picture scales to any viewport with no media queries and no magic numbers
+whole picture scales to any viewport with no width breakpoints and no magic
+numbers
 — the same approach as the other two pieces.
 
 ### The sprinkle of JavaScript
