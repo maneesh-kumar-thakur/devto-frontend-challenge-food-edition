@@ -38,7 +38,7 @@ two radial gradients and a shadow.
 
      Upload with the image button in the DEV editor and paste the
      media2.dev.to URL it returns in place of SCREENSHOT-URL. -->
-![Open Late — the hero and the menu for whichever kitchen is currently cooking](SCREENSHOT-URL)
+![The Open Late landing page at 12:13am: the header pill reads "Open now · 12:13 AM", the hero says it is serving the Small Hours menu, six dishes are shown including 3am Khichdi and Midnight Maggi, the hours table marks Small Hours as on now, and a booking form sits at the foot of the page.](SCREENSHOT-URL)
 
 <!-- Both links go live only once the repo is public AND Pages is on
      (Settings → Pages → main / root). Check them before publishing. -->
