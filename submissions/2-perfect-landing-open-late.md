@@ -32,21 +32,13 @@ two radial gradients and a shadow.
 
 ## Demo
 
-<!-- TWO screenshots, and they are doing a specific job. The challenge accepts
-     "an image of your project with a direct link to the live demo", and this
-     is the only entry with no embed — so the image is all a judge sees
-     without clicking.
-
-     Shoot the SAME viewport at two different hours. The whole idea of this
-     page is that it is not the same page at 3am as at 8am, and two stills
-     prove that instantly in a way one still cannot. Use the kitchen picker
-     to fake the hour rather than waiting up.
+<!-- The challenge accepts "an image of your project with a direct link to
+     the live demo", and this is the only entry with no embed of any kind
+     — so the image is all a judge sees without clicking. One is enough.
 
      Upload with the image button in the DEV editor and paste the
-     media2.dev.to URLs it returns. -->
-![Open Late at 3am — the Small Hours menu, dark, serving khichdi and drunken noodles](SCREENSHOT-3AM-URL)
-
-![The same page at 8am — the Sunrise menu, serving congee and soft eggs](SCREENSHOT-8AM-URL)
+     media2.dev.to URL it returns in place of SCREENSHOT-URL. -->
+![Open Late — the hero and the menu for whichever kitchen is currently cooking](SCREENSHOT-URL)
 
 <!-- Both links go live only once the repo is public AND Pages is on
      (Settings → Pages → main / root). Check them before publishing. -->
