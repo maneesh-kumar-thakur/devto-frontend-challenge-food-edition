@@ -255,7 +255,9 @@ both read private repos. Build command: none. Output directory: `/` (the root).
 
 ```dockerfile
 FROM nginx:alpine
-COPY landing/ /usr/share/nginx/html/
+# the repo root, so /css-art/, /css-art-chai/, /css-art-eggs/,
+# /css-art-tandoor/, /css-art-dabba/ and /landing/ are all served
+COPY . /usr/share/nginx/html/
 RUN sed -i 's/listen\s*80;/listen 8080;/' /etc/nginx/conf.d/default.conf
 EXPOSE 8080
 ```
@@ -315,10 +317,15 @@ licence separately.
 
 | Criterion | Where |
 |---|---|
-| **CSS Art** — creativity | A moment, not a plate: the 2am fridge instead of a bowl of ramen |
-| **CSS Art** — effective use of CSS | Radial light cones, mask feathering, blend modes, 3D perspective, container units |
-| **CSS Art** — aesthetic outcome | Single hot light source in a dark room; high contrast, cinematic grade |
+| **CSS Art** — creativity | Five answers to one question, none of them a plate of food: a moment (2am fridge), a ritual (4pm chai), a fallback (six-minute egg), a wait (the tandoor window), and a container (the dabba) |
+| **CSS Art** — effective use of CSS | `@property`-registered numbers that can be *transitioned* · rotation sold by scrolling a surface rather than rotating anything · painted glass with no `backdrop-filter` · a fourteen-stop reflection band for steel · `repeating-conic-gradient` citrus · radial light cones, mask feathering, 3D perspective · `cqw` throughout, zero media queries in any of the five |
+| **CSS Art** — aesthetic outcome | Every piece has one light source and one warm accent against a cold room; the set reads as a series rather than five unrelated drawings |
 | **Landing** — accessibility | See the list above; every choice is a design decision, not a retrofit |
 | **Landing** — usability / UX | The clock removes a decision: you never scroll past breakfast |
 | **Landing** — creativity | A menu that follows the hour, in a genre that's usually static |
 | **Landing** — code quality | Vanilla, tokenised CSS, documented JS, progressive enhancement |
+
+Each art post also carries its own write-up of what went **wrong** — a filter
+inheriting onto a child that was meant to stay sharp, a blend mode with no
+headroom left, an animation silently outranking a declaration, an elegant shape
+losing to an obvious one. Those are the parts worth reading.
