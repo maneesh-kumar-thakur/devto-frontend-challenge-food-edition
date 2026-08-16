@@ -1,17 +1,18 @@
 # DEV Frontend Challenge — Comfort Food Edition
 
-Three entries, one idea: **comfort food is defined by the hour you need it,
+Four entries, one idea: **comfort food is defined by the hour you need it,
 not by the recipe.**
 
 | | Entry | Prompt |
 |---|---|---|
 | 🌙 | [Midnight Fridge Raid](css-art/) | CSS Art: Comfort Food |
 | ☕ | [Cutting Chai](css-art-chai/) | CSS Art: Comfort Food |
+| 🥚 | [Soft Boil](css-art-eggs/) | CSS Art: Comfort Food |
 | 🍽️ | [Open Late](landing/) | Perfect Landing: Comfort Food |
 
-The challenge allows multiple entries per prompt, so both CSS-art pieces go in
-as separate posts — 2am leftovers and 4pm chai are two answers to the same
-question, and neither competes with the other.
+The challenge allows multiple entries per prompt, so all three CSS-art pieces
+go in as separate posts — 2am leftovers, 4pm chai and the six-minute egg are
+three answers to the same question, and none competes with the others.
 
 Deadline: **16 August, 11:59pm PDT**. Tag all three posts `#frontendchallenge`.
 
@@ -35,43 +36,38 @@ css-art/
 3D `perspective` with an offset `perspective-origin` · `cqw` container units
 throughout (zero media queries) · `prefers-reduced-motion`.
 
-### Publishing to CodePen
+### Publishing the art posts — CodePen via `{% embed %}`
 
-Both CSS-art pieces ship as CodePen embeds. Create a pen and paste each file
-into its matching panel:
-
-| File | CodePen panel |
-|---|---|
-| everything inside `<body>` in `index.html` (not the `<script>` tag) | **HTML** |
-| all of `style.css` | **CSS** |
-| all of `script.js` | **JS** |
-
-Then set the pen to a **wide preview** so the 5:4 scene has room, and embed it
-in the post with:
+Both art posts embed a CodePen. **Use `{% embed %}`, not `{% codepen %}`** —
+this is the one combination that works, confirmed in a published post:
 
 ```
-{% codepen https://codepen.io/USERNAME/pen/PEN-ID %}
+{% embed https://codepen.io/Maneesh-Thakur/pen/<uuid> %}     ← renders
+{% codepen https://codepen.io/Maneesh-Thakur/pen/<uuid> %}   ← "Invalid CodePen URL"
+{% https://codepen.io/Maneesh-Thakur/pen/<uuid> %}           ← prints as plain text
 ```
 
-The art is finished CSS on its own — the JS pane can be emptied and the picture
-still works, which is the point.
+Why: the dedicated `{% codepen %}` tag validates the URL against the **classic**
+pen shape (`codepen.io/user/pen/abcXYZ`) and rejects anything else. This account
+is on CodePen's newer file-based editor, which only ever produces UUID URLs, and
+`codepen.io/pen` redirects back to it — so there is no classic pen to create and
+nothing to convert. The generic `{% embed %}` tag skips that validation and
+resolves the UUID URL fine. Chasing a classic pen is a dead end; don't retry it.
 
-**It has to be a CLASSIC Pen.** This is confirmed, not a precaution: DEV's
-`{% codepen %}` tag rejects CodePen's newer project-style editor outright with
-*"Whoops, something went wrong: Invalid CodePen URL"*. The tag validates the
-URL shape and only accepts a classic pen slug.
+Creating a pen, in that newer editor:
 
-| | URL | DEV embed |
-|---|---|---|
-| Project editor | `codepen.io/user/pen/019ffcc6-745c-72fe-…` | **rejected** |
-| Classic Pen | `codepen.io/user/pen/abcXYZ` | works |
+1. New Pen → paste **the whole of** `index.html`, `style.css` and `script.js`,
+   one per file tab. Unlike a classic pen, this editor has a real filesystem, so
+   the document's `<link rel="stylesheet" href="style.css">` resolves and the
+   full HTML document is correct as-is.
+2. **Select-all in `style.css` before pasting.** It ships with an
+   `html::before { content: 'CodePen ♥ The Web' }` starter block — pasting below
+   it leaves a faint fixed caption floating over the scene.
+3. Set the pen **title** (it shows in the embed) and confirm **Public**.
+4. Save, then copy the URL from the address bar into the post.
 
-Create classic pens from **[codepen.io/pen](https://codepen.io/pen)** — the
-three-panel HTML/CSS/JS editor. Not "New Project", which is the file-based one
-with the Files sidebar. A classic pen also starts with empty panels, so
-there's no `html::before { … rebeccapurple }` starter boilerplate to delete.
-
-Set the pen title in **Pen Settings**, since it shows in the embed.
+Do not paste a fragment of the markup. A classic pen wanted the `<body>`
+contents only; this editor wants the whole `index.html`, `<head>` and all.
 
 ---
 
@@ -97,7 +93,36 @@ Same CodePen panel mapping as above.
 
 ---
 
-## 3. Open Late — landing page
+## 3. Soft Boil — CSS art
+
+Five eggs at a rolling boil in a clear glass bowl on an induction hob, with the
+element ring glowing underneath.
+
+```
+css-art-eggs/
+  index.html    markup only
+  style.css     the whole picture
+  script.js     ~50 lines: scatter the boil + the heat switch
+```
+
+**Techniques on show:** `@property`-registered `<number>` custom properties, so
+`--heat` and `--amp` can be *transitioned* — one declaration drives a
+nine-second, four-stage warm-up across every element · painted glass, no
+`backdrop-filter` anywhere · per-bubble `clamp()` thresholds so the boil arrives
+a few bubbles at a time · amplitude multiplied inside `@keyframes`, so the eggs
+go still without the animation ever stopping · bubbles that scale up as they
+rise · `cqw` units throughout · `prefers-reduced-motion`.
+
+The one to steal: **an animation that touches a property silently beats any
+plain declaration of that property.** Gating opacity through a `--vis`
+multiplier *inside* the keyframes is the fix, and it's why `.hob__ring`,
+`.spill`, `.bubbles i` and `.churn i` all set `--vis` rather than `opacity`.
+
+Same CodePen panel mapping as above.
+
+---
+
+## 4. Open Late — landing page
 
 An imaginary 24-hour diner whose menu follows the visitor's real clock. Four
 kitchens, six dishes each, filtering by kitchen / diet / search, an hours table
@@ -129,40 +154,39 @@ full ingredient lists, and a natively-validated form.
 
 ### Deploying
 
-It's three static files — any host works.
+Static files, no build step — any host works. **Only the landing post needs a
+host** — both art posts ship as CodePen embeds, so hosting is optional for them.
 
-**Cloudflare Pages (direct upload).** Only the landing page needs hosting —
-both CSS-art pieces ship as CodePen embeds:
+**GitHub Pages — no CLI, no new account.** The repo is already on GitHub, and
+the landing post's `Source →` link needs it public anyway. Settings → Pages →
+Source: *Deploy from a branch* → `main` / `/ (root)`. Serves all three entries:
+
+| Entry | Path |
+|---|---|
+| Midnight Fridge Raid | `/css-art/` |
+| Cutting Chai | `/css-art-chai/` |
+| Soft Boil | `/css-art-eggs/` |
+| Open Late (landing) | `/landing/` |
+
+under `https://maneesh-kumar-thakur.github.io/devto-frontend-challenge-food-edition/`.
+
+Other options, all serving the repo root:
 
 ```bash
-npx wrangler login                                # browser OAuth, once
-npx wrangler pages deploy ./landing --project-name=open-late
-# -> https://open-late.pages.dev
-```
+# Cloudflare Pages
+npx wrangler login                              # browser OAuth, once
+npx wrangler pages deploy . --project-name=open-late
 
-Or connect the repo in the Cloudflare dashboard instead — its GitHub App reads
-private repos too. Build command: none. Output directory: `landing`.
-
-Or connect the repo in the Cloudflare dashboard instead — its GitHub App reads
-private repos too. Build command: none. Output directory: `landing`.
-
-Other options:
-
-```bash
 # Netlify
-npx netlify-cli deploy --dir=landing --prod
-
-# GitHub Pages: make the repo public, then point Pages at main / root
-#   -> https://<user>.github.io/<repo>/landing/
+npx netlify-cli deploy --dir=. --prod
 
 # Google Cloud Run (the challenge accepts a Cloud Run embed)
 #   add the Dockerfile below, then:
 gcloud run deploy open-late --source . --allow-unauthenticated --region us-central1
 ```
 
-Note that hosting only solves the **demo** URL. The `Source →` link in the
-landing post still needs the repo public — worth doing, since "read the code"
-is doing real work for the code-quality criterion.
+Cloudflare and Netlify both connect the repo from their dashboard instead, and
+both read private repos. Build command: none. Output directory: `/` (the root).
 
 <details>
 <summary>Dockerfile for Cloud Run</summary>
@@ -180,7 +204,7 @@ Then embed with `{% embed YOUR_CLOUD_RUN_URL %}`, or just link the live demo.
 
 ---
 
-## 4. Submitting
+## 5. Submitting
 
 Drafts are in [`submissions/`](submissions/) with DEV front-matter:
 
