@@ -70,4 +70,4 @@ answers it with the box, because nobody ever packed one of these for themselves.
 Steel is the one material where the usual approach fails: a polished cylinder
 is a mirror, so what you draw is the room reflected in it, not the tin.
 
-**[Read it →](THE-DABBA-POST-URL)**
+**[Read it →](https://dev.to/maneesh_thakur_d16c2852fa/the-dabba-the-box-somebody-packed-for-you-before-you-were-awake-19l7)**
