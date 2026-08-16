@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comfort Food Edition — six entries in pure CSS</title>
+  <meta name="description" content="Five pure-CSS art pieces and a landing page, built for the DEV Frontend Challenge, Comfort Food Edition. No SVG, no images, no canvas.">
+  <style>
+    /* A signpost, not a seventh piece of art. Everything here is one
+       file with no dependencies, so it cannot be the thing that
+       breaks on the day. */
+    :root {
+      --ink:   #e8eef4;
+      --dim:   #8e99a4;
+      --line:  #262c33;
+      --card:  #14181d;
+      --warm:  #f0a24a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: clamp(2rem, 7vw, 5rem) clamp(1rem, 5vw, 3rem);
+      background: radial-gradient(120% 80% at 50% 0%, #1a1f25 0%, #0a0c0f 70%);
+      color: var(--ink);
+      font: 400 1rem/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    .wrap { max-width: 58rem; margin: 0 auto; }
+    h1 {
+      margin: 0 0 0.4rem;
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      letter-spacing: -0.02em;
+    }
+    .sub { margin: 0 0 0.6rem; color: var(--dim); text-wrap: balance; }
+    .rule {
+      margin: 2rem 0;
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+    h2 {
+      margin: 0 0 1rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+    ul { list-style: none; margin: 0 0 2.4rem; padding: 0; display: grid; gap: 0.75rem; }
+    @media (min-width: 40rem) { ul { grid-template-columns: 1fr 1fr; } }
+    a.card {
+      display: flex;
+      gap: 0.9rem;
+      align-items: baseline;
+      padding: 1rem 1.15rem;
+      border: 1px solid var(--line);
+      border-radius: 0.7rem;
+      background: var(--card);
+      color: inherit;
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s, transform 0.15s;
+    }
+    a.card:hover { border-color: #46525e; background: #191e24; transform: translateY(-1px); }
+    a.card:focus-visible { outline: 3px solid var(--warm); outline-offset: 3px; }
+    .emoji { font-size: 1.3rem; line-height: 1; }
+    .name { font-weight: 600; }
+    .desc { display: block; margin-top: 0.15rem; font-size: 0.85rem; color: var(--dim); }
+    footer { color: var(--dim); font-size: 0.85rem; }
+    footer a { color: var(--warm); }
+    @media (prefers-reduced-motion: reduce) {
+      a.card { transition: none; }
+      a.card:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <h1>Comfort Food Edition</h1>
+    <p class="sub">
+      Five pure-CSS art pieces and a landing page, built for the
+      DEV Frontend Challenge. No SVG, no images, no canvas &mdash; every shape
+      is a <code>div</code>, a gradient or a shadow.
+    </p>
+    <p class="sub">
+      Comfort food is defined by the hour you need it, not by the recipe.
+    </p>
+
+    <hr class="rule">
+
+    <h2>CSS Art</h2>
+    <ul>
+      <li><a class="card" href="css-art/"><span class="emoji">🌙</span><span>
+        <span class="name">Midnight Fridge Raid</span>
+        <span class="desc">2am, and last night&rsquo;s leftovers count as a meal</span>
+      </span></a></li>
+      <li><a class="card" href="css-art-chai/"><span class="emoji">☕</span><span>
+        <span class="name">Cutting Chai</span>
+        <span class="desc">Four o&rsquo;clock, every day, for as long as anyone remembers</span>
+      </span></a></li>
+      <li><a class="card" href="css-art-eggs/"><span class="emoji">🥚</span><span>
+        <span class="name">Soft Boil</span>
+        <span class="desc">Six minutes, one pan, impossible to get wrong</span>
+      </span></a></li>
+      <li><a class="card" href="css-art-tandoor/"><span class="emoji">🔥</span><span>
+        <span class="name">Slow Turn</span>
+        <span class="desc">Nine birds, one fire, and twenty minutes of waiting</span>
+      </span></a></li>
+      <li><a class="card" href="css-art-dabba/"><span class="emoji">🍱</span><span>
+        <span class="name">The Dabba</span>
+        <span class="desc">Dal, rice, roti, sabzi &mdash; and whoever packed it</span>
+      </span></a></li>
+    </ul>
+
+    <h2>Perfect Landing Page</h2>
+    <ul>
+      <li><a class="card" href="landing/"><span class="emoji">🍽️</span><span>
+        <span class="name">Open Late</span>
+        <span class="desc">A 24-hour diner whose menu follows your real clock</span>
+      </span></a></li>
+    </ul>
+
+    <hr class="rule">
+
+    <footer>
+      Source on
+      <a href="https://github.com/maneesh-kumar-thakur/devto-frontend-challenge-food-edition">GitHub</a>,
+      MIT licensed. Write-ups for each piece are on
+      <a href="https://dev.to/maneesh_thakur_d16c2852fa">DEV</a>.
+    </footer>
+
+  </div>
+</body>
+</html>

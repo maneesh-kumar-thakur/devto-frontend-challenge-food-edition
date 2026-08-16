@@ -31,7 +31,11 @@ two radial gradients and a shadow.
 
 ## Demo
 
-**[Live demo →](https://YOUR-DEMO-URL)** · **[Source →](https://github.com/YOUR-REPO)**
+<!-- Both links go live only once the repo is public AND Pages is on
+     (Settings → Pages → main / root). Check them before publishing. -->
+**[Live demo →](https://maneesh-kumar-thakur.github.io/devto-frontend-challenge-food-edition/landing/)**
+·
+**[Source →](https://github.com/maneesh-kumar-thakur/devto-frontend-challenge-food-edition)**
 
 Try it, then try it again at a different time of day. It's a different page.
 

@@ -218,8 +218,32 @@ host** — all five art posts ship as CodePen embeds, so hosting is optional for
 them.
 
 **GitHub Pages — no CLI, no new account.** The repo is already on GitHub, and
-the landing post's `Source →` link needs it public anyway. Settings → Pages →
-Source: *Deploy from a branch* → `main` / `/ (root)`. Serves all six entries:
+the landing post's `Source →` link needs it public anyway.
+
+Everything the site needs is already committed, so going live is two switches
+and no code:
+
+1. **Settings → General → Change visibility → Public.** Pages will not serve a
+   private repo on a free account, and every `Source →` link in the five
+   published art posts is 404ing until this happens.
+2. **Settings → Pages → Source: *Deploy from a branch* → `main` / `/ (root)`.**
+   First build takes a minute or two.
+3. Open the demo link in [`2-perfect-landing-open-late.md`](submissions/2-perfect-landing-open-late.md)
+   and confirm it loads before publishing that post.
+4. Optionally set the repo's **About → Website** to the Pages URL.
+
+Two files exist purely so step 2 behaves:
+
+- **`.nojekyll`** — Pages runs Jekyll by default, and all seven drafts in
+  `submissions/` open with `---`, so Jekyll would treat them as pages with
+  front matter and try to render them. This turns Jekyll off entirely and
+  serves the tree as-is.
+- **`index.html` at the repo root** — without it the bare Pages URL has no
+  page, and Jekyll would have rendered `README.md` as the homepage. It is a
+  plain signpost to the six entries, one file, no dependencies, so it cannot be
+  the thing that breaks on the day.
+
+Serves all six entries:
 
 | Entry | Path |
 |---|---|
@@ -293,11 +317,13 @@ Before publishing:
 3. Confirm the `#frontendchallenge` tag is present.
 4. Flip `published: false` → `true`.
 
-**Still outstanding:** `YOUR-DEMO-URL` and `YOUR-REPO` in the landing draft, and
-the link to that post from the chai draft — all three unblock the moment the
-landing page is hosted and the repo is public.
+**Still outstanding:** one link, in
+[`3-css-art-cutting-chai.md`](submissions/3-css-art-cutting-chai.md) — it
+points at the landing post, which does not exist yet. Everything else is
+filled in; the landing draft's demo and source URLs are written and simply go
+live when the two switches above are flipped.
 
-Editing a draft here does **not** change an already-published post. The four
+Editing a draft here does **not** change an already-published post. The five
 art drafts have since gained links to each other; those links only exist on DEV
 if they are pasted into each post's editor by hand.
 
