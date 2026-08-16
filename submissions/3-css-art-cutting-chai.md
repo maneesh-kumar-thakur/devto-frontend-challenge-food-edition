@@ -2,9 +2,10 @@
 title: "Cutting Chai — the comfort food that isn't food, drawn in CSS"
 published: false
 tags: frontendchallenge, css, webdev, showdev
+cover_image: 
 ---
 
-*This is a submission for [Frontend Challenge: Comfort Food Edition](https://dev.to/challenges/frontend), CSS Art: Comfort Food*
+_This is a submission for [Frontend Challenge - Comfort Food Edition, CSS Art](https://dev.to/challenges/frontend-2026-07-29)._
 
 ## What I Built
 

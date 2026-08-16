@@ -2,9 +2,10 @@
 title: "Open Late — a diner menu that follows the clock, not the other way round"
 published: false
 tags: frontendchallenge, css, a11y, webdev
+cover_image: 
 ---
 
-*This is a submission for [Frontend Challenge: Comfort Food Edition](https://dev.to/challenges/frontend), Perfect Landing: Comfort Food*
+_This is a submission for [Frontend Challenge - Comfort Food Edition, Perfect Landing](https://dev.to/challenges/frontend-2026-07-29)_
 
 ## What I Built
 
@@ -30,6 +31,22 @@ No framework. No build step. No image files — every plate on the page is
 two radial gradients and a shadow.
 
 ## Demo
+
+<!-- TWO screenshots, and they are doing a specific job. The challenge accepts
+     "an image of your project with a direct link to the live demo", and this
+     is the only entry with no embed — so the image is all a judge sees
+     without clicking.
+
+     Shoot the SAME viewport at two different hours. The whole idea of this
+     page is that it is not the same page at 3am as at 8am, and two stills
+     prove that instantly in a way one still cannot. Use the kitchen picker
+     to fake the hour rather than waiting up.
+
+     Upload with the image button in the DEV editor and paste the
+     media2.dev.to URLs it returns. -->
+![Open Late at 3am — the Small Hours menu, dark, serving khichdi and drunken noodles](SCREENSHOT-3AM-URL)
+
+![The same page at 8am — the Sunrise menu, serving congee and soft eggs](SCREENSHOT-8AM-URL)
 
 <!-- Both links go live only once the repo is public AND Pages is on
      (Settings → Pages → main / root). Check them before publishing. -->
