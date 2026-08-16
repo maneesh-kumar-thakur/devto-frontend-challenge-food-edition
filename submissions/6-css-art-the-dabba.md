@@ -258,3 +258,6 @@ Its companion pieces: a
 a [kulhad of cutting chai](https://dev.to/maneesh_thakur_d16c2852fa/cutting-chai-the-comfort-food-that-isnt-food-drawn-in-css-1c27),
 [five eggs at a rolling boil](https://dev.to/maneesh_thakur_d16c2852fa/soft-boil-six-minutes-and-you-cannot-get-it-wrong-5dj6),
 and [nine birds turning over a fire](https://dev.to/maneesh_thakur_d16c2852fa/slow-turn-nine-birds-one-fire-and-twenty-minutes-of-waiting-1k17).
+
+There is a landing page in the set too — [Open Late](https://dev.to/maneesh_thakur_d16c2852fa/open-late-a-diner-menu-that-follows-the-clock-not-the-other-way-round-20ga),
+a 24-hour diner whose menu follows your real clock.

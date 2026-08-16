@@ -213,3 +213,6 @@ Its companion pieces: a
 [five eggs at a rolling boil](https://dev.to/maneesh_thakur_d16c2852fa/soft-boil-six-minutes-and-you-cannot-get-it-wrong-5dj6),
 [nine birds turning over a fire](https://dev.to/maneesh_thakur_d16c2852fa/slow-turn-nine-birds-one-fire-and-twenty-minutes-of-waiting-1k17),
 and [a four-tier tiffin carrier](https://dev.to/maneesh_thakur_d16c2852fa/the-dabba-the-box-somebody-packed-for-you-before-you-were-awake-19l7).
+
+There is a landing page in the set too — [Open Late](https://dev.to/maneesh_thakur_d16c2852fa/open-late-a-diner-menu-that-follows-the-clock-not-the-other-way-round-20ga),
+a 24-hour diner whose menu follows your real clock.

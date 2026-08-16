@@ -139,9 +139,9 @@ keeping in your pocket.
 ### Sizing: one container query, zero breakpoints
 
 Every dimension is in `cqw` — 1% of the scene's own width — off a single
-`container-type: inline-size`. No media queries anywhere. The same technique
+`container-type: inline-size`. No width breakpoints anywhere. The same technique
 let me drop a simplified version of this cup straight into the hero of my
-[landing page entry](#) without touching a single number.
+[landing page entry](https://dev.to/maneesh_thakur_d16c2852fa/open-late-a-diner-menu-that-follows-the-clock-not-the-other-way-round-20ga) without touching a single number.
 
 ### The sprinkle of JavaScript
 
